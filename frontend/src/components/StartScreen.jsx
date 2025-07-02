@@ -3,7 +3,7 @@
 import React, { useState, useContext } from "react";
 import ThemeContext from "../ThemeContext";
 
-//Ciao Ciro
+//Ciao Ciro, programmiamo insieme!
 // --- Componente Popup "Contattaci" ---
 const ContactPopup = ({ onClose }) => {
   return (
