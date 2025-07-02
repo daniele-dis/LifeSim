@@ -1,0 +1,116 @@
+/* src/index.css */
+
+/* Stili Globali e Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Assicurati che HTML e BODY occupino il 100% della viewport */
+html {
+  height: 100%;
+  width: 100%;
+  /* Rimuovi i background specifici da html, li gestiremo sul body */
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden; /* Previene lo scroll orizzontale */
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Rimuovi i background specifici da body, li gestiremo con le classi di tema */
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: inherit; /* Eredita il colore dai figli */
+}
+
+/* --- IL CAMBIAMENTO CRUCIALE È QUI --- */
+
+/* Applica le variabili e gli stili per la modalità SCURA direttamente al BODY quando ha la classe 'dark-mode' */
+/* Questa è la tua modalità predefinita, e qui definisci tutte le variabili e gli stili di base del tema. */
+body.dark-mode {
+  /* Variabili Dark Mode */
+  --color-background-primary: linear-gradient(135deg, #0a0a0a 0%, #1a0a2a 100%);
+  --color-background-secondary: rgba(0, 0, 0, 0.6); 
+  --color-text-primary: #f0f0f0;
+  --color-text-secondary: #d0c4ff;
+  --color-highlight-primary: #AE7FFF; 
+  --color-highlight-secondary: #7B2FF7; 
+  --color-border-primary: rgba(174, 127, 255, 0.2); 
+  --color-shadow-primary: rgba(174, 127, 255, 0.8); 
+  --color-shadow-secondary: rgba(174, 127, 255, 0.4); 
+  --bg-image-dots: 
+    radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.02) 0%, transparent 70%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.01) 0px, transparent 1px, transparent 10px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.01) 0px, transparent 1px, transparent 10px);
+  --aura-color-1: #7B2FF7;
+  --aura-color-2: #AE7FFF;
+
+  /* Applica gli stili al body usando le variabili CSS */
+  background: var(--color-background-primary);
+  background-image: var(--bg-image-dots);
+  color: var(--color-text-primary); /* Applica il colore del testo primario */
+
+  /* Aggiungi una transizione fluida per un cambio tema visivamente piacevole */
+  transition: 
+    background 0.5s ease,
+    color 0.5s ease;
+}
+
+/* Applica le variabili e gli stili per la modalità CHIARA direttamente al BODY quando ha la classe 'light-mode' */
+body.light-mode {
+  /* Variabili Light Mode */
+  --color-background-primary: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+  --color-background-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-primary: #121212;
+  --color-text-secondary: #333;
+  --color-highlight-primary: #7B2FF7; 
+  --color-highlight-secondary: #AE7FFF; 
+  --color-border-primary: rgba(123, 47, 247, 0.3);
+  --color-shadow-primary: rgba(123, 47, 247, 0.5);
+  --color-shadow-secondary: rgba(123, 47, 247, 0.2);
+  --bg-image-dots: 
+    radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.02) 0%, transparent 70%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.01) 0px, transparent 1px, transparent 10px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.01) 0px, transparent 1px, transparent 10px);
+  --aura-color-1: rgba(123, 47, 247, 0.08); 
+  --aura-color-2: rgba(174, 127, 255, 0.05); 
+
+  /* Applica gli stili al body usando le variabili CSS */
+  background: var(--color-background-primary);
+  background-image: var(--bg-image-dots);
+  color: var(--color-text-primary); /* Applica il colore del testo primario */
+
+  /* La transizione è definita una volta sola sul body, ma puoi ripeterla */
+  transition: 
+    background 0.5s ease,
+    color 0.5s ease;
+}
+
+/* L'elemento #root non dovrebbe più avere stili di tema fissi, ma dovrebbe ereditare dal body. */
+/* #root serve solo come contenitore per la tua app. */
+#root {
+  height: 100%;
+  width: 100%;
+  /* Rimuovi qualsiasi background o colore diretto qui che vorresti fosse gestito dal tema. */
+}
+
+/* Selettori generali che usano le variabili (questi rimangono invariati e funzioneranno) */
+.title {
+  color: var(--color-text-primary);
+  /* ... altri stili ... */
+}
+
+
+
+/* Se in GameSelectionScreen.js hai ancora classi come 'dark-mode' o 'light-mode' sul suo div principale, */
+/* assicurati che il CSS in GameSelectionScreen.css le definisca correttamente usando i selettori appropriati. */
+/* Esempio: .game-selection-portal-container.dark-mode { ... } */
