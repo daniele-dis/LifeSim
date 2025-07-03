@@ -90,6 +90,11 @@ function App() {
     getGameState(); // Carica lo stato del gioco quando si passa al mainGame
   };
 
+  
+  const handleBackToStart = () => {
+  setCurrentPhase('start');
+};
+
   // === Rendering Condizionale delle Fasi ===
 
   // Fase 1: Schermata Iniziale
@@ -104,14 +109,16 @@ function App() {
   }
 
   // Fase 2: Schermata di Selezione del Gioco
-  if (currentPhase === 'gameSelection') {
-    return (
-      <GameSelectionScreen
-        isDarkMode={isDarkMode}
-        onGameSelected={handleGameSelected} // Quando si seleziona una partita, passa a 'mainGame'
-      />
-    );
-  }
+if (currentPhase === 'gameSelection') {
+  return (
+    <GameSelectionScreen
+      isDarkMode={isDarkMode}
+      onGameSelected={handleGameSelected}
+      onBackToStart={handleBackToStart} // ✅ AGGIUNGI QUESTO
+    />
+  );
+}
+
 
   // Fase 3: Il Gioco Principale (con stato e azioni)
   if (currentPhase === 'mainGame') {
@@ -133,6 +140,8 @@ function App() {
       </div>
     );
   }
+
+
 
   // Fallback (non dovrebbe mai accadere)
   return <div>Errore: Fase sconosciuta.</div>;

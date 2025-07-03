@@ -792,11 +792,67 @@ body {
 .game-slots-container h2 {
     color: var(--color-highlight-primary);
     margin-bottom: 25px;
-    font-size: 1.9em;
+    font-size: 2.2em;
     text-align: center;
     transition: color 0.5s ease;
     position: relative; /* Per assicurarsi che sia sopra le aure */
     z-index: 1;
+}
+
+.game-slots-title {
+    position: relative; /* Importante per z-index */
+    z-index: 1; /* Assicura che sia sopra le aure */
+    font-size: 3.8rem; /* Puoi aggiustare questo e i margini a tuo piacimento */
+    margin-top: -75px;
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--color-highlight-primary); /* Colore base del testo (senza glow) */
+    
+    /* Rimuovi il text-shadow da qui per non averlo di default */
+    
+    animation: fadeInSlideDown 1s ease-out; /* Mantiene l'animazione */
+    transition: color 0.5s ease, text-shadow 0.3s ease; /* Transizione per il glow */
+}
+
+/* Animazione per il titolo del portale (resta invariata) */
+@keyframes fadeInSlideDown {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.game-slots-title:hover {
+    /* Questo crea il glow SOLO all'hover */
+    text-shadow: 0 0 30px var(--color-highlight-primary-hover), /* Un'ombra */
+                 0 0 60px var(--color-highlight-primary); /* Un'altra ombra per un effetto più completo */
+}
+
+.game-slots-subtitle{
+    position: relative;
+    z-index: 1;
+    margin-top: 0.1rem;
+    margin-bottom: 2.1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.8px;
+    color: var(--color-text-secondary);
+    opacity: 0.9;
+    animation: fadeIn 1.2s ease-out 0.2s forwards;
+    /* opacity: 0; <-- Rimosso: l'animazione gestisce l'opacità iniziale */
+    transition: color 0.5s ease, opacity 0.5s ease;
+    text-shadow: 0 0 5px var(--color-shadow-tertiary); /* Leggero glow per il sottotitolo */
+    
+}
+
+.game-slots-subtitle:hover{
+    color: var(--color-highlight-secondary);
+}
+
+/* Animazione generica di fade-in */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* Stili per gli slot individuali, potrebbero aver bisogno di adattarsi al tema */
@@ -970,4 +1026,22 @@ body {
         font-size: 0.7em;
         margin-top: 5px;
     }
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 1000;
+  font-size: 14px;
+}
+
+.back-button:hover {
+  background-color: #1a252f;
 }

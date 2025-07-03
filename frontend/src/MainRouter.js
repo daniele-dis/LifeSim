@@ -14,6 +14,10 @@ function MainRouter() {
     setCurrentScreen('gameSelection');
   };
 
+  const handleBackToStart = () => {
+  setCurrentScreen('start');
+};
+
   // ✅ Rimosso lo stato isDarkMode e toggleDarkMode locali, vengono dal contesto
 
   return (
@@ -33,6 +37,7 @@ function MainRouter() {
         <GameSelectionScreen 
           // ✅ Passa isDarkMode dal contesto (se GameSelectionScreen ne ha bisogno)
           isDarkMode={isDarkMode} 
+          onBackToStart={handleBackToStart}
           // Se GameSelectionScreen avesse un suo toggle, dovresti passargli anche toggleDarkMode
         />
       )}

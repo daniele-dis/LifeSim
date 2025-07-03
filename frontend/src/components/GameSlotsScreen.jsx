@@ -10,7 +10,8 @@ const GameSlotsScreen = ({ onSlotSelect }) => {
 
   return (
     <div className={`game-slots-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-      <h2>Select a Slot to Start a New Game</h2>
+      <h2 className="game-slots-title">Che Abbia Inizio l'Avventura</h2>
+      <p className="game-slots-subtitle">Scegli Uno Slot Per Avviare La Partita.</p>
       <div className="slots-wrapper">
         {slots.map((slotNumber) => (
           <div
@@ -26,6 +27,9 @@ const GameSlotsScreen = ({ onSlotSelect }) => {
           </div>
         ))}
       </div>
+        <footer className="portal-footer">
+          <p>&copy; {new Date().getFullYear()} LifeSim Adventures. All rights reserved.</p>
+        </footer>
     </div>
   );
 };
