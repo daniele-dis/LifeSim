@@ -1,27 +1,28 @@
 // src/components/GameSlotsScreen.jsx
 
-import React, { useContext } from 'react'; // <--- Aggiungi useContext
-import ThemeContext from '../ThemeContext'; // <--- Importa ThemeContext
+import React, { useContext } from 'react';
+import ThemeContext from '../ThemeContext';
 import './../index.css';
 
 const GameSlotsScreen = ({ onSlotSelect }) => {
   const slots = [1, 2, 3];
-  const { isDarkMode } = useContext(ThemeContext); // <--- Usa il contesto del tema
+  const { isDarkMode } = useContext(ThemeContext);
 
   return (
-    // <--- Applica la classe del tema qui
     <div className={`game-slots-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <h2>Select a Slot to Start a New Game</h2>
       <div className="slots-wrapper">
         {slots.map((slotNumber) => (
           <div
             key={slotNumber}
-            className="game-slot empty-slot"
+            className="game-slot"
             onClick={() => onSlotSelect(slotNumber)}
           >
-            <h3>Slot {slotNumber}</h3>
-            <p>Empty</p>
-            <button>Start New Game</button>
+            <div className="slot-content">
+              <h3>Slot {slotNumber}</h3>
+              <p>Empty</p>
+              <button className="slot-button">Start New Game</button>
+            </div>
           </div>
         ))}
       </div>
