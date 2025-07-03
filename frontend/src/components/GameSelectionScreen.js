@@ -29,7 +29,7 @@ const GameSelectionScreen = ({ onGameSelected, onBackToStart }) => {
       
       {/* ✅ Pulsante Indietro: Aggiunto senza toccare il resto */}
       <button className="back-button" onClick={onBackToStart}>
-        ⬅ Torna alla schermata iniziale
+        ⬅ Indietro
       </button>
 
       {currentSubScreen === 'selection' && (
