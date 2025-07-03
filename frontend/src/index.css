@@ -4,123 +4,112 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
 /* --- Stili Base dell'Applicazione (Globali) --- */
-/* Questi stili si applicano a tutto il corpo del documento HTML. */
 body {
-    margin: 0; /* Rimuove il margine predefinito del browser */
-    font-family: 'Poppins', sans-serif; /* Imposta il font principale */
-    -webkit-font-smoothing: antialiased; /* Migliora il rendering dei font su WebKit/Chrome */
-    -moz-osx-font-smoothing: grayscale; /* Migliora il rendering dei font su Firefox */
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* --- Variabili CSS Globali per il Tema Scuro (Default) --- */
-/* Definisce i colori e le altre proprietà come variabili CSS.
-   Queste variabili vengono usate in tutta l'applicazione per mantenere coerenza. */
 :root {
     /* Colori generali di sfondo per le schermate */
     --color-background-primary: #121212; /* Sfondo principale scuro */
-    --color-background-secondary: rgba(40, 40, 40, 0.95); /* Sfondo per elementi secondari (menu, popup, footer portale) */
-    --color-background-tertiary: rgba(0, 0, 0, 0.4); /* Sfondo più scuro per il footer della StartScreen */
+    --color-background-secondary: rgba(40, 40, 40, 0.95);
+    --color-background-tertiary: rgba(0, 0, 0, 0.4);
 
     /* Colori del testo */
     --color-text-primary: #f0f0f0; /* Testo principale chiaro */
-    --color-text-secondary: #bbbbbb; /* Testo secondario (sottotitoli, testi informativi, footer) */
+    --color-text-secondary: #bbbbbb;
 
     /* Colori di evidenziazione e accento */
-    --color-highlight-primary: #ae7fff; /* Colore viola principale (titoli importanti, elementi interattivi) */
-    --color-highlight-secondary: #d0c4ff; /* Viola più chiaro (hover sottotitolo, testo forte nei popup) */
+    --color-highlight-primary: #ae7fff;
+    --color-highlight-secondary: #d0c4ff;
     
     /* Colori per gli stati hover e interattivi */
-    --color-highlight-primary-hover: rgba(174, 127, 255, 1); /* Colore ombra al passaggio del mouse sul titolo */
-    --color-highlight-hover: rgba(123, 47, 247, 0.2); /* Sfondo al passaggio del mouse per le voci di menu */
+    --color-highlight-primary-hover: rgba(174, 127, 255, 1);
+    --color-highlight-hover: rgba(123, 47, 247, 0.2);
     
     /* Colori per gli effetti 'aura' o sfumature di sfondo */
-    --aura-color-1: rgba(123, 47, 247, 0.12); /* Sfumatura viola principale (per :before) */
-    --aura-color-2: rgba(174, 127, 255, 0.08); /* Sfumatura viola secondaria (per :after) */
+    --aura-color-1: rgba(123, 47, 247, 0.12);
+    --aura-color-2: rgba(174, 127, 255, 0.08);
 
     /* Colori per gli overlay (sovrapposizioni) */
-    --color-overlay-primary: rgba(18, 18, 18, 0.88); /* Overlay scuro per il menu laterale */
-    --color-overlay-secondary: rgba(0, 0, 0, 0.7); /* Overlay scuro per i popup */
+    --color-overlay-primary: rgba(18, 18, 18, 0.88);
+    --color-overlay-secondary: rgba(0, 0, 0, 0.7);
 
     /* Colori dei bordi */
-    --color-border-primary: rgba(255, 255, 255, 0.1); /* Linee di separazione (es. impostazioni), bordi pulsanti portale */
+    --color-border-primary: rgba(255, 255, 255, 0.1);
 
     /* Colori specifici per i pulsanti */
-    --color-button-text: #fff; /* Colore del testo sui pulsanti e il "pollice" del toggle */
-    --color-button-gradient-start: #7B2FF7; /* Inizio gradiente per i pulsanti di StartScreen */
-    --color-button-gradient-end: #AE7FFF; /* Fine gradiente per i pulsanti di StartScreen */
-    --color-button-shadow-primary: rgba(123, 47, 247, 0.7); /* Ombra predefinita per i pulsanti */
-    --color-button-shadow-hover: rgba(174, 127, 255, 0.9); /* Ombra al passaggio del mouse per i pulsanti */
+    --color-button-text: #fff;
+    --color-button-gradient-start: #7B2FF7;
+    --color-button-gradient-end: #AE7FFF;
+    --color-button-shadow-primary: rgba(123, 47, 247, 0.7);
+    --color-button-shadow-hover: rgba(174, 127, 255, 0.9);
 
     /* Colori per le ombre (shadows) */
-    --color-shadow-primary: rgba(0, 0, 0, 0.5); /* Ombra principale (menu panel, popup, titoli portale, pulsanti portale) */
-    --color-shadow-secondary: rgba(0, 0, 0, 0.4); /* Ombra secondaria (titolo portale, "pollice" toggle) */
-    --color-shadow-tertiary: rgba(10, 10, 10, 0.29); /* Ombra più leggera (per il "pollice" del toggle) */
+    --color-shadow-primary: rgba(0, 0, 0, 0.5);
+    --color-shadow-secondary: rgba(0, 0, 0, 0.4);
+    --color-shadow-tertiary: rgba(10, 10, 10, 0.29);
 
     /* Variabili specifiche per la schermata di selezione gioco (GameSelectionScreen) in Modalità Scura */
-    --portal-background: linear-gradient(135deg, #1a1a1a, #0a0a0a); /* Sfondo specifico per il "portale" */
-    --portal-button-glow-color: var(--color-highlight-primary); /* Colore del glow sui pulsanti del portale */
+    --portal-background: transparent; /* Renderemo il contenitore trasparente */
+    --portal-button-glow-color: var(--color-highlight-primary);
 }
 
 /* --- Stili per l'elemento Root (Gestione del Tema) --- */
-/* L'elemento #root è il contenitore principale della tua applicazione React.
-   Questi stili di base e la transizione vengono applicati qui per un cambio tema fluido. */
 #root {
-    min-height: 100vh; /* Assicura che l'app occupi almeno l'intera altezza della viewport */
-    display: flex; /* Utilizza flexbox per l'impaginazione */
-    flex-direction: column; /* Organizza gli elementi in colonna */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     
-    background-color: var(--color-background-primary); /* Imposta il colore di sfondo principale */
-    color: var(--color-text-primary); /* Imposta il colore del testo principale */
-    transition: background-color 0.5s ease, color 0.5s ease; /* Aggiunge una transizione fluida per il cambio tema */
+    background-color: var(--color-background-primary); /* Questo è il background principale! */
+    color: var(--color-text-primary);
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 /* --- Stili per il Tema Chiaro (se la classe 'light-mode' è presente su #root) --- */
-/* Sovrascrive le variabili CSS definite in :root quando il tema chiaro è attivo. */
 #root.light-mode {
     /* Colori generali di sfondo (Light Mode) */
     --color-background-primary: #f0f0f0; /* Sfondo principale chiaro */
-    --color-background-secondary: rgba(220, 220, 220, 0.95); /* Sfondo elementi secondari più chiaro */
-    --color-background-tertiary: rgba(255, 255, 255, 0.6); /* Sfondo footer StartScreen più chiaro */
+    --color-background-secondary: rgba(220, 220, 220, 0.95);
+    --color-background-tertiary: rgba(255, 255, 255, 0.6);
 
     /* Colori del testo (Light Mode) */
-    --color-text-primary: #121212; /* Testo principale scuro */
-    --color-text-secondary: #333; /* Sottotitolo, footer scuro */
+    --color-text-primary: #121212;
+    --color-text-secondary: #333;
 
     /* Colori di evidenziazione (Light Mode) */
-    --color-highlight-primary: #000000; /* Viola principale più scuro per light mode */
-    --color-highlight-secondary: #AE7FFF; /* Viola più chiaro per light mode */
+    --color-highlight-primary: #000000;
+    --color-highlight-secondary: #AE7FFF;
     
     /* Colori per gli stati hover (Light Mode) */
-    --color-highlight-primary-hover: #7B2FF7; /* Ombra hover titolo tema chiaro */
-    --color-highlight-hover: rgba(123, 47, 247, 0.1); /* Sfondo hover menu item tema chiaro */
+    --color-highlight-primary-hover: #7B2FF7;
+    --color-highlight-hover: rgba(123, 47, 247, 0.1);
 
     /* Colori per gli effetti 'aura' (Light Mode) */
-    --aura-color-1: rgba(123, 47, 247, 0.05); /* Sfumatura aura 1 più discreta */
-    --aura-color-2: rgba(174, 127, 255, 0.03); /* Sfumatura aura 2 più discreta */
+    --aura-color-1: rgba(123, 47, 247, 0.05);
+    --aura-color-2: rgba(174, 127, 255, 0.03);
 
     /* Colori per gli overlay (Light Mode) */
-    --color-overlay-primary: rgba(255, 255, 255, 0.88); /* Overlay menu chiaro */
-    --color-overlay-secondary: rgba(255, 255, 255, 0.7); /* Overlay popup chiaro */
+    --color-overlay-primary: rgba(255, 255, 255, 0.88);
+    --color-overlay-secondary: rgba(255, 255, 255, 0.7);
 
     /* Colori dei bordi (Light Mode) */
-    --color-border-primary: rgba(0, 0, 0, 0.1); /* Linea di separazione impostazioni chiara */
+    --color-border-primary: rgba(0, 0, 0, 0.1);
 
-    /* Nota sui gradienti dei pulsanti di StartScreen:
-       I gradienti dei pulsanti .button e .button_chiudi in StartScreen sono definiti con valori fissi
-       (--color-button-gradient-start, --color-button-gradient-end) che non cambiano tra i temi.
-       Se vuoi che i colori del gradiente cambino nel tema chiaro, dovrai definire nuove variabili
-       specifiche per il tema chiaro e usarle qui per sovrascrivere quelle del tema scuro. */
-    --color-button-shadow-primary: rgba(0, 0, 0, 0.2); /* Ombra pulsante normale tema chiaro */
-    --color-button-shadow-hover: rgba(0, 0, 0, 0.3); /* Ombra pulsante hover tema chiaro */
+    --color-button-shadow-primary: rgba(0, 0, 0, 0.2);
+    --color-button-shadow-hover: rgba(0, 0, 0, 0.3);
 
     /* Colori per le ombre (Light Mode) */
-    --color-shadow-primary: rgba(0, 0, 0, 0.2); /* Ombra principale tema chiaro */
-    --color-shadow-secondary: rgba(0, 0, 0, 0.2); /* Ombra secondaria tema chiaro */
-    --color-shadow-tertiary: rgba(10, 10, 10, 0.15); /* Ombra più leggera tema chiaro */
+    --color-shadow-primary: rgba(0, 0, 0, 0.2);
+    --color-shadow-secondary: rgba(0, 0, 0, 0.2);
+    --color-shadow-tertiary: rgba(10, 10, 10, 0.15);
 
     /* Variabili specifiche per la schermata di selezione gioco (GameSelectionScreen) in Modalità Chiara */
-    --portal-background: linear-gradient(135deg, #f0f0f0, #e0e0e0); /* Sfondo del "portale" in light mode */
-    --portal-button-glow-color: var(--color-highlight-primary); /* Glow dei pulsanti portale (coerente con highlight primario) */
+    --portal-background: transparent; /* Renderemo il contenitore trasparente */
+    --portal-button-glow-color: var(--color-highlight-primary);
 }
 
 
@@ -128,37 +117,36 @@ body {
 /* --- STILI SPECIFICI PER LA SCHERMATA INIZIALE (StartScreen) --- */
 /* ========================================================================== */
 
-/* Contenitore principale della StartScreen. Si estende per tutta la viewport. */
 .container {
-    position: relative; /* Per posizionare gli elementi interni rispetto ad esso */
-    height: 100vh; /* Occupa tutta l'altezza della viewport */
-    overflow: hidden; /* Nasconde contenuti che escono dai bordi */
-    display: flex; /* Usa flexbox per centrare il contenuto */
-    flex-direction: column; /* Organizza gli elementi in colonna */
-    justify-content: center; /* Centra verticalmente il contenuto */
-    align-items: center; /* Centra orizzontalmente il contenuto */
-    font-family: 'Poppins', sans-serif; /* Assicura il font */
-    text-align: center; /* Allinea il testo al centro */
-    padding: 0 1rem; /* Padding laterale */
-    box-sizing: border-box; /* Include padding e bordo nel calcolo della larghezza/altezza */
-    /* Queste proprietà sono cruciali: permettono al tema di #root di "passare attraverso". */
-    background: transparent; /* Sfondo trasparente per mostrare lo sfondo di #root */
-    color: inherit; /* Eredita il colore del testo da #root */
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    /* Questo è già corretto: trasparente per mostrare il background di #root */
+    background: transparent;
+    color: inherit;
 }
 
 /* Effetti "Aura" di sfondo per StartScreen (pseudo-elementi ::before e ::after) */
 .container::before {
-    content: ""; /* Necessario per i pseudo-elementi */
-    position: absolute; /* Posizionamento assoluto rispetto al .container */
-    top: -60%; /* Inizia in alto, fuori dallo schermo */
-    left: -50%; /* Inizia a sinistra, fuori dallo schermo */
-    width: 200%; /* Larghezza molto grande per la sfumatura */
-    height: 220%; /* Altezza molto grande per la sfumatura */
-    background: radial-gradient(ellipse at center, var(--aura-color-1) 0%, transparent 85%); /* Sfumatura radiale con variabile */
-    filter: blur(160px); /* Effetto sfocato */
-    animation: auroraMove1 30s ease-in-out infinite alternate; /* Animazione di movimento */
-    z-index: 0; /* Posiziona dietro il contenuto principale */
-    transition: background 0.5s ease, filter 0.5s ease; /* Transizione per il cambio tema */
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: -50%;
+    width: 200%;
+    height: 220%;
+    background: radial-gradient(ellipse at center, var(--aura-color-1) 0%, transparent 85%);
+    filter: blur(160px);
+    animation: auroraMove1 30s ease-in-out infinite alternate;
+    z-index: 0;
+    transition: background 0.5s ease, filter 0.5s ease;
 }
 
 .container::after {
@@ -168,7 +156,7 @@ body {
     left: 40%;
     width: 180%;
     height: 180%;
-    background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%); /* Sfumatura radiale con variabile */
+    background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%);
     filter: blur(110px);
     animation: auroraMove2 35s ease-in-out infinite alternate;
     z-index: 0;
@@ -190,9 +178,9 @@ body {
 
 /* Stili per il titolo, i pulsanti e il sottotitolo della StartScreen */
 .title, .button, .subtitle {
-    position: relative; /* Necessario per z-index */
-    z-index: 1; /* Posiziona sopra gli effetti aura */
-    transition: color 0.5s ease; /* Transizione per il colore del testo */
+    position: relative;
+    z-index: 1;
+    transition: color 0.5s ease;
 }
 
 .title {
@@ -201,33 +189,33 @@ body {
     margin-bottom: 0.1rem;
     font-weight: 700;
     letter-spacing: 2px;
-    color: var(--color-highlight-primary); /* Colore dal tema */
-    transition: text-shadow 0.3s ease, color 0.5s ease; /* Transizioni per ombra e colore */
+    color: var(--color-highlight-primary);
+    transition: text-shadow 0.3s ease, color 0.5s ease;
 }
 
 .title:hover {
-    text-shadow: 0 0 30px var(--color-highlight-primary-hover); /* Ombra al passaggio del mouse */
+    text-shadow: 0 0 30px var(--color-highlight-primary-hover);
 }
 
 /* Stili per il pulsante principale (es. "Inizia Nuova Partita") */
 .button {
-    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end)); /* Gradiente dal tema */
+    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     border: none;
     border-radius: 16px;
     padding: 1rem 6rem;
     font-size: 1.8rem;
     font-weight: 700;
-    color: var(--color-button-text); /* Colore testo dal tema */
+    color: var(--color-button-text);
     cursor: pointer;
-    box-shadow: 0 12px 25px var(--color-button-shadow-primary); /* Ombra dal tema */
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); /* Transizione complessa per effetti hover */
+    box-shadow: 0 12px 25px var(--color-button-shadow-primary);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing: 1.2px;
-    user-select: none; /* Impedisce la selezione del testo */
+    user-select: none;
 }
 
 .button:hover {
-    box-shadow: 0 20px 40px var(--color-button-shadow-hover); /* Ombra al passaggio del mouse */
-    transform: scale(1.12); /* Ingandisce leggermente */
+    box-shadow: 0 20px 40px var(--color-button-shadow-hover);
+    transform: scale(1.12);
 }
 
 /* Stili per il pulsante "Chiudi" nei popup */
@@ -259,12 +247,12 @@ body {
     font-weight: 400;
     font-style: italic;
     letter-spacing: 0.6px;
-    color: var(--color-text-secondary); /* Colore dal tema */
+    color: var(--color-text-secondary);
     transition: color 0.3s ease;
 }
 
 .subtitle:hover {
-    color: var(--color-highlight-secondary); /* Colore al passaggio del mouse dal tema */
+    color: var(--color-highlight-secondary);
 }
 
 /* Media Queries per la responsività della StartScreen */
@@ -283,43 +271,42 @@ body {
     .subtitle {
         font-size: 1rem;
     }
-    /* Il footer è gestito da una regola generale più avanti, non qui */
 }
 
 /* --- Stili per il Menu Toggle (StartScreen) --- */
 .menu-container {
-    position: absolute; /* Posiziona in modo fisso rispetto alla viewport */
-    top: 1rem; /* In alto */
-    left: 1.2rem; /* A sinistra */
-    z-index: 5; /* Assicura che sia sopra altri elementi */
+    position: absolute;
+    top: 1rem;
+    left: 1.2rem;
+    z-index: 5;
 }
 
 .menu-toggle {
-    font-size: 2rem; /* Dimensione icona */
-    color: var(--color-text-primary); /* Colore icona dal tema */
-    cursor: pointer; /* Indica che è cliccabile */
-    user-select: none; /* Impedisce la selezione del testo */
-    transition: transform 0.3s ease, color 0.5s ease; /* Transizioni per animazione e colore */
+    font-size: 2rem;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.3s ease, color 0.5s ease;
 }
 
 .menu-toggle:hover {
-    transform: scale(1.1); /* Ingandisce al passaggio del mouse */
+    transform: scale(1.1);
 }
 
 /* --- Stili per l'Overlay del Menu (StartScreen) --- */
 .overlay {
-    position: fixed; /* Si sovrappone all'intera viewport */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: var(--color-overlay-primary); /* Sfondo semi-trasparente dal tema */
-    backdrop-filter: blur(6px); /* Effetto sfocato sullo sfondo sottostante */
+    background: var(--color-overlay-primary);
+    backdrop-filter: blur(6px);
     display: flex;
-    justify-content: flex-start; /* Allinea il menu a sinistra */
+    justify-content: flex-start;
     align-items: flex-start;
-    z-index: 4; /* Posiziona sotto il menu ma sopra il contenuto principale */
-    animation: fadeInOverlay 0.4s ease forwards; /* Animazione di apparizione */
+    z-index: 4;
+    animation: fadeInOverlay 0.4s ease forwards;
 }
 
 /* Animazione per l'overlay del menu */
@@ -338,68 +325,68 @@ body {
 .menu-panel {
     position: relative;
     width: 100%;
-    max-width: 240px; /* Larghezza massima */
+    max-width: 240px;
     height: 100vh;
-    background: var(--color-background-secondary); /* Sfondo dal tema */
-    border-top-right-radius: 12px; /* Bordi arrotondati */
+    background: var(--color-background-secondary);
+    border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
-    box-shadow: 8px 0 20px var(--color-shadow-primary); /* Ombra dal tema */
+    box-shadow: 8px 0 20px var(--color-shadow-primary);
     display: flex;
     flex-direction: column;
     padding-top: 5.5rem;
     padding-left: 0.8rem;
-    transition: background 0.5s ease; /* Transizione per il cambio tema dello sfondo */
+    transition: background 0.5s ease;
 }
 
 /* --- Stili per le Voci del Menu (StartScreen) --- */
 .menu-item {
-    color: var(--color-text-primary); /* Colore testo dal tema */
+    color: var(--color-text-primary);
     font-size: 1.2rem;
     cursor: pointer;
     padding: 0.6rem 1rem;
     border-radius: 6px;
-    transition: background 0.3s ease, color 0.3s ease; /* Transizioni per effetti hover */
+    transition: background 0.3s ease, color 0.3s ease;
     text-align: left;
 }
 
 .menu-item:hover {
-    background: var(--color-highlight-hover); /* Sfondo al passaggio del mouse dal tema */
-    color: var(--color-highlight-primary); /* Colore testo al passaggio del mouse dal tema */
+    background: var(--color-highlight-hover);
+    color: var(--color-highlight-primary);
 }
 
 /* --- Stili per i Popup (Generici, usati in StartScreen per Contatti/Impostazioni) --- */
 .popup-overlay {
-    position: fixed; /* Si sovrappone all'intera viewport */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: var(--color-overlay-secondary); /* Sfondo semi-trasparente dal tema */
+    background: var(--color-overlay-secondary);
     display: flex;
-    justify-content: center; /* Centra il popup orizzontalmente */
-    align-items: center; /* Centra il popup verticalmente */
-    z-index: 100; /* Assicura che sia sopra tutto il resto */
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
 }
 
 .popup-content {
-    background: var(--color-background-secondary); /* Sfondo popup dal tema */
+    background: var(--color-background-secondary);
     padding: 2.5rem;
     border-radius: 12px;
-    box-shadow: 0 10px 30px var(--color-shadow-primary); /* Ombra dal tema */
+    box-shadow: 0 10px 30px var(--color-shadow-primary);
     max-width: 500px;
     width: 90%;
-    color: var(--color-text-primary); /* Colore testo popup dal tema */
+    color: var(--color-text-primary);
     text-align: center;
     position: relative;
-    animation: fadeInPopup 0.3s ease-out; /* Animazione di apparizione */
-    transition: background 0.5s ease, color 0.5s ease; /* Transizioni per il cambio tema */
+    animation: fadeInPopup 0.3s ease-out;
+    transition: background 0.5s ease, color 0.5s ease;
 }
 
 .popup-content h2 {
     font-size: 2rem;
     margin-top: 0.1rem;
     margin-bottom: 1.0rem;
-    color: var(--color-highlight-primary); /* Colore titolo popup dal tema */
+    color: var(--color-highlight-primary);
     transition: color 0.5s ease;
 }
 
@@ -409,44 +396,44 @@ body {
     font-size: 1.05rem;
     line-height: 1.6;
     text-align: center;
-    color: var(--color-text-primary); /* Colore testo paragrafo dal tema */
+    color: var(--color-text-primary);
     transition: color 0.5s ease;
 }
 
 .popup-content p strong {
-    color: var(--color-highlight-secondary); /* Colore testo forte dal tema */
+    color: var(--color-highlight-secondary);
     transition: color 0.5s ease;
 }
 
 /* Colore specifico per le email nel popup di contatto */
 .contact-email-text {
-    color: var(--color-highlight-primary); /* Colore email dal tema */
-    text-decoration: none; /* Rimuove sottolineatura */
+    color: var(--color-highlight-primary);
+    text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
 }
 
 /* Stili per le opzioni nelle impostazioni (all'interno di un popup) */
 .settings-option {
-    display: flex; /* Utilizza flexbox per allineare gli elementi */
-    justify-content: space-between; /* Spazia gli elementi equamente */
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
     padding: 0.5rem 0;
-    border-bottom: 1px solid var(--color-border-primary); /* Bordo inferiore dal tema */
+    border-bottom: 1px solid var(--color-border-primary);
 }
 
 .settings-option p {
     margin: 0;
     font-size: 1.2rem;
     text-align: left;
-    flex-grow: 1; /* Permette al paragrafo di occupare lo spazio disponibile */
-    color: var(--color-text-primary); /* Colore testo opzione dal tema */
+    flex-grow: 1;
+    color: var(--color-text-primary);
 }
 
 /* --- Stili per il Toggle Switch (Interruttore ON/OFF nelle Impostazioni) --- */
 .react-switch-checkbox {
-    height: 0; /* Nasconde la checkbox nativa */
+    height: 0;
     width: 0;
     visibility: hidden;
 }
@@ -458,8 +445,8 @@ body {
     cursor: pointer;
     width: 50px;
     height: 26px;
-    background: var(--color-text-secondary); /* Sfondo del toggle "spento" dal tema */
-    border-radius: 26px; /* Forma arrotondata */
+    background: var(--color-text-secondary);
+    border-radius: 26px;
     position: relative;
     transition: background-color 0.3s ease;
 }
@@ -471,19 +458,19 @@ body {
     left: 2px;
     width: 22px;
     height: 22px;
-    border-radius: 50%; /* Forma circolare per il "pollice" */
-    background: var(--color-button-text); /* Colore del "pollice" dal tema (es. bianco) */
+    border-radius: 50%;
+    background: var(--color-button-text);
     transition: 0.3s ease;
-    box-shadow: 0 0 2px 0 var(--color-shadow-tertiary); /* Ombra per il "pollice" dal tema */
+    box-shadow: 0 0 2px 0 var(--color-shadow-tertiary);
 }
 
 .react-switch-checkbox:checked + .react-switch-label {
-    background: linear-gradient(90deg, var(--color-highlight-primary), var(--color-highlight-secondary)); /* Sfondo del toggle "acceso" con gradiente dal tema */
+    background: linear-gradient(90deg, var(--color-highlight-primary), var(--color-highlight-secondary));
 }
 
 .react-switch-checkbox:checked + .react-switch-label .react-switch-button {
-    left: calc(100% - 2px); /* Sposta il "pollice" a destra */
-    transform: translateX(-100%); /* Compensazione per centrare */
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
 }
 
 /* Animazione per i popup (generale) */
@@ -500,20 +487,20 @@ body {
 
 /* --- Stili per il Footer della StartScreen --- */
 .footer {
-    position: absolute; /* Posizionato in modo fisso rispetto al .container */
-    bottom: 0; /* In basso */
+    position: absolute;
+    bottom: 0;
     width: 100%;
     padding: 1rem;
-    background: var(--color-background-tertiary); /* Sfondo dal tema */
-    color: var(--color-text-secondary); /* Colore testo dal tema */
+    background: var(--color-background-tertiary);
+    color: var(--color-text-secondary);
     font-size: 0.85rem;
     text-align: center;
-    z-index: 2; /* Sopra gli effetti aura ma sotto il contenuto principale */
-    transition: background 0.5s ease, color 0.5s ease; /* Transizioni per il cambio tema */
+    z-index: 2;
+    transition: background 0.5s ease, color 0.5s ease;
 }
 
 .footer p {
-    margin: 0.2rem 0; /* Margine minimo per i paragrafi */
+    margin: 0.2rem 0;
 }
 
 
@@ -535,81 +522,71 @@ body {
     text-align: center;
     padding: 0 1rem;
     box-sizing: border-box;
-    background: var(--portal-background);
+    /* Rendi trasparente per ereditare il background da #root */
+    background: transparent;
     color: var(--color-text-primary);
     transition: background 0.5s ease, color 0.5s ease;
 }
 
-/* Effetti di luce sui bordi (simili a portali) usando pseudo-elementi */
+/* **AGGIUNTO**: Applica gli effetti "Aura" anche al container del portale */
 .game-selection-portal-container::before,
 .game-selection-portal-container::after {
     content: "";
     position: absolute;
     border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.2;
+    filter: blur(160px); /* Aumentato il blur per coerenza con StartScreen */
+    opacity: 0.2; /* Opacità base per l'aura */
     z-index: 0;
     transition: background-color 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
 }
 
 /* Aura 1: Dalle profondità, più scura e grande */
 .game-selection-portal-container::before {
-    background-color: var(--aura-color-1);
-    width: 800px;
-    height: 800px;
-    bottom: -400px;
-    left: -400px;
-    animation: portalPulse 25s ease-in-out infinite alternate;
+    background: radial-gradient(ellipse at center, var(--aura-color-1) 0%, transparent 85%); /* Usa radial-gradient come StartScreen */
+    width: 200%; /* Dimensioni simili a StartScreen */
+    height: 220%;
+    top: -60%;
+    left: -50%;
+    animation: auroraMove1 30s ease-in-out infinite alternate; /* Usa animazione di StartScreen */
 }
 
 /* Aura 2: Dall'alto, più chiara e dinamica */
 .game-selection-portal-container::after {
-    background-color: var(--aura-color-2);
-    width: 600px;
-    height: 600px;
-    top: -300px;
-    right: -300px;
-    animation: portalFloat 30s ease-in-out infinite alternate-reverse;
-}
-
-/* Animazioni specifiche per le aure del portale */
-@keyframes portalPulse {
-    0% { transform: scale(0.95); opacity: 0.15; }
-    50% { transform: scale(1.05); opacity: 0.3; }
-    100% { transform: scale(0.95); opacity: 0.15; }
-}
-
-@keyframes portalFloat {
-    0% { transform: translate(0, 0) scale(1); opacity: 0.2; }
-    25% { transform: translate(20px, -30px) scale(1.02); opacity: 0.25; }
-    50% { transform: translate(0, -60px) scale(0.98); opacity: 0.18; }
-    75% { transform: translate(-20px, -30px) scale(1.03); opacity: 0.22; }
-    100% { transform: translate(0, 0) scale(1); opacity: 0.2; }
+    background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%); /* Usa radial-gradient come StartScreen */
+    width: 180%; /* Dimensioni simili a StartScreen */
+    height: 180%;
+    top: -40%;
+    left: 40%;
+    animation: auroraMove2 35s ease-in-out infinite alternate; /* Usa animazione di StartScreen */
 }
 
 /* --- Stili per il Titolo della Schermata di Selezione Gioco ("Scegli La Modalità") --- */
 .portal-title {
-    position: relative;
-    z-index: 1;
-    font-size: 3.8rem;
+    position: relative; /* Importante per z-index */
+    z-index: 1; /* Assicura che sia sopra le aure */
+    font-size: 3.8rem; /* Puoi aggiustare questo e i margini a tuo piacimento */
     margin-top: -120px;
     margin-bottom: 0.8rem;
     font-weight: 700;
     letter-spacing: 3px;
-    color: var(--color-text-primary);
-    text-shadow: 0 0 25px var(--color-shadow-primary), 0 0 50px var(--color-shadow-secondary);
-    animation: fadeInSlideDown 1s ease-out;
-    transition: color 0.5s ease, text-shadow 0.3s ease;
+    color: var(--color-highlight-primary); /* Colore base del testo (senza glow) */
+    
+    /* Rimuovi il text-shadow da qui per non averlo di default */
+    
+    animation: fadeInSlideDown 1s ease-out; /* Mantiene l'animazione */
+    transition: color 0.5s ease, text-shadow 0.3s ease; /* Transizione per il glow */
 }
 
-/* Animazione per il titolo del portale */
+/* Animazione per il titolo del portale (resta invariata) */
 @keyframes fadeInSlideDown {
     from { opacity: 0; transform: translateY(-50px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 .portal-title:hover {
-    text-shadow: 0 0 40px var(--color-shadow-secondary), 0 0 80px var(--color-shadow-primary);
+    /* Questo crea il glow SOLO all'hover */
+    text-shadow: 0 0 30px var(--color-highlight-primary-hover), /* Un'ombra */
+                 0 0 60px var(--color-highlight-primary); /* Un'altra ombra per un effetto più completo */
 }
 
 /* --- Stili per il Sottotitolo della Schermata di Selezione Gioco --- */
@@ -625,8 +602,13 @@ body {
     color: var(--color-text-secondary);
     opacity: 0.9;
     animation: fadeIn 1.2s ease-out 0.2s forwards;
-    opacity: 0;
+    /* opacity: 0; <-- Rimosso: l'animazione gestisce l'opacità iniziale */
     transition: color 0.5s ease, opacity 0.5s ease;
+    text-shadow: 0 0 5px var(--color-shadow-tertiary); /* Leggero glow per il sottotitolo */
+}
+
+.portal-subtitle:hover{
+    color: var(--color-highlight-secondary);
 }
 
 /* Animazione generica di fade-in */
@@ -651,9 +633,9 @@ body {
 /* --- Stili per i Pulsanti "Portali" (Nuova Partita, Carica Partita) --- */
 .portal-button {
     position: relative;
-    display: flex; /* Aggiunto per centrare il contenuto */
-    align-items: center; /* Centra verticalmente */
-    justify-content: center; /* Centra orizzontalmente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     border: none;
@@ -678,7 +660,7 @@ body {
 /* Testo all'interno del pulsante, posizionato sopra il glow */
 .portal-button-text {
     position: relative;
-    z-index: 2; /* Sopra il glow */
+    z-index: 2;
 }
 
 /* Effetto "glow" interno al pulsante al passaggio del mouse */
@@ -689,7 +671,7 @@ body {
     left: 50%;
     width: 0;
     height: 0;
-    background: var(--portal-button-glow-color); /* Può rimanere questo colore o usare highlight-primary */
+    background: var(--portal-button-glow-color);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     opacity: 0;
@@ -699,8 +681,8 @@ body {
 
 /* Effetti hover sui pulsanti del portale */
 .portal-button:hover {
-    box-shadow: 0 20px 40px var(--color-button-shadow-hover); /* Ombra al passaggio del mouse */
-    transform: scale(1.12); /* Ingandisce leggermente */
+    box-shadow: 0 20px 40px var(--color-button-shadow-hover);
+    transform: scale(1.12);
 }
 
 /* --- Stili per il Footer della Schermata di Selezione Gioco --- */
@@ -724,13 +706,12 @@ body {
 /* --- Media Queries per la Responsività della GameSelectionScreen --- */
 @media (min-width: 768px) {
     .portal-options-grid {
-        /* Rimosso grid-template-columns per mantenere la colonna */
         gap: 30px;
         max-width: 700px;
     }
     .portal-button {
-        padding: 1rem 6rem; /* Manteniamo il padding del pulsante principale */
-        font-size: 1.8rem; /* Manteniamo il font size del pulsante principale */
+        padding: 1rem 6rem;
+        font-size: 1.8rem;
     }
 }
 
@@ -744,11 +725,274 @@ body {
         margin-bottom: 3rem;
     }
     .portal-button {
-        padding: 1rem 2.5rem; /* Adattiamo solo il padding orizzontale */
-        font-size: 1.4rem; /* Riduci il font-size per schermi molto piccoli */
+        padding: 1rem 2.5rem;
+        font-size: 1.4rem;
     }
     .portal-footer {
         font-size: 0.75rem;
         padding: 0.8rem;
+    }
+}
+
+/* ========================================================================== */
+/* --- STILI SPECIFICI PER LA SCHERMATA DI SELEZIONE SLOT (GameSlotsScreen) --- */
+/* ========================================================================== */
+
+.game-slots-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.5s ease;
+
+    /* Rendi trasparente per ereditare il background da #root */
+    background-color: transparent; 
+    color: var(--color-text-primary); /* Eredita il colore del testo principale */
+    position: relative; /* Necessario per posizionare gli pseudo-elementi */
+    overflow: hidden; /* Per contenere le aure */
+}
+
+/* Applica gli effetti "Aura" anche al container degli slot */
+.game-slots-container::before,
+.game-slots-container::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(160px); /* Aumentato il blur per coerenza con StartScreen */
+    opacity: 0.2; /* Opacità base per l'aura */
+    z-index: 0;
+    transition: background-color 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
+}
+
+/* Aura 1 (per GameSlotsScreen): Dalle profondità, più scura e grande */
+.game-slots-container::before {
+    background: radial-gradient(ellipse at center, var(--aura-color-1) 0%, transparent 85%);
+    width: 200%;
+    height: 220%;
+    top: -60%;
+    left: -50%;
+    animation: auroraMove1 30s ease-in-out infinite alternate;
+}
+
+/* Aura 2 (per GameSlotsScreen): Dall'alto, più chiara e dinamica */
+.game-slots-container::after {
+    background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%);
+    width: 180%;
+    height: 180%;
+    top: -40%;
+    left: 40%;
+    animation: auroraMove2 35s ease-in-out infinite alternate;
+}
+
+/* Assicurati che il testo degli h2 in GameSlotsScreen usi il colore del tema */
+.game-slots-container h2 {
+    color: var(--color-highlight-primary);
+    margin-bottom: 25px;
+    font-size: 1.9em;
+    text-align: center;
+    transition: color 0.5s ease;
+}
+
+/* Stili per gli slot individuali, potrebbero aver bisogno di adattarsi al tema */
+/* Stili per gli slot individuali, potrebbero aver bisogno di adattarsi al tema */
+.slots-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    align-items: flex-start;
+    /* MODIFICATO: Usa max-width invece di width */
+    max-width: 1300px; /* La larghezza massima che il wrapper può raggiungere */
+    width: 100%; /* Assicura che occupi il 100% dello spazio disponibile fino al max-width */
+    margin: 0 auto; /* Questo centra il blocco quando la larghezza è inferiore al 100% del genitore */
+    padding: 0 5px;
+    box-sizing: border-box;
+    overflow-x: unset;
+    -webkit-overflow-scrolling: unset; 
+    scroll-snap-type: unset; 
+    scrollbar-width: unset; 
+    -ms-overflow-style: unset; 
+}
+
+
+.game-slot {
+    background-color: #fff; /* Bianco per default (tema chiaro) */
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 12px; /* **MODIFICATO**: Riduci ulteriormente il padding interno dello slot */
+    
+    /* **MODIFICATO**: Aumenta la larghezza, riduci altezza */
+    flex-basis: calc(20% - 12px); /* Base per 5 slot per riga (larghezze) */
+    max-width: calc(20% - 12px); 
+    min-width: 180px; 
+    height: 110px; /* **MODIFICATO**: Riduci significativamente l'altezza a 110px */
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease-in-out;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    scroll-snap-align: unset;
+}
+
+/* Stili per gli slot individuali nel tema SCURO */
+.dark-mode .game-slot {
+    background-color: var(--color-background-secondary);
+    border: 2px dashed var(--color-border-primary);
+    box-shadow: 0 3px 6px var(--color-shadow-secondary);
+}
+
+.game-slot h3 {
+    color: var(--color-highlight-primary);
+    margin-bottom: 5px; /* **MODIFICATO**: Riduci ulteriormente il margine inferiore */
+    font-size: 1em; /* **MODIFICATO**: Riduci la dimensione del font a 1em */
+    transition: color 0.5s ease;
+}
+
+.game-slot p {
+    color: var(--color-text-secondary);
+    font-style: italic;
+    font-size: 0.75em; /* **MODIFICATO**: Riduci la dimensione del font a 0.75em */
+    line-height: 1.2; /* **MODIFICATO**: Riduci il line-height per maggiore compattezza */
+    transition: color 0.5s ease;
+}
+
+.game-slot:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
+}
+
+.dark-mode .game-slot:hover {
+    box-shadow: 0 6px 12px var(--color-shadow-primary);
+}
+
+/* Stili per gli slot individuali, potrebbero aver bisogno di adattarsi al tema */
+/* ... (Il resto del tuo codice .slots-wrapper e .game-slot rimane invariato) ... */
+
+.game-slot button {
+    /* INTEGRAZIONE DELLO STILE: Prendi il gradiente e il colore del testo dai temi */
+    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
+    color: var(--color-button-text); /* Questo dovrebbe essere bianco o un colore chiaro */
+    
+    /* Le seguenti proprietà sono quelle che vuoi mantenere per la compattezza */
+    border: none;
+    border-radius: 8px; /* Mantenuto 8px per la compattezza */
+    padding: 4px 8px; /* Mantenuto il padding compatto */
+    font-size: 0.75em; /* Mantenuta la dimensione del font compatta */
+    cursor: pointer;
+    transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1); /* Transizione adattata per il gradiente */
+    margin-top: 6px; /* Mantenuto il margine superiore compatto */
+    
+    /* Rimosse le proprietà che creavano conflitto o erano ridondanti */
+    /* background-color: rgba(156, 8, 255, 0.5); */ /* Questa è stata sostituita dal linear-gradient */
+    /* color: rgb(255, 255, 255); */ /* Questa è stata sostituita da var(--color-button-text) */
+}
+
+/* Stili per il bottone degli slot nel tema SCURO (qui puoi sovrascrivere il gradiente se necessario,
+   ma solitamente le variabili CSS lo gestiscono automaticamente per il tema scuro) */
+.dark-mode .game-slot button {
+    /* Se le tue variabili --color-button-gradient-start e --color-button-gradient-end
+       cambiano nel tema scuro, non hai bisogno di sovrascrivere qui.
+       Altrimenti, potresti definirne una versione più scura: */
+    /* background: linear-gradient(90deg, var(--color-button-gradient-start-dark), var(--color-button-gradient-end-dark)); */
+    /* Oppure un semplice colore scuro se non vuoi il gradiente scuro: */
+    background-color: #0056b3; /* Mantenuto il tuo colore scuro precedente come fallback o alternativa */
+}
+
+.game-slot button:hover {
+    /* Per un effetto hover sul gradiente, puoi leggermente cambiarlo,
+       o aggiungere un piccolo box-shadow per farlo risaltare */
+    transform: translateY(-1px); /* Leggero sollevamento */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Una piccola ombra all'hover */
+    /* Oppure potresti alterare leggermente il gradiente, es: */
+    /* filter: brightness(1.1); */ /* Rende il gradiente leggermente più luminoso */
+}
+
+.dark-mode .game-slot button:hover {
+    background-color: #003a73; /* Mantenuto il tuo colore hover scuro precedente */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Media Queries per i bottoni degli slot (da rivedere se hai modificato il padding/font-size qui) */
+@media (max-width: 576px) {
+    .game-slot button {
+        padding: 3px 6px; /* Mantenuto il padding compatto */
+        font-size: 0.7em; /* Mantenuto il font compatto */
+    }
+}
+
+/* Media Queries per la responsività */
+/* NOTA: Rivedi attentamente queste media query con i nuovi calcoli.
+   Potrebbe essere necessario un CSS "Mobile First" per migliore adattamento. */
+
+@media (min-width: 1400px) { /* Per schermi molto grandi, prova a inserire 6 slot */
+    .game-slot {
+        flex-basis: calc(16.666% - 12.5px); /* 6 slot per riga con gap di 15px */
+        max-width: calc(16.666% - 12.5px);
+        min-width: 150px; /* **MODIFICATO**: Larghezza minima ulteriormente ridotta */
+    }
+}
+
+@media (max-width: 1200px) { /* Da 1200px a 993px: 4 slot per riga */
+    .game-slot {
+        flex-basis: calc(25% - 11.25px); /* 4 slot per riga con gap di 15px */
+        max-width: calc(25% - 11.25px);
+        min-width: 180px; /* Assicurati che non si stringano troppo */
+    }
+}
+
+@media (max-width: 992px) { /* Da 992px a 769px: 3 slot per riga */
+    .game-slot {
+        flex-basis: calc(33.333% - 10px); /* 3 slot per riga con gap di 15px */
+        max-width: calc(33.333% - 10px);
+        height: 120px; /* **MODIFICATO**: Altezza per 3 slot/riga */
+        min-width: 200px;
+    }
+}
+
+@media (max-width: 768px) { /* Da 768px a 577px: 2 slot per riga */
+    .game-slot {
+        flex-basis: calc(50% - 7.5px); /* 2 slot per riga con gap di 15px */
+        max-width: calc(50% - 7.5px);
+        height: 130px; /* **MODIFICATO**: Altezza per 2 slot/riga */
+        min-width: unset;
+    }
+}
+
+@media (max-width: 576px) { /* Schermi mobile (1 slot per riga) */
+    .game-slots-container h2 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+    }
+    .slots-wrapper {
+        padding: 0 8px;
+        gap: 10px;
+    }
+    .game-slot {
+        flex-basis: calc(100% - 0px);
+        max-width: calc(100% - 0px);
+        height: 120px; /* **MODIFICATO**: Altezza per 1 slot/riga */
+        padding: 10px; /* **MODIFICATO**: Padding su mobile */
+        margin: 0 auto;
+    }
+    .game-slot h3 {
+        font-size: 0.9em; /* **MODIFICATO**: Font h3 su mobile */
+    }
+    .game-slot p {
+        font-size: 0.7em; /* **MODIFICATO**: Font p su mobile */
+    }
+    .game-slot button {
+        padding: 3px 6px; /* **MODIFICATO**: Bottone su mobile */
+        font-size: 0.7em;
     }
 }
