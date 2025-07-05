@@ -944,7 +944,7 @@ body {
     color: var(--color-button-text); 
     
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 4px 10px; /* Padding del bottone ridotto */
     font-size: 0.8em; /* Dimensione del font del bottone ridotta */
     cursor: pointer;
@@ -1056,4 +1056,166 @@ body {
   font-size: 14px;
 }
 
+/* ========================================================================== */
+/* --- STILI SPECIFICI PER LA SCHERMATA DI INSERIMENTO NOME (InputScreen) --- */
+/* ========================================================================== */
 
+.name-input-container {
+    position: relative; /* Aggiunto per il posizionamento del back-button */
+    max-width: 480px;
+    margin: 3rem auto;
+    padding: 2rem 2.5rem;
+    background-color: var(--color-background-secondary);
+    border-radius: 14px;
+    box-shadow: 0 5px 18px var(--color-shadow-primary);
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-text-primary);
+    text-align: center;
+    transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+    z-index: 1; /* Assicurati che il contenuto sia sopra le aure se presenti */
+}
+
+.name-input-title {
+    font-size: 2rem;
+    margin-bottom: 0.3rem;
+    font-weight: 700;
+    color: var(--color-highlight-primary);
+    transition: color 0.5s ease;
+}
+
+.name-input-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--color-text-secondary);
+    transition: color 0.5s ease;
+}
+
+.name-input-field {
+    width: calc(100% - 2.5rem); /* Adatta la larghezza con padding */
+    padding: 0.8rem 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--color-border-primary);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    background-color: var(--color-background-tertiary);
+    color: var(--color-text-primary);
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+}
+
+.name-input-field::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 0.7;
+    transition: color 0.5s ease;
+}
+
+.name-input-field:focus {
+    outline: none;
+    border-color: var(--color-highlight-primary);
+    box-shadow: 0 0 0 3px var(--aura-color-1);
+}
+
+/* Stili per il pulsante specifico di InputScreen (es. "Continua") */
+.name-input-button {
+    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
+    border: none;
+    border-radius: 16px;
+    padding: 0.9rem 4rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-button-text);
+    cursor: pointer;
+    box-shadow: 0 12px 25px var(--color-button-shadow-primary);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 1.2px;
+    user-select: none;
+    margin-top: 20px; /* Aggiungi un margine se necessario per separarlo dall'input */
+}
+
+.name-input-button:hover {
+    box-shadow: 0 20px 40px var(--color-button-shadow-hover);
+    transform: scale(1.08);
+}
+
+/* Stili per il pulsante "Indietro" specifico per InputScreen */
+.name-input-back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
+    color: var(--color-button-text); /* Assicurati che sia leggibile in entrambi i temi */
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 1000;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px var(--color-button-shadow-primary); /* Aggiungi un'ombra */
+}
+
+.name-input-back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px var(--color-button-shadow-hover); /* Ombra più pronunciata all'hover */
+}
+
+.name-input-button {
+    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
+    color: var(--color-button-text); 
+    
+    border: none;
+    border-radius: 12px;
+    padding: 4px 10px; /* Padding del bottone ridotto */
+    font-size: 0.8em; /* Dimensione del font del bottone ridotta */
+    cursor: pointer;
+    transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 8px; /* Margine superiore del bottone */
+}
+
+.dark-mode .name-input-button  {
+    background-color: #0056b3; 
+}
+
+.name-input-button:hover {
+    transform: translateY(-1px); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.dark-mode .name-input-button:hover {
+    background-color: #003a73; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Media Queries per la responsività dell'InputScreen */
+@media (max-width: 480px) {
+    .name-input-container {
+        padding: 1.5rem 1.5rem;
+        margin: 2rem auto;
+    }
+    .name-input-title {
+        font-size: 1.8rem;
+    }
+    .name-input-subtitle {
+        font-size: 1rem;
+    }
+    .name-input-field {
+        font-size: 1rem;
+        padding: 0.7rem 0.8rem;
+    }
+    .name-input-button {
+        padding: 0.8rem 3rem;
+        font-size: 1.2rem;
+    }
+    .name-input-back-button {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+    .name-input-button {
+        padding: 3px 8px;
+        font-size: 0.75em;
+        margin-top: 6px;
+    }
+
+}
