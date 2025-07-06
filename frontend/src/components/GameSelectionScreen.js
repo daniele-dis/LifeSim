@@ -1,33 +1,37 @@
-// src/components/GameSelectionScreen.js
-
-import React, { useState, useContext } from 'react'; // Importa useState
+import React, { useState, useContext } from 'react';
 import ThemeContext from '../ThemeContext';
-import GameSlotsScreen from './GameSlotsScreen'; // Importa GameSlotsScreen
+import GameSlotsScreen from './GameSlotsScreen';
 
-// ✅ Aggiunta della prop onBackToStart
-const GameSelectionScreen = ({ onGameSelected, onBackToStart }) => {
+const GameSelectionScreen = ({ onNewGame, onLoadGame, onGameSelected, onBackToStart }) => {
   const { isDarkMode } = useContext(ThemeContext);
-
   const [currentSubScreen, setCurrentSubScreen] = useState('selection');
+  const [gameMode, setGameMode] = useState(null); // Aggiunto
 
   const handleNewGameClick = () => {
+    setGameMode('new');
     setCurrentSubScreen('gameSlots');
   };
 
   const handleLoadGameClick = () => {
-    console.log('Carica Partita non ancora implementato!');
-    if (onGameSelected) onGameSelected('loadGame');
+    setGameMode('load');
+    setCurrentSubScreen('gameSlots');
+  };
+
+  const handleBackFromSlots = () => {
+    setCurrentSubScreen('selection');
+    setGameMode(null);
   };
 
   const handleSlotSelection = (slotNumber) => {
-    console.log(`Avvio nuova partita nello Slot ${slotNumber}`);
-    if (onGameSelected) onGameSelected('newGameStarted', slotNumber);
+    console.log(`Slot ${slotNumber} selezionato in modalità ${gameMode}`);
+    if (onGameSelected) {
+      const action = gameMode === 'new' ? 'newGameStarted' : 'loadGameStarted';
+      onGameSelected(action, slotNumber);
+    }
   };
 
   return (
     <div className={`game-selection-portal-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-      
-      {/* ✅ Pulsante Indietro: Aggiunto senza toccare il resto */}
       <button className="back-button" onClick={onBackToStart}>
         ⬅ Indietro
       </button>
@@ -38,17 +42,11 @@ const GameSelectionScreen = ({ onGameSelected, onBackToStart }) => {
           <p className="portal-subtitle">Esplora il multiverso, crea la tua storia.</p>
 
           <div className="portal-options-grid">
-            <button
-              className="portal-button new-game-portal"
-              onClick={handleNewGameClick}
-            >
+            <button className="portal-button new-game-portal" onClick={handleNewGameClick}>
               <span className="portal-button-text">Nuova Partita</span>
               <span className="portal-glow"></span>
             </button>
-            <button
-              className="portal-button load-game-portal"
-              onClick={handleLoadGameClick}
-            >
+            <button className="portal-button load-game-portal" onClick={handleLoadGameClick}>
               <span className="portal-button-text">Carica Partita</span>
               <span className="portal-glow"></span>
             </button>
@@ -62,7 +60,11 @@ const GameSelectionScreen = ({ onGameSelected, onBackToStart }) => {
       )}
 
       {currentSubScreen === 'gameSlots' && (
-        <GameSlotsScreen onSlotSelect={handleSlotSelection} />
+        <GameSlotsScreen
+          mode={gameMode}
+          onSlotSelect={handleSlotSelection}
+          onBack={handleBackFromSlots}
+        />
       )}
     </div>
   );

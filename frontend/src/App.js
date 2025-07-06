@@ -14,7 +14,8 @@ function App() {
   const [selectedSlot, setSelectedSlot] = useState(null); // Lo slot attualmente selezionato/caricato
   const [savedSlots, setSavedSlots] = useState({}); // Stato per memorizzare tutti i riepiloghi degli slot salvati
   const [isLoadingSlots, setIsLoadingSlots] = useState(false); // NUOVO STATO: per il caricamento degli slot
-
+  
+  
   const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
 
   // Debugging: Log del cambio di fase
@@ -56,20 +57,20 @@ function App() {
   };
 
   // Funzione per recuperare il riepilogo di tutti gli slot salvati dal backend
-  const fetchAllSavedSlots = async () => {
-    setIsLoadingSlots(true); // Imposta lo stato di caricamento a true
-    try {
-      console.log("Backend Call: Tentativo di recuperare tutti gli slot salvati...");
-      const res = await axios.get("http://localhost:5050/get_all_slots");
-      setSavedSlots(res.data); // Memorizza la risposta (es. {"1": {"nome": "Daniele", "avatar": "male"}})
-      console.log("Backend Response: Tutti gli slot caricati:", res.data);
-    } catch (error) {
-      console.error("Backend Error: Errore nel caricare tutti gli slot:", error);
-      setSavedSlots({}); // In caso di errore, resetta a un oggetto vuoto
-    } finally {
-      setIsLoadingSlots(false); // Imposta lo stato di caricamento a false, indipendentemente dal successo/errore
-    }
-  };
+const fetchAllSavedSlots = async () => {
+  setIsLoadingSlots(true);
+  try {
+    const res = await axios.get(`http://localhost:5050/get_all_slots?ts=${Date.now()}`);
+    console.log("fetchAllSavedSlots: dati ricevuti", res.data);
+    setSavedSlots(res.data);
+  } catch (error) {
+    console.error(error);
+    setSavedSlots({});
+  } finally {
+    setIsLoadingSlots(false);
+  }
+};
+
 
   // Modifica la funzione doAction per inviare anche lo slot corrente al backend
   const doAction = async (azione) => {
@@ -158,6 +159,8 @@ function App() {
     setSavedSlots({}); // Pulisci gli slot salvati quando torni all'inizio
   };
 
+  
+
   // --- Render delle diverse fasi ---
 
   if (currentPhase === 'start') {
@@ -175,9 +178,11 @@ function App() {
       <GameSelectionScreen
         isDarkMode={isDarkMode}
         onNewGame={handleNewGameFromSelection}
-        onGameSelected={(gameType) => {
-          console.log("onGameSelected chiamato con gameType:", gameType);
-          handleNewGameFromSelection();
+        onLoadGame={handleLoadGame}
+        onGameSelected={(gameType, slotNumber) => {
+          if (gameType === 'newGameStarted') {
+            handleSlotSelect(slotNumber);
+          }
         }}
         onBackToStart={handleBackToStart}
       />
@@ -185,17 +190,17 @@ function App() {
   }
 
   if (currentPhase === 'gameSlots') {
-    return (
-      <GameSlotsScreen
-        isDarkMode={isDarkMode}
-        onSlotSelect={handleSlotSelect}
-        onLoadGame={handleLoadGame}
-        onBack={handleBackToStart} // Il pulsante "Indietro" generale può ancora tornare a Start
-        savedSlots={savedSlots}
-        isLoadingSlots={isLoadingSlots} // Passa lo stato di caricamento
-      />
-    );
-  }
+  return (
+    <GameSlotsScreen
+      isDarkMode={isDarkMode}
+      onSlotSelect={handleSlotSelect}
+      onLoadGame={handleLoadGame}
+      onBack={handleBackToStart}
+      savedSlots={savedSlots} // ✅ AGGIUNTO
+      isLoadingSlots={isLoadingSlots} // ✅ AGGIUNTO
+    />
+  );
+}
 
   if (currentPhase === 'nameInput') {
     return (
