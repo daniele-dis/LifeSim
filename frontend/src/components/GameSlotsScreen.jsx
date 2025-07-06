@@ -34,8 +34,7 @@ const GameSlotsScreen = ({ onSlotSelect, onBack }) => { // onBack è correttamen
               <button onClick={() => {
                 console.log("Cliccato Start New Game con slot:", slotNumber);
                 onSlotSelect(slotNumber);
-              }}>
-                Start New Game
+              }}>Nuova Partita
               </button>
 
 
@@ -51,8 +50,10 @@ const GameSlotsScreen = ({ onSlotSelect, onBack }) => { // onBack è correttamen
           Indietro
         </button>
       )}
-      <footer className="portal-footer">
-        <p>&copy; {new Date().getFullYear()} LifeSim Adventures. Tutti i diritti riservati.</p>
+      <footer className="footer">
+       <p>&copy; {new Date().getFullYear()} LifeSim. Tutti i diritti riservati.</p>
+       <p>Sviluppato da Daniele Di Sarno & Ciro La Rocca</p>
+        
       </footer>
     </div>
   );

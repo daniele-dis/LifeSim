@@ -4,8 +4,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
 /* --- Stili Base dell'Applicazione (Globali) --- */
-body {
-    margin: 0;
+/* Blocca lo scorrimento orizzontale per l'intera pagina */
+
+html, body {
+    overflow-x: hidden; /* <-- Questa è la proprietà chiave */
+    width: 100%;       /* <-- Assicura che occupi tutta la larghezza */
+    margin: 0;         /* <-- Rimuove margini predefiniti */
+    padding: 0;        /* <-- Rimuove padding predefiniti */
     font-family: 'Poppins', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -486,6 +491,9 @@ body {
 }
 
 /* --- Stili per il Footer della StartScreen --- */
+/* TUTTI I FOOTER FANNO RIFERIMENTO A QUESTO, PERCIò OGNI CLASS NAME FOOTER
+SI REFERENZIA A QUESTO FOOTER  */
+
 .footer {
     position: absolute;
     bottom: 0;
@@ -685,24 +693,6 @@ body {
     transform: scale(1.12);
 }
 
-/* --- Stili per il Footer della Schermata di Selezione Gioco --- */
-.portal-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 1rem;
-    background: var(--color-background-tertiary);
-    color: var(--color-text-secondary);
-    font-size: 0.85rem;
-    text-align: center;
-    z-index: 2;
-    transition: background 0.5s ease, color 0.5s ease;
-}
-
-.portal-footer p {
-    margin: 0.8rem 1;
-}
-
 /* --- Media Queries per la Responsività della GameSelectionScreen --- */
 @media (min-width: 768px) {
     .portal-options-grid {
@@ -728,10 +718,7 @@ body {
         padding: 1rem 2.5rem;
         font-size: 1.4rem;
     }
-    .portal-footer {
-        font-size: 0.75rem;
-        padding: 0.8rem;
-    }
+
 }
 
 /* ========================================================================== */
@@ -873,12 +860,6 @@ body {
     box-sizing: border-box;
     position: relative; /* Per assicurarsi che sia sopra le aure */
     z-index: 1;
-    /* Rimosse o commentate le proprietà non necessarie per un layout a colonna singola */
-    /* overflow-x: unset; */
-    /* -webkit-overflow-scrolling: unset; */
-    /* scroll-snap-type: unset; */
-    /* scrollbar-width: unset; */
-    /* -ms-overflow-style: unset; */
 }
 
 
@@ -1064,6 +1045,7 @@ body {
     position: relative; /* Aggiunto per il posizionamento del back-button */
     max-width: 480px;
     margin: 3rem auto;
+    margin-top: 4.5em;
     padding: 2rem 2.5rem;
     background-color: var(--color-background-secondary);
     border-radius: 14px;
@@ -1076,15 +1058,16 @@ body {
 }
 
 .name-input-title {
-    font-size: 2rem;
-    margin-bottom: 0.3rem;
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 2.2rem;
     font-weight: 700;
     color: var(--color-highlight-primary);
     transition: color 0.5s ease;
 }
 
 .name-input-subtitle {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     margin-bottom: 1.5rem;
     font-weight: 400;
     font-style: italic;
@@ -1108,6 +1091,7 @@ body {
     color: var(--color-text-secondary);
     opacity: 0.7;
     transition: color 0.5s ease;
+    text-align: center;
 }
 
 .name-input-field:focus {
@@ -1122,7 +1106,7 @@ body {
     border: none;
     border-radius: 16px;
     padding: 0.9rem 4rem;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: 700;
     color: var(--color-button-text);
     cursor: pointer;
@@ -1165,9 +1149,9 @@ body {
     color: var(--color-button-text); 
     
     border: none;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 4px 10px; /* Padding del bottone ridotto */
-    font-size: 0.8em; /* Dimensione del font del bottone ridotta */
+    font-size: 1.2em; /* Dimensione del font del bottone ridotta */
     cursor: pointer;
     transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     margin-top: 8px; /* Margine superiore del bottone */
@@ -1185,6 +1169,74 @@ body {
 .dark-mode .name-input-button:hover {
     background-color: #003a73; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Stile per la selezione dell'Avatar */
+.avatar-selection-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px; /* Spazio tra gli avatar */
+  margin-bottom: 25px; /* Spazio tra avatar e sottotitolo */
+}
+
+.avatar-option {
+  cursor: pointer;
+  padding: 10px;
+  border: 2px solid transparent; /* Bordo trasparente predefinito */
+  border-radius: 8px; /* Angoli leggermente arrotondati */
+  transition: border-color 0.2s ease-in-out, transform 0.2s ease-in-out; /* Transizione fluida per hover/selezione */
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.05); /* Lieve sfondo per la modalità scura */
+}
+
+.avatar-option:hover {
+  transform: translateY(-3px); /* Effetto leggero di sollevamento al passaggio del mouse */
+}
+
+.avatar-image {
+  width: 90px; /* Regola la dimensione a seconda delle necessità */
+  height: 90px; /* Mantieni l'aspect ratio */
+  border-radius: 50%; /* Rendi gli avatar circolari */
+  object-fit: cover; /* Assicurati che l'immagine copra l'area */
+  margin-bottom: 8px; /* Spazio tra immagine ed etichetta */
+}
+
+.avatar-label {
+  font-size: 0.9em;
+  color: #ccc; /* Colore più chiaro per l'etichetta in modalità scura */
+}
+
+/* Stile Avatar Selezionato */
+.avatar-option.selected-avatar {
+  border-color: #4CAF50; /* Bordo verde per l'avatar selezionato */
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.6); /* Opzionale: bagliore sottile */
+  background-color: rgba(76, 175, 80, 0.1); /* Lieve tinta verde per lo sfondo selezionato */
+}
+
+/* Regolazioni specifiche per la modalità scura per la selezione dell'avatar */
+.dark-mode .avatar-option {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .avatar-option.selected-avatar {
+    background-color: rgba(76, 175, 80, 0.2);
+}
+
+.dark-mode .avatar-label {
+  color: #eee;
+}
+
+/* Regolazioni specifiche per la modalità chiara per la selezione dell'avatar */
+.light-mode .avatar-option {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.light-mode .avatar-option.selected-avatar {
+  background-color: rgba(76, 175, 80, 0.15);
+}
+
+.light-mode .avatar-label {
+  color: #333;
 }
 
 

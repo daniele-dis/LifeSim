@@ -54,8 +54,9 @@ const GameSelectionScreen = ({ onGameSelected, onBackToStart }) => {
             </button>
           </div>
 
-          <footer className="portal-footer">
-            <p>&copy; {new Date().getFullYear()} LifeSim Adventures. All rights reserved.</p>
+          <footer className="footer">
+            <p>&copy; {new Date().getFullYear()} LifeSim. Tutti i diritti riservati.</p>
+            <p>Sviluppato da Daniele Di Sarno & Ciro La Rocca</p>
           </footer>
         </>
       )}
