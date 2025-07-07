@@ -1,23 +1,9 @@
 {
     "1": {
         "nome": "Daniele",
-        "avatar": "male",
-        "soldi": 100,
-        "energia": 50,
-        "felicit\u00e0": 70
-    },
-    "3": {
-        "nome": "Davide",
-        "avatar": "male",
-        "soldi": 100,
-        "energia": 50,
-        "felicit\u00e0": 70
-    },
-    "2": {
-        "nome": "Federica",
-        "avatar": "female",
-        "soldi": 100,
-        "energia": 50,
-        "felicit\u00e0": 70
+        "avatar": "(M)",
+        "soldi": 510,
+        "energia": 60,
+        "felicita": 65
     }
 }

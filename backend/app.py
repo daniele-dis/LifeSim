@@ -60,7 +60,7 @@ def initialize_game():
         "avatar": selected_avatar, # Salviamo l'avatar qui
         "soldi": 100,
         "energia": 50,
-        "felicità": 70
+        "felicita": 70
     }
 
     # Salva i game_slots aggiornati sul file per persistenza
@@ -94,36 +94,37 @@ def debug_slots():
 # --- Endpoint per eseguire azioni (modificato per usare lo slot corrente) ---
 @app.route("/do_action", methods=["POST"])
 def do_action():
-    """
-    Esegue un'azione di gioco (es. lavoro, dormi) per lo slot corrente
-    e aggiorna il suo stato.
-    """
-    # Carica lo stato più recente dal file
-    game_slots = load_game_slots() 
+    game_slots = load_game_slots()
     
     data = request.json
     azione = data.get("azione")
-    current_slot = str(data.get("slot")) # Ottieni l'ID dello slot dalla richiesta frontend
+    current_slot = str(data.get("slot"))
 
     if current_slot not in game_slots:
         return jsonify({"message": "Nessun gioco attivo per questo slot."}), 400
 
-    state_in_slot = game_slots[current_slot]
+    state = game_slots[current_slot]
 
     if azione == "lavoro":
-        state_in_slot["soldi"] += 50
-        state_in_slot["energia"] -= 20
+        state["soldi"] += 50
+        state["energia"] -= 20
+        state["felicita"] = max(0, state.get("felicita", 0) - 30)  # diminuisce felicità, min 0
     elif azione == "dormi":
-        state_in_slot["energia"] += 30
-        state_in_slot["felicità"] += 5
+        state["energia"] = min(100, state.get("energia", 0) + 30)
+        state["felicita"] = min(100, state.get("felicita", 0) + 5)
     elif azione == "divertiti":
-        state_in_slot["felicità"] += 20
-        state_in_slot["soldi"] -= 15
-    
-    # Salva i game_slots aggiornati sul file dopo ogni azione
-    save_game_slots(game_slots)
+        state["felicita"] = min(100, state.get("felicita", 0) + 20)
+        state["soldi"] = max(0, state.get("soldi", 0) - 15)
+        state["energia"] = max(0, state.get("energia", 0) - 10)
 
-    return jsonify(state_in_slot)
+    # Assicuriamoci di limare tutti i valori (nel caso manchino)
+    state["energia"] = max(0, min(state.get("energia", 0), 100))
+    state["felicita"] = max(0, min(state.get("felicita", 0), 100))
+    state["soldi"] = max(0, state.get("soldi", 0))
+
+    save_game_slots(game_slots)
+    return jsonify(state)
+
 
 # --- Endpoint per ottenere tutti gli slot disponibili (utile per "Carica Partita") ---
 @app.route("/get_all_slots", methods=["GET"])

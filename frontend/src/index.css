@@ -1271,3 +1271,139 @@ SI REFERENZIA A QUESTO FOOTER  */
     }
 
 }
+
+/* ========================================================================== */
+/* --- STILI PER LA SCHERMATA DI GIOCO (MainGameScreen) MIGLIORATI --- */
+/* ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+/* MAIN GAME SCREEN */
+.main-game-screen {
+  font-family: 'Poppins', sans-serif;
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  padding: 2.5rem 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Back button */
+.main-game-screen__back-btn {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  background: transparent;
+  border: none;
+  color: #a0a0a0;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+.main-game-screen__back-btn:hover {
+  color: var(--color-highlight-primary);
+}
+
+/* Title */
+.main-game-screen__title {
+  font-weight: 600;
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: 0.03em;
+  color: var(--color-text-primary);
+  transition: color 0.5s ease;
+}
+.main-game-screen__title .highlight {
+  color: var(--color-highlight-primary);
+  font-weight: 700;
+  text-shadow: 0 0 10px var(--color-highlight-primary);
+}
+
+/* Stats container */
+.main-game-screen__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  max-width: 720px;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+/* Single stat */
+.game-stat {
+  background: var(--color-background-secondary);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  flex: 1 1 160px;
+  color: #c0c0c0;
+  font-weight: 500;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  user-select: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 188, 212, 0.15);
+}
+.game-stat:hover {
+  background: var(--color-background-tertiary);
+  color: #ffffff;
+  box-shadow: 0 0 15px var(--color-highlight-primary);
+}
+
+/* Emoji/icon */
+.game-stat span:first-child {
+  font-size: 1.6rem;
+}
+
+/* Buttons container */
+.main-game-screen__actions {
+  display: flex;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Action buttons */
+.main-game-screen__action-btn {
+  flex: 1 1 170px;
+  padding: 0.95rem 0;
+  background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
+  color: var(--color-button-text);
+  border: none;
+  border-radius: 9999px; /* pill */
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  user-select: none;
+  box-shadow: 0 4px 8px var(--color-button-shadow-primary);
+}
+.main-game-screen__action-btn:hover {
+  background: var(--color-highlight-secondary);
+  transform: scale(1.05);
+  color: #fafafa;
+  box-shadow: 0 6px 12px var(--color-button-shadow-hover);
+}
+.main-game-screen__action-btn:active {
+  transform: scale(0.95);
+}
+
+/* Footer */
+.main-game-screen__footer {
+  margin-top: auto;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  user-select: none;
+  text-align: center;
+  font-style: italic;
+  transition: color 0.5s ease;
+}
