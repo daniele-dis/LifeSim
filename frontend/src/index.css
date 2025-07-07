@@ -1042,7 +1042,7 @@ SI REFERENZIA A QUESTO FOOTER  */
 /* ========================================================================== */
 
 .name-input-container {
-    position: relative; /* Aggiunto per il posizionamento del back-button */
+    position: relative;
     max-width: 480px;
     margin: 3rem auto;
     margin-top: 4.5em;
@@ -1054,7 +1054,7 @@ SI REFERENZIA A QUESTO FOOTER  */
     color: var(--color-text-primary);
     text-align: center;
     transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
-    z-index: 1; /* Assicurati che il contenuto sia sopra le aure se presenti */
+    z-index: 1;
 }
 
 .name-input-title {
@@ -1124,24 +1124,24 @@ SI REFERENZIA A QUESTO FOOTER  */
 
 /* Stili per il pulsante "Indietro" specifico per InputScreen */
 .name-input-back-button {
-    position: absolute;
+    position: fixed; /* Changed from absolute to fixed */
     top: 20px;
     left: 20px;
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
-    color: var(--color-button-text); /* Assicurati che sia leggibile in entrambi i temi */
+    color: var(--color-button-text);
     border: none;
     padding: 10px 15px;
     border-radius: 8px;
     cursor: pointer;
-    z-index: 1000;
+    z-index: 1001; /* Increased z-index */
     font-size: 14px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 8px var(--color-button-shadow-primary); /* Aggiungi un'ombra */
+    box-shadow: 0 4px 8px var(--color-button-shadow-primary);
 }
 
 .name-input-back-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px var(--color-button-shadow-hover); /* Ombra più pronunciata all'hover */
+    box-shadow: 0 6px 12px var(--color-button-shadow-hover);
 }
 
 .name-input-button {

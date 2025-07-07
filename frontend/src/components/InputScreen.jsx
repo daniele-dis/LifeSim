@@ -38,15 +38,15 @@ const InputScreen = ({ onNameSubmit, onBack, slotNumber }) => {
         {/* Selezione Avatar */}
         <div className="avatar-selection-container">
           <div
-            className={`avatar-option ${selectedAvatar === 'male' ? 'selected-avatar' : ''}`}
-            onClick={() => setSelectedAvatar('male')}
+            className={`avatar-option ${selectedAvatar === '(M)' ? 'selected-avatar' : ''}`}
+            onClick={() => setSelectedAvatar('(M)')}
           >
             <img src={maleAvatar} alt="Avatar Maschile" className="avatar-image" />
             <p className="avatar-label">Ragazzo</p>
           </div>
           <div
-            className={`avatar-option ${selectedAvatar === 'female' ? 'selected-avatar' : ''}`}
-            onClick={() => setSelectedAvatar('female')}
+            className={`avatar-option ${selectedAvatar === '(F)' ? 'selected-avatar' : ''}`}
+            onClick={() => setSelectedAvatar('(F)')}
           >
             <img src={femaleAvatar} alt="Avatar Femminile" className="avatar-image" />
             <p className="avatar-label">Ragazza</p>

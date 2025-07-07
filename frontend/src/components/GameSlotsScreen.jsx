@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext } from 'react'; // Rimosso useEffect e useState
 import ThemeContext from '../ThemeContext';
 import './../index.css';
 
@@ -9,25 +9,15 @@ import './../index.css';
  * @param {'new'|'load'} props.mode - Modalità operativa: 'new' o 'load'
  * @param {function(number): void} props.onSlotSelect - Funzione di callback quando uno slot viene selezionato.
  * @param {function(): void} [props.onBack] - Funzione di callback per un pulsante "Indietro" (opzionale).
+ * @param {object} props.savedSlots - Oggetto contenente i dati degli slot salvati.
+ * @param {boolean} props.isLoadingSlots - Indica se gli slot sono in fase di caricamento.
  */
-const GameSlotsScreen = ({ mode, onSlotSelect, onBack }) => {
+const GameSlotsScreen = ({ mode, onSlotSelect, onBack, savedSlots, isLoadingSlots }) => {
   const { isDarkMode } = useContext(ThemeContext);
-  const [savedSlots, setSavedSlots] = useState({});
-  const [isLoadingSlots, setIsLoadingSlots] = useState(true);
-  const slots = [1, 2, 3];
+  // Rimosso lo stato interno savedSlots e isLoadingSlots, ora vengono passati tramite props.
+  // Rimosso l'useEffect per il caricamento interno degli slot, ora gestito dal custom hook.
 
-  useEffect(() => {
-    fetch('http://localhost:5050/get_all_slots')
-      .then((res) => res.json())
-      .then((data) => {
-        setSavedSlots(data);
-        setIsLoadingSlots(false);
-      })
-      .catch((err) => {
-        console.error('Errore caricamento slot:', err);
-        setIsLoadingSlots(false);
-      });
-  }, []);
+  const slots = [1, 2, 3]; // Ipotizziamo sempre 3 slot
 
   return (
     <div className={`game-slots-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
@@ -39,6 +29,7 @@ const GameSlotsScreen = ({ mode, onSlotSelect, onBack }) => {
           ? 'Scegli uno slot libero per iniziare una nuova partita.'
           : 'Scegli uno slot salvato da caricare.'}
       </p>
+      
 
       {isLoadingSlots ? (
         <p className="loading-text">Caricamento degli slot in corso...</p>
@@ -55,11 +46,12 @@ const GameSlotsScreen = ({ mode, onSlotSelect, onBack }) => {
 
                   {hasSave ? (
                     <>
-                      <p>👤 {slotData.nome}</p>
-                      <p>🧍 Avatar: {slotData.avatar}</p>
+                      <p>👤: {slotData.nome} 🧍: {slotData.avatar}</p>
+                      {/* Mostra "Carica Partita" solo in modalità 'load' */}
                       {mode === 'load' && (
                         <button onClick={() => onSlotSelect(slotNumber)}>Carica Partita</button>
                       )}
+                      {/* Mostra "Slot Occupato" solo in modalità 'new' */}
                       {mode === 'new' && (
                         <p className="info-text">Slot Occupato</p>
                       )}
@@ -67,10 +59,14 @@ const GameSlotsScreen = ({ mode, onSlotSelect, onBack }) => {
                   ) : (
                     <>
                       <p>Empty</p>
+                      {/* Mostra "Nuova Partita" solo in modalità 'new' */}
                       {mode === 'new' && (
                         <button onClick={() => onSlotSelect(slotNumber)}>Nuova Partita</button>
                       )}
-                      {/* mode === 'load' con slot vuoto: non mostrare niente */}
+                      {/* Mostra "Slot Vuoto" in modalità 'load' */}
+                      {mode === 'load' && (
+                        <p className="info-text">Slot Vuoto</p>
+                      )}
                     </>
                   )}
                 </div>
@@ -80,11 +76,14 @@ const GameSlotsScreen = ({ mode, onSlotSelect, onBack }) => {
         </div>
       )}
 
+      {/* Questo è il SOLO pulsante "Indietro" gestito da GameSlotsScreen.
+          Appare sempre se la prop onBack è fornita, indipendentemente dalla modalità. */}
       {onBack && (
-        <button className="back-button" onClick={onBack} style={{ marginTop: '20px' }}>
-          Indietro
+        <button className="back-button" onClick={onBack}>
+          &larr; Indietro
         </button>
       )}
+
 
       <footer className="footer">
         <p>&copy; {new Date().getFullYear()} LifeSim. Tutti i diritti riservati.</p>
