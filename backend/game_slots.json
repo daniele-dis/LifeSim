@@ -2,8 +2,9 @@
     "1": {
         "nome": "Daniele",
         "avatar": "(M)",
-        "soldi": 510,
-        "energia": 60,
-        "felicita": 65
+        "soldi": 1620,
+        "energia": 55,
+        "felicita": 100,
+        "current_suggestion": null
     }
 }
