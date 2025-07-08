@@ -1,9 +1,8 @@
 // src/components/StartScreen.js
 
 import React, { useState, useContext } from "react";
-import ThemeContext from "../ThemeContext";
+import ThemeContext from "../ThemeContext"; // Assicurati che il percorso sia corretto
 
-//Ciao Ciro, programmiamo insieme!
 // --- Componente Popup "Contattaci" ---
 const ContactPopup = ({ onClose }) => {
   return (

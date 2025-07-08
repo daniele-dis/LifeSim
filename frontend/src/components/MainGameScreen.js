@@ -1,7 +1,7 @@
 // components/MainGameScreen.js
 import React from 'react';
 
-function MainGameScreen({ gameState, doAction, onBack, isDarkMode }) {
+function MainGameScreen({ gameState, doAction, onBack, isDarkMode, aiSuggestion, onAcceptSuggestion, onRejectSuggestion }) {
     if (!gameState) {
         return (
             <div className={`loading-screen ${isDarkMode ? 'dark' : 'light'}`}>
@@ -41,8 +41,19 @@ function MainGameScreen({ gameState, doAction, onBack, isDarkMode }) {
                 </p>
             </div>
 
+            {/* --- AI Suggestion Section (NEW) --- */}
+            {aiSuggestion && (
+                <div className="main-game-screen__ai-suggestion">
+                    <p className="ai-suggestion__text">{aiSuggestion.text}</p>
+                    <div className="ai-suggestion__actions">
+                        <button onClick={() => onAcceptSuggestion(aiSuggestion.action)} className="ai-suggestion__btn ai-suggestion__btn--accept">Accetta</button>
+                        <button onClick={onRejectSuggestion} className="ai-suggestion__btn ai-suggestion__btn--reject">Rifiuta</button>
+                    </div>
+                </div>
+            )}
+            {/* --- END AI Suggestion Section --- */}
 
-            {/* Action Buttons Container */}
+            {/* Action Buttons Container (Existing Manual Actions) */}
             <div className="main-game-screen__actions">
                 <button onClick={() => doAction('lavoro')} className="main-game-screen__action-btn">Vai a Lavorare</button>
                 <button onClick={() => doAction('dormi')} className="main-game-screen__action-btn">Dormi</button>

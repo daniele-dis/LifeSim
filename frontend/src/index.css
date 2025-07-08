@@ -8,12 +8,18 @@
 
 html, body {
     overflow-x: hidden; /* <-- Questa è la proprietà chiave */
-    width: 100%;       /* <-- Assicura che occupi tutta la larghezza */
-    margin: 0;         /* <-- Rimuove margini predefiniti */
-    padding: 0;        /* <-- Rimuove padding predefiniti */
+    width: 100%;        /* <-- Assicura che occupi tutta la larghezza */
+    margin: 0;          /* <-- Rimuove margini predefiniti */
+    padding: 0;         /* <-- Rimuove padding predefiniti */
     font-family: 'Poppins', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    box-sizing: border-box; /* Cruciale per il modello a scatola */
+}
+
+/* Applica box-sizing a tutti gli elementi per un layout più prevedibile */
+*, *::before, *::after {
+    box-sizing: inherit;
 }
 
 /* --- Variabili CSS Globali per il Tema Scuro (Default) --- */
@@ -61,6 +67,14 @@ html, body {
     /* Variabili specifiche per la schermata di selezione gioco (GameSelectionScreen) in Modalità Scura */
     --portal-background: transparent; /* Renderemo il contenitore trasparente */
     --portal-button-glow-color: var(--color-highlight-primary);
+
+    /* Z-index values */
+    --z-index-base: 1;
+    --z-index-content: 2;
+    --z-index-menu: 4;
+    --z-index-overlay: 5;
+    --z-index-popup: 10; /* Changed from 100 to make room for higher values if needed */
+    --z-index-back-button: 11; /* Slightly higher than popup if it overlaps */
 }
 
 /* --- Stili per l'elemento Root (Gestione del Tema) --- */
@@ -117,6 +131,27 @@ html, body {
     --portal-button-glow-color: var(--color-highlight-primary);
 }
 
+/* --- Base Button Style to reduce repetition --- */
+/* NOTA: Se non usi un precompilatore CSS (es. Sass, Less),
+   NON puoi usare @extend. In quel caso, dovrai copiare manualmente
+   queste proprietà in ogni classe di pulsante che le utilizza. */
+.base-button {
+    border: none;
+    border-radius: 16px;
+    font-weight: 700;
+    color: var(--color-button-text);
+    cursor: pointer;
+    box-shadow: 0 12px 25px var(--color-button-shadow-primary);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 1.2px;
+    user-select: none;
+    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
+}
+
+.base-button:hover {
+    box-shadow: 0 20px 40px var(--color-button-shadow-hover);
+    transform: scale(1.12);
+}
 
 /* ========================================================================== */
 /* --- STILI SPECIFICI PER LA SCHERMATA INIZIALE (StartScreen) --- */
@@ -133,39 +168,38 @@ html, body {
     font-family: 'Poppins', sans-serif;
     text-align: center;
     padding: 0 1rem;
-    box-sizing: border-box;
-    /* Questo è già corretto: trasparente per mostrare il background di #root */
-    background: transparent;
-    color: inherit;
+    background: transparent; /* Inherit from #root */
+    color: inherit; /* Inherit from #root */
 }
 
 /* Effetti "Aura" di sfondo per StartScreen (pseudo-elementi ::before e ::after) */
-.container::before {
+.container::before,
+.container::after {
     content: "";
     position: absolute;
+    border-radius: 50%; /* Ensuring circular blur source */
+    filter: blur(160px);
+    z-index: var(--z-index-base); /* Using variable */
+    transition: background 0.5s ease, filter 0.5s ease, opacity 0.5s ease; /* Add opacity transition */
+}
+
+.container::before {
     top: -60%;
     left: -50%;
     width: 200%;
     height: 220%;
     background: radial-gradient(ellipse at center, var(--aura-color-1) 0%, transparent 85%);
-    filter: blur(160px);
     animation: auroraMove1 30s ease-in-out infinite alternate;
-    z-index: 0;
-    transition: background 0.5s ease, filter 0.5s ease;
 }
 
 .container::after {
-    content: "";
-    position: absolute;
     top: -40%;
     left: 40%;
     width: 180%;
     height: 180%;
     background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%);
-    filter: blur(110px);
+    filter: blur(110px); /* Slightly less blur for the second aura */
     animation: auroraMove2 35s ease-in-out infinite alternate;
-    z-index: 0;
-    transition: background 0.5s ease, filter 0.5s ease;
 }
 
 /* Animazioni per gli effetti "Aura" */
@@ -184,7 +218,7 @@ html, body {
 /* Stili per il titolo, i pulsanti e il sottotitolo della StartScreen */
 .title, .button, .subtitle {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-index-content); /* Using variable */
     transition: color 0.5s ease;
 }
 
@@ -204,18 +238,20 @@ html, body {
 
 /* Stili per il pulsante principale (es. "Inizia Nuova Partita") */
 .button {
+    /* Se non usi un precompilatore, copia qui le proprietà da .base-button */
+    /* @extend .base-button; */
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     border: none;
     border-radius: 16px;
-    padding: 1rem 6rem;
-    font-size: 1.8rem;
     font-weight: 700;
     color: var(--color-button-text);
-    cursor: pointer;
     box-shadow: 0 12px 25px var(--color-button-shadow-primary);
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing: 1.2px;
     user-select: none;
+    cursor: pointer; /* Aggiunto cursor: pointer */
+    padding: 1rem 6rem;
+    font-size: 1.8rem;
 }
 
 .button:hover {
@@ -225,24 +261,27 @@ html, body {
 
 /* Stili per il pulsante "Chiudi" nei popup */
 .button_chiudi {
+    /* Se non usi un precompilatore, copia qui le proprietà da .base-button */
+    /* @extend .base-button; */
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     border: none;
     border-radius: 16px;
-    padding: 1rem 3rem;
-    font-size: 1.2rem;
     font-weight: 700;
     color: var(--color-button-text);
-    cursor: pointer;
     box-shadow: 0 12px 25px var(--color-button-shadow-primary);
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing: 1.2px;
     user-select: none;
+    cursor: pointer; /* Aggiunto cursor: pointer */
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    /* Overwrite specific hover scale for chiudi button */
+}
+.button_chiudi:hover { /* Chiusura corretta del blocco &:hover */
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px var(--color-button-shadow-hover); /* Aggiunto box-shadow mancante */
 }
 
-.button_chiudi:hover {
-    box-shadow: 0 20px 40px var(--color-button-shadow-hover);
-    transform: scale(1.05);
-}
 
 /* Stili per il sottotitolo della StartScreen */
 .subtitle {
@@ -283,7 +322,7 @@ html, body {
     position: absolute;
     top: 1rem;
     left: 1.2rem;
-    z-index: 5;
+    z-index: var(--z-index-menu); /* Using variable */
 }
 
 .menu-toggle {
@@ -310,7 +349,7 @@ html, body {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    z-index: 4;
+    z-index: var(--z-index-overlay); /* Using variable */
     animation: fadeInOverlay 0.4s ease forwards;
 }
 
@@ -370,7 +409,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    z-index: var(--z-index-popup); /* Using variable */
 }
 
 .popup-content {
@@ -503,7 +542,7 @@ SI REFERENZIA A QUESTO FOOTER  */
     color: var(--color-text-secondary);
     font-size: 0.85rem;
     text-align: center;
-    z-index: 2;
+    z-index: var(--z-index-content); /* Using variable */
     transition: background 0.5s ease, color 0.5s ease;
 }
 
@@ -529,9 +568,7 @@ SI REFERENZIA A QUESTO FOOTER  */
     font-family: 'Poppins', sans-serif;
     text-align: center;
     padding: 0 1rem;
-    box-sizing: border-box;
-    /* Rendi trasparente per ereditare il background da #root */
-    background: transparent;
+    background: transparent; /* Inherit from #root */
     color: var(--color-text-primary);
     transition: background 0.5s ease, color 0.5s ease;
 }
@@ -542,47 +579,44 @@ SI REFERENZIA A QUESTO FOOTER  */
     content: "";
     position: absolute;
     border-radius: 50%;
-    filter: blur(160px); /* Aumentato il blur per coerenza con StartScreen */
-    opacity: 0.2; /* Opacità base per l'aura */
-    z-index: 0;
+    filter: blur(160px);
+    opacity: 0.2;
+    z-index: var(--z-index-base); /* Using variable */
     transition: background-color 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
 }
 
 /* Aura 1: Dalle profondità, più scura e grande */
 .game-selection-portal-container::before {
-    background: radial-gradient(ellipse at center, var(--aura-color-1) 0%, transparent 85%); /* Usa radial-gradient come StartScreen */
-    width: 200%; /* Dimensioni simili a StartScreen */
+    background: radial-gradient(ellipse at center, var(--aura-color-1) 0%, transparent 85%);
+    width: 200%;
     height: 220%;
     top: -60%;
     left: -50%;
-    animation: auroraMove1 30s ease-in-out infinite alternate; /* Usa animazione di StartScreen */
+    animation: auroraMove1 30s ease-in-out infinite alternate;
 }
 
 /* Aura 2: Dall'alto, più chiara e dinamica */
 .game-selection-portal-container::after {
-    background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%); /* Usa radial-gradient come StartScreen */
-    width: 180%; /* Dimensioni simili a StartScreen */
+    background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%);
+    width: 180%;
     height: 180%;
     top: -40%;
     left: 40%;
-    animation: auroraMove2 35s ease-in-out infinite alternate; /* Usa animazione di StartScreen */
+    animation: auroraMove2 35s ease-in-out infinite alternate;
 }
 
 /* --- Stili per il Titolo della Schermata di Selezione Gioco ("Scegli La Modalità") --- */
 .portal-title {
-    position: relative; /* Importante per z-index */
-    z-index: 1; /* Assicura che sia sopra le aure */
-    font-size: 3.8rem; /* Puoi aggiustare questo e i margini a tuo piacimento */
+    position: relative;
+    z-index: var(--z-index-content); /* Using variable */
+    font-size: 3.8rem;
     margin-top: -120px;
     margin-bottom: 0.8rem;
     font-weight: 700;
     letter-spacing: 3px;
-    color: var(--color-highlight-primary); /* Colore base del testo (senza glow) */
-    
-    /* Rimuovi il text-shadow da qui per non averlo di default */
-    
-    animation: fadeInSlideDown 1s ease-out; /* Mantiene l'animazione */
-    transition: color 0.5s ease, text-shadow 0.3s ease; /* Transizione per il glow */
+    color: var(--color-highlight-primary);
+    animation: fadeInSlideDown 1s ease-out;
+    transition: color 0.5s ease, text-shadow 0.3s ease;
 }
 
 /* Animazione per il titolo del portale (resta invariata) */
@@ -592,15 +626,14 @@ SI REFERENZIA A QUESTO FOOTER  */
 }
 
 .portal-title:hover {
-    /* Questo crea il glow SOLO all'hover */
-    text-shadow: 0 0 30px var(--color-highlight-primary-hover), /* Un'ombra */
-                 0 0 60px var(--color-highlight-primary); /* Un'altra ombra per un effetto più completo */
+    text-shadow: 0 0 30px var(--color-highlight-primary-hover),
+                 0 0 60px var(--color-highlight-primary);
 }
 
 /* --- Stili per il Sottotitolo della Schermata di Selezione Gioco --- */
 .portal-subtitle {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-index-content); /* Using variable */
     margin-top: 0.5rem;
     margin-bottom: 3.5rem;
     font-size: 1.3rem;
@@ -610,9 +643,8 @@ SI REFERENZIA A QUESTO FOOTER  */
     color: var(--color-text-secondary);
     opacity: 0.9;
     animation: fadeIn 1.2s ease-out 0.2s forwards;
-    /* opacity: 0; <-- Rimosso: l'animazione gestisce l'opacità iniziale */
     transition: color 0.5s ease, opacity 0.5s ease;
-    text-shadow: 0 0 5px var(--color-shadow-tertiary); /* Leggero glow per il sottotitolo */
+    text-shadow: 0 0 5px var(--color-shadow-tertiary);
 }
 
 .portal-subtitle:hover{
@@ -628,7 +660,7 @@ SI REFERENZIA A QUESTO FOOTER  */
 /* --- Stili per la Griglia dei Pulsanti "Portali" --- */
 .portal-options-grid {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-index-content); /* Using variable */
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -640,24 +672,23 @@ SI REFERENZIA A QUESTO FOOTER  */
 
 /* --- Stili per i Pulsanti "Portali" (Nuova Partita, Carica Partita) --- */
 .portal-button {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
+    /* Se non usi un precompilatore, copia qui le proprietà da .base-button */
+    /* @extend .base-button; */
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     border: none;
-    border-radius: 20px;
-    padding: 0.8rem 3rem;
-    font-size: 1.8rem;
+    border-radius: 16px; /* Changed from 20px to 16px for consistency with base-button */
     font-weight: 700;
     color: var(--color-button-text);
-    cursor: pointer;
     box-shadow: 0 12px 25px var(--color-button-shadow-primary);
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing: 1.2px;
     user-select: none;
-    
+    cursor: pointer; /* Aggiunto cursor: pointer */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 3rem;
+    font-size: 1.8rem;
     width: 100%;
     max-width: 300px;
     height: 75px;
@@ -668,7 +699,7 @@ SI REFERENZIA A QUESTO FOOTER  */
 /* Testo all'interno del pulsante, posizionato sopra il glow */
 .portal-button-text {
     position: relative;
-    z-index: 2;
+    z-index: var(--z-index-content); /* Higher z-index for text inside button */
 }
 
 /* Effetto "glow" interno al pulsante al passaggio del mouse */
@@ -684,7 +715,7 @@ SI REFERENZIA A QUESTO FOOTER  */
     transform: translate(-50%, -50%);
     opacity: 0;
     transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
-    z-index: 1;
+    z-index: var(--z-index-base); /* Behind the text */
 }
 
 /* Effetti hover sui pulsanti del portale */
@@ -718,7 +749,6 @@ SI REFERENZIA A QUESTO FOOTER  */
         padding: 1rem 2.5rem;
         font-size: 1.4rem;
     }
-
 }
 
 /* ========================================================================== */
@@ -733,14 +763,11 @@ SI REFERENZIA A QUESTO FOOTER  */
     min-height: 100vh;
     justify-content: center;
     width: 100%;
-    box-sizing: border-box;
-    transition: background-color 0.5s ease;
-
-    /* Rendi trasparente per ereditare il background da #root */
-    background-color: transparent; 
+    background-color: transparent;
     color: var(--color-text-primary);
-    position: relative; /* Necessario per posizionare gli pseudo-elementi */
-    overflow: hidden; /* Per contenere le aure */
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.5s ease;
 }
 
 /* Applica gli effetti "Aura" anche al container degli slot */
@@ -749,9 +776,9 @@ SI REFERENZIA A QUESTO FOOTER  */
     content: "";
     position: absolute;
     border-radius: 50%;
-    filter: blur(160px); /* Aumentato il blur per coerenza con StartScreen */
-    opacity: 0.2; /* Opacità base per l'aura */
-    z-index: 0;
+    filter: blur(160px);
+    opacity: 0.2;
+    z-index: var(--z-index-base);
     transition: background-color 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
 }
 
@@ -765,7 +792,6 @@ SI REFERENZIA A QUESTO FOOTER  */
     animation: auroraMove1 30s ease-in-out infinite alternate;
 }
 
-/* Aura 2 (per GameSlotsScreen): Dall'alto, più chiara e dinamica */
 .game-slots-container::after {
     background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%);
     width: 180%;
@@ -775,48 +801,37 @@ SI REFERENZIA A QUESTO FOOTER  */
     animation: auroraMove2 35s ease-in-out infinite alternate;
 }
 
-/* Assicurati che il testo degli h2 in GameSlotsScreen usi il colore del tema */
 .game-slots-container h2 {
     color: var(--color-highlight-primary);
     margin-bottom: 25px;
     font-size: 2.2em;
     text-align: center;
     transition: color 0.5s ease;
-    position: relative; /* Per assicurarsi che sia sopra le aure */
-    z-index: 1;
+    position: relative;
+    z-index: var(--z-index-content); /* Using variable */
 }
 
 .game-slots-title {
-    position: relative; /* Importante per z-index */
-    z-index: 1; /* Assicura che sia sopra le aure */
-    font-size: 3.8rem; /* Puoi aggiustare questo e i margini a tuo piacimento */
+    position: relative;
+    z-index: var(--z-index-content);
+    font-size: 3.8rem;
     margin-top: -75px;
     margin-bottom: 0.8rem;
     font-weight: 700;
     letter-spacing: 2px;
-    color: var(--color-highlight-primary); /* Colore base del testo (senza glow) */
-    
-    /* Rimuovi il text-shadow da qui per non averlo di default */
-    
-    animation: fadeInSlideDown 1s ease-out; /* Mantiene l'animazione */
-    transition: color 0.5s ease, text-shadow 0.3s ease; /* Transizione per il glow */
-}
-
-/* Animazione per il titolo del portale (resta invariata) */
-@keyframes fadeInSlideDown {
-    from { opacity: 0; transform: translateY(-50px); }
-    to { opacity: 1; transform: translateY(0); }
+    color: var(--color-highlight-primary);
+    animation: fadeInSlideDown 1s ease-out;
+    transition: color 0.5s ease, text-shadow 0.3s ease;
 }
 
 .game-slots-title:hover {
-    /* Questo crea il glow SOLO all'hover */
-    text-shadow: 0 0 30px var(--color-highlight-primary-hover), /* Un'ombra */
-                 0 0 60px var(--color-highlight-primary); /* Un'altra ombra per un effetto più completo */
+    text-shadow: 0 0 30px var(--color-highlight-primary-hover),
+                 0 0 60px var(--color-highlight-primary);
 }
 
-.game-slots-subtitle{
+.game-slots-subtitle {
     position: relative;
-    z-index: 1;
+    z-index: var(--z-index-content);
     margin-top: 0.1rem;
     margin-bottom: 2.1rem;
     font-size: 1rem;
@@ -826,146 +841,117 @@ SI REFERENZIA A QUESTO FOOTER  */
     color: var(--color-text-secondary);
     opacity: 0.9;
     animation: fadeIn 1.2s ease-out 0.2s forwards;
-    /* opacity: 0; <-- Rimosso: l'animazione gestisce l'opacità iniziale */
     transition: color 0.5s ease, opacity 0.5s ease;
-    text-shadow: 0 0 5px var(--color-shadow-tertiary); /* Leggero glow per il sottotitolo */
-    
+    text-shadow: 0 0 5px var(--color-shadow-tertiary);
 }
 
-.game-slots-subtitle:hover{
+.game-slots-subtitle:hover {
     color: var(--color-highlight-secondary);
 }
 
-/* Animazione generica di fade-in */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
 
 /* Stili per gli slot individuali, potrebbero aver bisogno di adattarsi al tema */
 .slots-wrapper {
     display: flex;
-    flex-direction: column; /* Mantiene gli slot in colonna */
-    /* flex-wrap: wrap; */ /* RIMOSSO: Questo permetterebbe più colonne */
-    gap: 15px; /* Spazio tra gli slot leggermente ridotto per renderli più compatti */
+    flex-direction: column;
+    gap: 15px;
     justify-content: center;
-    align-items: center; /* Centra gli elementi nel wrapper */
-
-    /* Larghezza massima per il wrapper, per limitare la larghezza degli slot */
-    max-width: 320px; /* Larghezza massima per la colonna di slot */
-    width: 100%; /* Occupa il 100% dello spazio disponibile fino al max-width */
-
-    margin: 0 auto; /* Centra il blocco */
+    align-items: center;
+    max-width: 320px;
+    width: 100%;
+    margin: 0 auto;
     padding: 0 20px;
     box-sizing: border-box;
-    position: relative; /* Per assicurarsi che sia sopra le aure */
-    z-index: 1;
+    position: relative;
+    z-index: var(--z-index-content);
 }
-
 
 .game-slot {
-    background-color: #fff; /* Bianco per default (tema chiaro) */
-    border: 2px dashed #ccc;
-    border-radius: 8px;
-    padding: 15px; /* Padding leggermente ridotto per compattezza */
-    
-    /* MODIFICATO: Larghezza e altezza degli slot */
-    width: 100%; /* Ogni slot occupa la larghezza completa del wrapper */
-    max-width: 300px; /* Larghezza massima per il singolo slot, leggermente inferiore al wrapper */
-    min-width: 250px; /* Larghezza minima per il singolo slot, per evitare che si stringa troppo */
-    
-    height: 100px; /* Altezza fissa ridotta per gli slot, renderli piccoli */
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease-in-out;
-    cursor: pointer;
-    position: relative;
-    z-index: 1;
-    /* scroll-snap-align: unset; */ /* Rimosso, non necessario per layout a colonna singola */
-}
-
-/* Stili per gli slot individuali nel tema SCURO */
-.dark-mode .game-slot {
     background-color: var(--color-background-secondary);
     border: 2px dashed var(--color-border-primary);
+    border-radius: 8px;
+    padding: 15px;
+    width: 100%;
+    max-width: 300px;
+    min-width: 250px;
+    /* Rimossa l'altezza fissa - CORREZIONE CHIAVE */
+    min-height: 100px; /* Altezza minima garantita */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribuisce lo spazio verticalmente */
+    align-items: center;
+    text-align: center;
     box-shadow: 0 3px 6px var(--color-shadow-secondary);
+    transition: background-color 0.3s ease, border-color 0.3s ease, 
+                box-shadow 0.3s ease, transform 0.2s ease-in-out;
+    cursor: pointer;
+    position: relative;
+    z-index: var(--z-index-content);
+}
+
+.slot-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-grow: 1; /* Occupa tutto lo spazio disponibile */
+    justify-content: center; /* Centra verticalmente il contenuto */
 }
 
 .game-slot h3 {
     color: var(--color-highlight-primary);
     margin-bottom: 5px; 
-    font-size: 1em; /* Dimensione del font adatta per slot piccoli */
+    font-size: 1em;
     transition: color 0.5s ease;
 }
 
 .game-slot p {
     color: var(--color-text-secondary);
     font-style: italic;
-    font-size: 0.75em; /* Dimensione del font adatta per slot piccoli */
-    line-height: 1.2; /* Line-height per una migliore compattezza */
+    font-size: 0.75em;
+    line-height: 1.2;
     transition: color 0.5s ease;
 }
 
 .game-slot:hover {
     transform: translateY(-3px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
-}
-
-.dark-mode .game-slot:hover {
-    box-shadow: 0 6px 12px var(--color-shadow-primary);
+    box-shadow: 0 5px 10px var(--color-shadow-primary); /* Use primary shadow on hover */
 }
 
 .game-slot button {
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     color: var(--color-button-text); 
-    
     border: none;
     border-radius: 12px;
-    padding: 4px 10px; /* Padding del bottone ridotto */
-    font-size: 0.8em; /* Dimensione del font del bottone ridotta */
+    padding: 4px 10px;
+    font-size: 0.8em;
     cursor: pointer;
-    transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-top: 8px; /* Margine superiore del bottone */
-}
-
-.dark-mode .game-slot button {
-    background-color: #0056b3; 
+    transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s ease-in-out, box-shadow 0.2s ease;
+    margin-top: 8px;
 }
 
 .game-slot button:hover {
     transform: translateY(-1px); 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-}
-
-.dark-mode .game-slot button:hover {
-    background-color: #003a73; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 8px var(--color-button-shadow-hover);
 }
 
 /* Media Queries per la responsività */
-/* Queste media query ora si concentrano sull'adattamento della larghezza e del padding,
-   mantenendo sempre gli slot in singola colonna. */
-
-@media (max-width: 768px) { /* Tablet e schermi più piccoli */
+@media (max-width: 768px) {
     .game-slots-container h2 {
         font-size: 1.7em;
         margin-bottom: 20px;
     }
     .slots-wrapper {
-        gap: 15px; /* Mantieni il gap ridotto */
-        max-width: 300px; /* Riduci la larghezza massima del wrapper */
+        gap: 15px;
+        max-width: 300px;
         padding: 0 15px;
     }
     .game-slot {
-        height: 95px; /* Altezza leggermente più piccola su tablet */
-        padding: 12px; /* Padding ridotto */
-        max-width: 280px; /* Larghezza massima per slot su tablet */
-        min-width: 220px; /* Assicurati che non si stringano troppo */
+        height: 95px;
+        padding: 12px;
+        max-width: 280px;
+        min-width: 220px;
     }
     .game-slot h3 {
         font-size: 0.95em;
@@ -980,21 +966,21 @@ SI REFERENZIA A QUESTO FOOTER  */
     }
 }
 
-@media (max-width: 576px) { /* Schermi mobile */
+@media (max-width: 576px) {
     .game-slots-container h2 {
         font-size: 1.4em;
         margin-bottom: 15px;
     }
     .slots-wrapper {
-        padding: 0 10px; /* Padding del wrapper ridotto su mobile */
-        gap: 10px; /* Spazio tra gli slot ridotto su mobile */
-        max-width: 280px; /* Riduci ulteriormente la larghezza massima del wrapper su mobile */
+        padding: 0 10px;
+        gap: 10px;
+        max-width: 280px;
     }
     .game-slot {
-        height: 90px; /* Altezza più piccola su mobile */
-        padding: 10px; /* Padding ridotto su mobile */
-        max-width: 260px; /* Larghezza massima per slot su mobile */
-        min-width: 200px; /* Assicurati che non si stringano troppo */
+        height: 90px;
+        padding: 10px;
+        max-width: 260px;
+        min-width: 200px;
     }
     .game-slot h3 {
         font-size: 0.9em;
@@ -1014,27 +1000,19 @@ SI REFERENZIA A QUESTO FOOTER  */
   top: 20px;
   left: 20px;
   background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
-  color: white;
+  color: var(--color-button-text);
   border: none;
   padding: 10px 15px;
   border-radius: 8px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: var(--z-index-back-button);
   font-size: 14px;
+  transition: all 0.3s ease;
 }
 
-.dark-mode .back-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
-  color: black;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  z-index: 1000;
-  font-size: 14px;
+.back-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* ========================================================================== */
@@ -1054,7 +1032,7 @@ SI REFERENZIA A QUESTO FOOTER  */
     color: var(--color-text-primary);
     text-align: center;
     transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
-    z-index: 1;
+    z-index: var(--z-index-content);
 }
 
 .name-input-title {
@@ -1068,63 +1046,122 @@ SI REFERENZIA A QUESTO FOOTER  */
 
 .name-input-subtitle {
     font-size: 0.9rem;
-    margin-bottom: 1.5rem;
-    font-weight: 400;
-    font-style: italic;
     color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
     transition: color 0.5s ease;
 }
 
-.name-input-field {
-    width: calc(100% - 2.5rem); /* Adatta la larghezza con padding */
+/* Additional styles for input fields within the container */
+.name-input-container input[type="text"] {
+    width: calc(100% - 2rem);
     padding: 0.8rem 1rem;
     margin-bottom: 1.5rem;
     border: 1px solid var(--color-border-primary);
     border-radius: 8px;
-    font-size: 1.1rem;
     background-color: var(--color-background-tertiary);
     color: var(--color-text-primary);
-    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
-.name-input-field::placeholder {
-    color: var(--color-text-secondary);
-    opacity: 0.7;
-    transition: color 0.5s ease;
-    text-align: center;
-}
-
-.name-input-field:focus {
+.name-input-container input[type="text"]:focus {
     outline: none;
     border-color: var(--color-highlight-primary);
     box-shadow: 0 0 0 3px var(--aura-color-1);
 }
 
-/* Stili per il pulsante specifico di InputScreen (es. "Continua") */
-.name-input-button {
+.name-input-container button {
+    /* Se non usi un precompilatore, copia qui le proprietà da .base-button */
+    /* @extend .base-button; */
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     border: none;
     border-radius: 16px;
-    padding: 0.9rem 4rem;
-    font-size: 1.6rem;
     font-weight: 700;
     color: var(--color-button-text);
-    cursor: pointer;
     box-shadow: 0 12px 25px var(--color-button-shadow-primary);
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing: 1.2px;
     user-select: none;
-    margin-top: 20px; /* Aggiungi un margine se necessario per separarlo dall'input */
+    cursor: pointer; /* Aggiunto cursor: pointer */
+    padding: 0.8rem 2.5rem;
+    font-size: 1.1rem;
 }
 
-.name-input-button:hover {
+.name-input-container button:hover {
     box-shadow: 0 20px 40px var(--color-button-shadow-hover);
-    transform: scale(1.08);
+    transform: scale(1.12);
 }
 
-/* Stili per il pulsante "Indietro" specifico per InputScreen */
-.name-input-back-button {
-    position: fixed; /* Changed from absolute to fixed */
+@media (max-width: 480px) {
+    .name-input-container {
+        margin-top: 2.5em;
+        padding: 1.5rem;
+    }
+    .name-input-title {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+    }
+    .name-input-subtitle {
+        font-size: 0.8rem;
+    }
+    .name-input-container input[type="text"] {
+        width: 100%;
+        padding: 0.7rem;
+        font-size: 0.9rem;
+    }
+    .name-input-container button {
+        padding: 0.7rem 2rem;
+        font-size: 1rem;
+    }
+}
+
+/* --- Stili per la MainGameScreen (NUOVO) --- */
+.main-game-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    background-color: transparent; /* Inherit from #root */
+    color: var(--color-text-primary);
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.main-game-screen::before,
+.main-game-screen::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(160px);
+    opacity: 0.2;
+    z-index: var(--z-index-base);
+    transition: background-color 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
+}
+
+.main-game-screen::before {
+    background: radial-gradient(ellipse at center, var(--aura-color-1) 0%, transparent 85%);
+    width: 200%;
+    height: 220%;
+    top: -60%;
+    left: -50%;
+    animation: auroraMove1 30s ease-in-out infinite alternate;
+}
+
+.main-game-screen::after {
+    background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%);
+    width: 180%;
+    height: 180%;
+    top: -40%;
+    left: 40%;
+    animation: auroraMove2 35s ease-in-out infinite alternate;
+}
+
+.main-game-screen__back-btn {
+    position: absolute;
     top: 20px;
     left: 20px;
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
@@ -1133,277 +1170,267 @@ SI REFERENZIA A QUESTO FOOTER  */
     padding: 10px 15px;
     border-radius: 8px;
     cursor: pointer;
-    z-index: 1001; /* Increased z-index */
+    z-index: var(--z-index-back-button);
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 8px var(--color-button-shadow-primary);
 }
 
-.name-input-back-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px var(--color-button-shadow-hover);
+.main-game-screen__back-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.name-input-button {
+.main-game-screen__back-btn .back-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--color-button-text); /* Assicurati che l'icona abbia il colore del testo del pulsante */
+}
+
+.main-game-screen__title {
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    color: var(--color-highlight-primary);
+    text-shadow: 0 0 15px rgba(174, 127, 255, 0.5);
+    position: relative;
+    z-index: var(--z-index-content);
+    animation: fadeInSlideDown 1s ease-out;
+}
+
+.main-game-screen__title .highlight {
+    color: var(--color-highlight-secondary);
+}
+
+.main-game-screen__stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: var(--z-index-content);
+    width: 100%;
+    max-width: 700px;
+}
+
+.game-stat {
+    background: var(--color-background-secondary);
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px var(--color-shadow-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.3s ease;
+    min-width: 200px; /* Assicura una larghezza minima per le statistiche */
+    justify-content: center;
+}
+
+.game-stat .icon {
+    font-size: 1.8rem;
+}
+
+.game-stat .stat-value {
+    color: var(--color-highlight-primary);
+    font-weight: 700;
+}
+
+/* --- AI Suggestion Section (NUOVO) --- */
+.main-game-screen__ai-suggestion {
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-border-primary);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 20px var(--color-shadow-primary);
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    z-index: var(--z-index-content);
+    animation: fadeInScale 0.5s ease-out forwards;
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.ai-suggestion__text {
+    font-size: 1.15rem;
+    color: var(--color-text-primary);
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-style: italic;
+    transition: color 0.5s ease;
+}
+
+.ai-suggestion__actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap; /* Permette ai bottoni di andare a capo su schermi piccoli */
+}
+
+.ai-suggestion__btn {
+    /* Estende lo stile base del pulsante o copia le proprietà */
+    /* @extend .base-button; */
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
-    color: var(--color-button-text); 
-    
     border: none;
     border-radius: 16px;
-    padding: 4px 10px; /* Padding del bottone ridotto */
-    font-size: 1.2em; /* Dimensione del font del bottone ridotta */
+    font-weight: 700;
+    color: var(--color-button-text);
+    box-shadow: 0 8px 15px var(--color-button-shadow-primary); /* Ombra leggermente ridotta */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.8px;
+    user-select: none;
     cursor: pointer;
-    transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-top: 8px; /* Margine superiore del bottone */
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    min-width: 120px;
 }
 
-.dark-mode .name-input-button  {
-    background-color: #0056b3; 
+.ai-suggestion__btn:hover {
+    box-shadow: 0 12px 25px var(--color-button-shadow-hover);
+    transform: translateY(-2px); /* Leggero sollevamento */
 }
 
-.name-input-button:hover {
-    transform: translateY(-1px); 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+.ai-suggestion__btn--accept {
+    /* Potresti voler un colore leggermente diverso per l'accettazione */
+    /* background: linear-gradient(90deg, #4CAF50, #81C784); */
 }
 
-.dark-mode .name-input-button:hover {
-    background-color: #003a73; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+.ai-suggestion__btn--reject {
+    /* Potresti voler un colore leggermente diverso per il rifiuto */
+    /* background: linear-gradient(90deg, #F44336, #E57373); */
 }
 
-/* Stile per la selezione dell'Avatar */
-.avatar-selection-container {
-  display: flex;
-  justify-content: center;
-  gap: 40px; /* Spazio tra gli avatar */
-  margin-bottom: 25px; /* Spazio tra avatar e sottotitolo */
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }
 
-.avatar-option {
-  cursor: pointer;
-  padding: 10px;
-  border: 2px solid transparent; /* Bordo trasparente predefinito */
-  border-radius: 8px; /* Angoli leggermente arrotondati */
-  transition: border-color 0.2s ease-in-out, transform 0.2s ease-in-out; /* Transizione fluida per hover/selezione */
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.05); /* Lieve sfondo per la modalità scura */
-}
-
-.avatar-option:hover {
-  transform: translateY(-3px); /* Effetto leggero di sollevamento al passaggio del mouse */
-}
-
-.avatar-image {
-  width: 90px; /* Regola la dimensione a seconda delle necessità */
-  height: 90px; /* Mantieni l'aspect ratio */
-  border-radius: 50%; /* Rendi gli avatar circolari */
-  object-fit: cover; /* Assicurati che l'immagine copra l'area */
-  margin-bottom: 8px; /* Spazio tra immagine ed etichetta */
-}
-
-.avatar-label {
-  font-size: 0.9em;
-  color: #ccc; /* Colore più chiaro per l'etichetta in modalità scura */
-}
-
-/* Stile Avatar Selezionato */
-.avatar-option.selected-avatar {
-  border-color: #4CAF50; /* Bordo verde per l'avatar selezionato */
-  box-shadow: 0 0 10px rgba(76, 175, 80, 0.6); /* Opzionale: bagliore sottile */
-  background-color: rgba(76, 175, 80, 0.1); /* Lieve tinta verde per lo sfondo selezionato */
-}
-
-/* Regolazioni specifiche per la modalità scura per la selezione dell'avatar */
-.dark-mode .avatar-option {
-  background-color: rgba(255, 255, 255, 0.08);
-}
-
-.dark-mode .avatar-option.selected-avatar {
-    background-color: rgba(76, 175, 80, 0.2);
-}
-
-.dark-mode .avatar-label {
-  color: #eee;
-}
-
-/* Regolazioni specifiche per la modalità chiara per la selezione dell'avatar */
-.light-mode .avatar-option {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.light-mode .avatar-option.selected-avatar {
-  background-color: rgba(76, 175, 80, 0.15);
-}
-
-.light-mode .avatar-label {
-  color: #333;
-}
-
-
-/* Media Queries per la responsività dell'InputScreen */
-@media (max-width: 480px) {
-    .name-input-container {
-        padding: 1.5rem 1.5rem;
-        margin: 2rem auto;
-    }
-    .name-input-title {
-        font-size: 1.8rem;
-    }
-    .name-input-subtitle {
-        font-size: 1rem;
-    }
-    .name-input-field {
-        font-size: 1rem;
-        padding: 0.7rem 0.8rem;
-    }
-    .name-input-button {
-        padding: 0.8rem 3rem;
-        font-size: 1.2rem;
-    }
-    .name-input-back-button {
-        font-size: 12px;
-        padding: 8px 12px;
-    }
-    .name-input-button {
-        padding: 3px 8px;
-        font-size: 0.75em;
-        margin-top: 6px;
-    }
-
-}
-
-/* ========================================================================== */
-/* --- STILI PER LA SCHERMATA DI GIOCO (MainGameScreen) MIGLIORATI --- */
-/* ========================================================================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-/* MAIN GAME SCREEN */
-.main-game-screen {
-  font-family: 'Poppins', sans-serif;
-  background: var(--color-background-primary);
-  color: var(--color-text-primary);
-  min-height: 100vh;
-  padding: 2.5rem 1.5rem 4rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  transition: background-color 0.5s ease, color 0.5s ease;
-}
-
-/* Back button */
-.main-game-screen__back-btn {
-  position: absolute;
-  top: 1.25rem;
-  left: 1.25rem;
-  background: transparent;
-  border: none;
-  color: #a0a0a0;
-  font-size: 1.8rem;
-  cursor: pointer;
-  transition: color 0.25s ease;
-}
-.main-game-screen__back-btn:hover {
-  color: var(--color-highlight-primary);
-}
-
-/* Title */
-.main-game-screen__title {
-  font-weight: 600;
-  font-size: 3rem;
-  margin-bottom: 2rem;
-  text-align: center;
-  letter-spacing: 0.03em;
-  color: var(--color-text-primary);
-  transition: color 0.5s ease;
-}
-.main-game-screen__title .highlight {
-  color: var(--color-highlight-primary);
-  font-weight: 700;
-  text-shadow: 0 0 10px var(--color-highlight-primary);
-}
-
-/* Stats container */
-.main-game-screen__stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  max-width: 720px;
-  width: 100%;
-  justify-content: center;
-  margin-bottom: 3rem;
-}
-
-/* Single stat */
-.game-stat {
-  background: var(--color-background-secondary);
-  border-radius: 12px;
-  padding: 1rem 1.5rem;
-  flex: 1 1 160px;
-  color: #c0c0c0;
-  font-weight: 500;
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.9rem;
-  user-select: none;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  box-shadow: 0 0 10px rgba(0, 188, 212, 0.15);
-}
-.game-stat:hover {
-  background: var(--color-background-tertiary);
-  color: #ffffff;
-  box-shadow: 0 0 15px var(--color-highlight-primary);
-}
-
-/* Emoji/icon */
-.game-stat span:first-child {
-  font-size: 1.6rem;
-}
-
-/* Buttons container */
+/* --- Action Buttons Container (Existing Manual Actions) --- */
 .main-game-screen__actions {
-  display: flex;
-  gap: 1.1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-  max-width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 50px;
+    position: relative;
+    z-index: var(--z-index-content);
+    width: 100%;
+    max-width: 800px;
 }
 
-/* Action buttons */
 .main-game-screen__action-btn {
-  flex: 1 1 170px;
-  padding: 0.95rem 0;
-  background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
-  color: var(--color-button-text);
-  border: none;
-  border-radius: 9999px; /* pill */
-  font-weight: 600;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  user-select: none;
-  box-shadow: 0 4px 8px var(--color-button-shadow-primary);
-}
-.main-game-screen__action-btn:hover {
-  background: var(--color-highlight-secondary);
-  transform: scale(1.05);
-  color: #fafafa;
-  box-shadow: 0 6px 12px var(--color-button-shadow-hover);
-}
-.main-game-screen__action-btn:active {
-  transform: scale(0.95);
+    /* Estende lo stile base del pulsante o copia le proprietà */
+    /* @extend .base-button; */
+    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
+    border: none;
+    border-radius: 16px;
+    font-weight: 700;
+    color: var(--color-button-text);
+    box-shadow: 0 10px 20px var(--color-button-shadow-primary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 1px;
+    user-select: none;
+    cursor: pointer;
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    min-width: 200px; /* Assicura una larghezza minima per i pulsanti */
 }
 
-/* Footer */
-.main-game-screen__footer {
-  margin-top: auto;
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-  user-select: none;
-  text-align: center;
-  font-style: italic;
-  transition: color 0.5s ease;
+.main-game-screen__action-btn:hover {
+    box-shadow: 0 15px 30px var(--color-button-shadow-hover);
+    transform: translateY(-3px);
+}
+
+/* Media Queries per MainGameScreen */
+@media (max-width: 768px) {
+    .main-game-screen__title {
+        font-size: 2.8rem;
+        margin-bottom: 1.5rem;
+    }
+    .main-game-screen__stats {
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+    .game-stat {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+        min-width: unset; /* Rimuovi larghezza minima per permettere il restringimento */
+        width: 90%; /* Occupa più spazio disponibile */
+    }
+    .game-stat .icon {
+        font-size: 1.5rem;
+    }
+    .main-game-screen__ai-suggestion {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    .ai-suggestion__text {
+        font-size: 1rem;
+    }
+    .ai-suggestion__btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+        min-width: 100px;
+    }
+    .main-game-screen__actions {
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+    .main-game-screen__action-btn {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+        min-width: unset; /* Rimuovi larghezza minima */
+        width: 90%; /* Occupa più spazio disponibile */
+    }
+    .main-game-screen__back-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    .main-game-screen__back-btn .back-icon {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* --- Stili per i Messaggi Globali dell'App (Caricamento, Errori, IA) --- */
+.app-message-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6); /* Sfondo semi-trasparente */
+    backdrop-filter: blur(3px); /* Effetto sfocato sullo sfondo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: var(--z-index-overlay); /* Usa la variabile z-index per overlay */
+    animation: fadeInOverlay 0.3s ease-out forwards;
+}
+
+.app-message-box {
+    background: var(--color-background-secondary); /* Usa il colore di sfondo secondario del tema */
+    color: var(--color-text-primary); /* Usa il colore del testo primario del tema */
+    padding: 1.5rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px var(--color-shadow-primary); /* Usa l'ombra del tema */
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    max-width: 400px;
+    width: 90%;
+    animation: fadeInPopup 0.3s ease-out forwards; /* Riutilizza l'animazione popup */
+    transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.app-message-box p {
+    margin: 0; /* Rimuovi margini predefiniti */
 }
