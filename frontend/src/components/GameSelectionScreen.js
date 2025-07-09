@@ -2,7 +2,8 @@ import React, { useContext } from 'react'; // Rimosso useState
 import ThemeContext from '../ThemeContext';
 // Rimosso l'import di GameSlotsScreen, non è più renderizzato qui
 
-const GameSelectionScreen = ({ onNewGame, onLoadGame, onBackToStart }) => {
+const GameSelectionScreen = ({ onNewGame, onLoadGame, onDeleteGame, onBackToStart }) => {
+
   const { isDarkMode } = useContext(ThemeContext);
 
   // Rimosse le funzioni handleNewGameClick, handleLoadGameClick, handleBackFromSlots, handleSlotSelection
@@ -31,6 +32,12 @@ const GameSelectionScreen = ({ onNewGame, onLoadGame, onBackToStart }) => {
             <span className="portal-button-text">Carica Partita</span>
             <span className="portal-glow"></span>
           </button>
+
+        <button className="portal-button load-game-portal" onClick={onDeleteGame}>
+          <span className="portal-button-text">Elimina Partita</span>
+          <span className="portal-glow"></span>
+        </button>
+
         </div>
 
         <footer className="footer">

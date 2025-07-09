@@ -4,7 +4,7 @@ import ThemeContext from './ThemeContext'; // Importa il contesto del tema
 
 // Importa i componenti delle schermate
 import StartScreen from './components/StartScreen';
-import GameSelectionScreen from './components/GameSelectionScreen'; // Percorso corretto
+import GameSelectionScreen from './components/GameSelectionScreen';
 import GameSlotsScreen from './components/GameSlotsScreen';
 import InputScreen from './components/InputScreen';
 import MainGameScreen from './components/MainGameScreen';
@@ -31,10 +31,12 @@ function App() {
         handleBackToStart,
         handleNewGameSelection,
         handleLoadGameSelection,
+        handleDeleteGameSelection,
         aiSuggestion,
         handleAcceptSuggestion,
         handleRejectSuggestion,
         message,
+        deleteSlot, // <--- ASSICURATI CHE deleteSlot SIA DESTRUTTURATO QUI!
     } = useGameNavigation();
 
     // Debugging: Log per vedere la fase e la modalità prima del rendering
@@ -64,14 +66,16 @@ function App() {
                 <GameSelectionScreen
                     onNewGame={handleNewGameSelection}
                     onLoadGame={handleLoadGameSelection}
+                    onDeleteGame={handleDeleteGameSelection} // <- importante: questa funzione imposta la modalità 'delete'
                     onBackToStart={handleBackToStart}
                 />
             )}
 
             {currentPhase === 'gameSlots' && (
                 <GameSlotsScreen
-                    mode={gameSlotsMode}
-                    onSlotSelect={handleSlotSelect}
+                    mode={gameSlotsMode} // Passa la modalità al GameSlotsScreen
+                    onSlotSelect={handleSlotSelect} // Questa gestirà la selezione per new/load E l'apertura del modale per delete
+                    onDeleteSlot={deleteSlot} // <--- PASSA deleteSlot A GAMESLOTSSCREEN
                     onBack={handleBackToGameSelection}
                     savedSlots={savedSlots}
                     isLoadingSlots={isLoadingSlots}
@@ -95,10 +99,10 @@ function App() {
                     aiSuggestion={aiSuggestion}
                     onAcceptSuggestion={handleAcceptSuggestion}
                     onRejectSuggestion={handleRejectSuggestion}
+                    message={message}
                 />
             )}
 
-            {/* Gestione di uno stato sconosciuto, utile per debug */}
             {currentPhase === 'unknown' && (
                 <div className="error-screen">Errore: Stato sconosciuto dell'applicazione.</div>
             )}

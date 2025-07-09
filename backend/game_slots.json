@@ -2,12 +2,45 @@
     "1": {
         "nome": "Daniele",
         "avatar": "(M)",
-        "soldi": 1650,
-        "energia": 65,
-        "felicita": 90,
+        "soldi": 128,
+        "energia": 0,
+        "felicita": 97,
+        "eta": 18,
+        "giorni_passati": 13,
+        "relazione": {
+            "stato": "fidanzato",
+            "partner_nome": "Sofia Ferrari",
+            "felicita_relazione": 98
+        },
+        "figli": [],
         "current_suggestion": {
-            "action": "lavoro",
-            "text": "Daniele, potresti guadagnare un po' di pi\u00f9. Hai voglia di lavorare?"
-        }
+            "action": "dormi",
+            "text": "Daniele, sei esausto. \u00c8 vitale riposare!"
+        },
+        "message": "GAME OVER! sei morto di sfinimento totale.",
+        "is_game_over": true,
+        "death_reason": "sei morto di sfinimento totale."
+    },
+    "2": {
+        "nome": "Gaia",
+        "avatar": 2,
+        "soldi": 257,
+        "energia": 73,
+        "felicita": 98,
+        "eta": 19,
+        "giorni_passati": 33,
+        "relazione": {
+            "stato": "fidanzato",
+            "partner_nome": "Sofia Russo",
+            "felicita_relazione": 86
+        },
+        "figli": [],
+        "current_suggestion": {
+            "action": "divertiti",
+            "text": "La vita \u00e8 anche divertimento! Che ne dici di goderti un po' di tempo libero, Gaia?"
+        },
+        "message": "Hai passato del tempo di qualit\u00e0 con Sofia Russo. La relazione \u00e8 migliorata!",
+        "is_game_over": false,
+        "death_reason": null
     }
 }

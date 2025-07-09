@@ -561,6 +561,7 @@ SI REFERENZIA A QUESTO FOOTER  */
     height: 100vh;
     width: 100vw;
     overflow: hidden;
+    margin-top: 0.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -768,6 +769,7 @@ SI REFERENZIA A QUESTO FOOTER  */
     position: relative;
     overflow: hidden;
     transition: background-color 0.5s ease;
+    
 }
 
 /* Applica gli effetti "Aura" anche al container degli slot */
@@ -874,7 +876,7 @@ SI REFERENZIA A QUESTO FOOTER  */
     width: 250px;
 
     /* Rimossa l'altezza fissa - CORREZIONE CHIAVE */
-    min-height: 140px; 
+    min-height: 130px; 
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Distribuisce lo spazio verticalmente */
@@ -900,7 +902,8 @@ SI REFERENZIA A QUESTO FOOTER  */
 
 .game-slot h3 {
     color: var(--color-highlight-primary);
-    margin-bottom: 5px; 
+    margin-top: 2px;
+    margin-bottom: 2px; 
     font-size: 1em;
     transition: color 0.5s ease;
 }
@@ -939,7 +942,7 @@ SI REFERENZIA A QUESTO FOOTER  */
 @media (max-width: 768px) {
     .game-slots-container h2 {
         font-size: 1.7em;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
     .slots-wrapper {
         gap: 15px;
@@ -947,7 +950,6 @@ SI REFERENZIA A QUESTO FOOTER  */
         padding: 0 15px;
     }
     .game-slot {
-        height: 95px;
         padding: 12px;
         max-width: 280px;
         min-width: 220px;
@@ -965,34 +967,6 @@ SI REFERENZIA A QUESTO FOOTER  */
     }
 }
 
-@media (max-width: 576px) {
-    .game-slots-container h2 {
-        font-size: 1.4em;
-        margin-bottom: 15px;
-    }
-    .slots-wrapper {
-        padding: 0 10px;
-        gap: 10px;
-        max-width: 280px;
-    }
-    .game-slot {
-        height: 90px;
-        padding: 10px;
-        max-width: 260px;
-        min-width: 200px;
-    }
-    .game-slot h3 {
-        font-size: 0.9em;
-    }
-    .game-slot p {
-        font-size: 0.65em;
-    }
-    .game-slot button {
-        padding: 2px 6px;
-        font-size: 0.7em;
-        margin-top: 5px;
-    }
-}
 
 .back-button {
   position: absolute;
@@ -1022,7 +996,7 @@ SI REFERENZIA A QUESTO FOOTER  */
     position: relative;
     max-width: 480px;
     margin: 3rem auto;
-    margin-top: 4.5em;
+    margin-top: 2.5em;
     padding: 2rem 2.5rem;
     background-color: var(--color-background-secondary);
     border-radius: 14px;
@@ -1091,6 +1065,51 @@ SI REFERENZIA A QUESTO FOOTER  */
     transform: scale(1.12);
 }
 
+.avatar-selection-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.avatar-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    border: 2px solid rgba(128, 128, 128, 0.8); /* Grigio chiaro trasparente */
+    border-radius: 12px;
+    padding: 0.5rem;
+    background-color: rgba(128, 128, 128, 0.2); /* Leggera trasparenza */
+    transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+}
+
+.avatar-option:hover {
+    transform: scale(1.05);
+}
+
+.avatar-option.selected-avatar {
+    border-color: var(--color-highlight-primary); /* Colore verde o primario */
+    background-color: rgba(0, 255, 102, 0.404); /* Verde trasparente */
+}
+
+.avatar-image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.avatar-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+
 @media (max-width: 480px) {
     .name-input-container {
         margin-top: 2.5em;
@@ -1118,21 +1137,27 @@ SI REFERENZIA A QUESTO FOOTER  */
 /* --- STILI SPECIFICI PER LA SCHERMATA DI INSERIMENTO NOME (MainGameScreen) --- */
 /* ========================================================================== */
 
+/* General container */
 .main-game-screen {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* Use 'vh' for padding to be relative to viewport height */
+    padding: 2vh 30px; /* Reduced vertical padding */
     min-height: 100vh;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-    background-color: transparent; /* Inherit from #root */
+    /* Use space-evenly to distribute space more uniformly if needed,
+       or keep 'center' if you want content clustered.
+       'space-around' or 'space-between' can also work depending on exact layout needs. */
+    justify-content: space-evenly; /* Changed to space-evenly for better distribution */
+    width: 100%;
+    background-color: var(--color-background-primary);
     color: var(--color-text-primary);
-    font-family: 'Poppins', sans-serif;
-    transition: background-color 0.5s ease, color 0.5s ease;
+    position: relative;
+    overflow: hidden; /* Keep this to prevent scroll due to aura effects */
+    transition: background-color 0.5s ease;
 }
 
+/* Background aura effects (assuming you have them from previous CSS) - no changes needed here */
 .main-game-screen::before,
 .main-game-screen::after {
     content: "";
@@ -1162,21 +1187,30 @@ SI REFERENZIA A QUESTO FOOTER  */
     animation: auroraMove2 35s ease-in-out infinite alternate;
 }
 
+/* Keyframes for aura movement (add if not present) */
+@keyframes auroraMove1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(20%, 10%) scale(1.1); }
+}
+
+@keyframes auroraMove2 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-15%, -5%) scale(1.05); }
+}
+
+
 .main-game-screen__back-btn {
     position: absolute;
-    top: 20px;
+    top: 1.5vh; /* Use vh for top positioning */
     left: 20px;
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     color: var(--color-button-text);
     border: none;
-    padding: 10px 15px;
+    padding: 0.8vh 15px; /* Use vh for vertical padding */
     border-radius: 8px;
     cursor: pointer;
     z-index: var(--z-index-back-button);
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    font-size: 1.8vh; /* Use vh for font size */
     transition: all 0.3s ease;
 }
 
@@ -1185,254 +1219,592 @@ SI REFERENZIA A QUESTO FOOTER  */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.main-game-screen__back-btn .back-icon {
-    width: 20px;
-    height: 20px;
-    color: var(--color-button-text); /* Assicurati che l'icona abbia il colore del testo del pulsante */
+.main-game-screen__back-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .main-game-screen__title {
-    font-size: 3.5rem;
-    margin-bottom: 2rem;
+    font-size: 5vh; /* Scale font size with viewport height */
     color: var(--color-highlight-primary);
-    text-shadow: 0 0 15px rgba(174, 127, 255, 0.5);
-    position: relative;
+    margin-bottom: 2vh; /* Use vh for margin */
+    text-align: center;
+    transition: color 0.5s ease;
     z-index: var(--z-index-content);
     animation: fadeInSlideDown 1s ease-out;
 }
 
 .main-game-screen__title .highlight {
     color: var(--color-highlight-secondary);
+    text-shadow: 0 0 15px var(--color-highlight-secondary);
+    transition: color 0.5s ease, text-shadow 0.5s ease;
+}
+
+/* Animations (add if not present) */
+@keyframes fadeInSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .main-game-screen__stats {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
-    margin-bottom: 40px;
-    position: relative;
+    background-color: var(--color-background-secondary);
+    border-radius: 12px;
+    padding: 1.5vh 30px; /* Reduced vertical padding, using vh */
+    margin-bottom: 2.5vh; /* Reduced margin, using vh */
+    box-shadow: 0 4px 15px var(--color-shadow-primary);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Slightly reduced min-width for columns */
+    gap: 10px; /* Reduced gap */
+    width: 95%; /* Adjusted width */
+    max-width: 900px;
+    text-align: left;
+    transition: background-color 0.5s ease, box-shadow 0.5s ease;
     z-index: var(--z-index-content);
-    width: 100%;
-    max-width: 700px;
 }
 
 .game-stat {
-    background: var(--color-background-secondary);
-    padding: 15px 25px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px var(--color-shadow-primary);
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 1.3rem;
-    font-weight: 600;
+    font-size: 1.8vh; /* Scaled with vh */
     color: var(--color-text-primary);
-    transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.3s ease;
-    min-width: 200px; /* Assicura una larghezza minima per le statistiche */
-    justify-content: center;
+    transition: color 0.5s ease;
 }
 
 .game-stat .icon {
-    font-size: 1.8rem;
+    margin-right: 8px; /* Slightly reduced margin */
+    font-size: 2.2vh; /* Scaled with vh */
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.2));
 }
 
 .game-stat .stat-value {
+    font-weight: 600;
     color: var(--color-highlight-primary);
-    font-weight: 700;
+    transition: color 0.5s ease;
 }
 
-/* --- AI Suggestion Section (NUOVO) --- */
-.main-game-screen__ai-suggestion {
-    background: var(--color-background-secondary);
+/* Game Message */
+.game-message {
+    background-color: var(--color-background-tertiary);
     border: 1px solid var(--color-border-primary);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 8px 20px var(--color-shadow-primary);
+    border-radius: 8px;
+    padding: 1vh 15px; /* Reduced padding, using vh */
+    margin-bottom: 2vh; /* Reduced margin, using vh */
+    max-width: 700px;
+    width: 95%; /* Adjusted width */
     text-align: center;
-    max-width: 600px;
-    width: 90%;
-    position: relative;
+    font-size: 1.8vh; /* Scaled with vh */
+    font-weight: 500;
+    color: var(--color-text-primary);
+    box-shadow: 0 2px 8px var(--color-shadow-secondary);
+    animation: fadeIn 0.5s ease-out;
     z-index: var(--z-index-content);
-    animation: fadeInScale 0.5s ease-out forwards;
-    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* AI Suggestion Section */
+.main-game-screen__ai-suggestion {
+    background-color: var(--color-background-accent);
+    border: 2px solid var(--color-highlight-primary);
+    border-radius: 10px;
+    padding: 2vh; /* Reduced padding, using vh */
+    margin-bottom: 2.5vh; /* Reduced margin, using vh */
+    max-width: 700px;
+    width: 95%; /* Adjusted width */
+    text-align: center;
+    box-shadow: 0 5px 20px var(--color-highlight-primary-hover);
+    animation: fadeInScale 0.6s ease-out;
+    z-index: var(--z-index-content);
 }
 
 .ai-suggestion__text {
-    font-size: 1.15rem;
+    font-size: 2vh; /* Scaled with vh */
     color: var(--color-text-primary);
-    margin-bottom: 20px;
-    line-height: 1.6;
+    margin-bottom: 1.5vh; /* Reduced margin, using vh */
     font-style: italic;
-    transition: color 0.5s ease;
 }
 
 .ai-suggestion__actions {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap; /* Permette ai bottoni di andare a capo su schermi piccoli */
+    gap: 10px; /* Reduced gap */
 }
 
 .ai-suggestion__btn {
-    /* Estende lo stile base del pulsante o copia le proprietà */
-    /* @extend .base-button; */
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
-    border: none;
-    border-radius: 16px;
-    font-weight: 700;
     color: var(--color-button-text);
-    box-shadow: 0 8px 15px var(--color-button-shadow-primary); /* Ombra leggermente ridotta */
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    letter-spacing: 0.8px;
-    user-select: none;
+    border: none;
+    border-radius: 12px;
+    padding: 1vh 15px; /* Reduced padding, using vh */
+    font-size: 1.7vh; /* Scaled with vh */
     cursor: pointer;
-    padding: 0.8rem 2rem;
-    font-size: 1rem;
-    min-width: 120px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .ai-suggestion__btn:hover {
-    box-shadow: 0 12px 25px var(--color-button-shadow-hover);
-    transform: translateY(-2px); /* Leggero sollevamento */
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 20px var(--color-button-shadow-hover);
 }
 
 .ai-suggestion__btn--accept {
-    /* Potresti voler un colore leggermente diverso per l'accettazione */
-    /* background: linear-gradient(90deg, #4CAF50, #81C784); */
+    /* Specific styles if needed */
 }
 
 .ai-suggestion__btn--reject {
-    /* Potresti voler un colore leggermente diverso per il rifiuto */
-    /* background: linear-gradient(90deg, #F44336, #E57373); */
+    background: linear-gradient(90deg, var(--color-button-gradient-end), var(--color-button-gradient-start));
+    opacity: 0.8;
 }
 
 @keyframes fadeInScale {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
-/* --- Action Buttons Container (Existing Manual Actions) --- */
+
 .main-game-screen__actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 50px;
-    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Further reduced min-width for columns */
+    gap: 10px; /* Reduced gap */
+    width: 95%; /* Adjusted width */
+    max-width: 900px;
     z-index: var(--z-index-content);
-    width: 100%;
-    max-width: 800px;
+    margin-bottom: 2.5vh; /* Reduced margin, using vh */
 }
 
 .main-game-screen__action-btn {
-    /* Estende lo stile base del pulsante o copia le proprietà */
-    /* @extend .base-button; */
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
-    border: none;
-    border-radius: 16px;
-    font-weight: 700;
     color: var(--color-button-text);
-    box-shadow: 0 10px 20px var(--color-button-shadow-primary);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    letter-spacing: 1px;
-    user-select: none;
+    border: none;
+    border-radius: 14px;
+    padding: 1.2vh 15px; /* Reduced padding, using vh */
+    font-size: 1.9vh; /* Scaled with vh */
     cursor: pointer;
-    padding: 1rem 3rem;
-    font-size: 1.2rem;
-    min-width: 200px; /* Assicura una larghezza minima per i pulsanti */
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 700;
+    letter-spacing: 0.5px; /* Slightly reduced letter spacing */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 15px var(--color-button-shadow-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .main-game-screen__action-btn:hover {
-    box-shadow: 0 15px 30px var(--color-button-shadow-hover);
-    transform: translateY(-3px);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px var(--color-button-shadow-hover);
 }
 
-/* Media Queries per MainGameScreen */
+.main-game-screen__action-btn--danger {
+    background: linear-gradient(90deg, #dc3545, #c82333);
+}
+
+.main-game-screen__action-btn--danger:hover {
+    box-shadow: 0 10px 25px rgba(220, 53, 69, 0.4);
+}
+
+.main-game-screen__footer {
+    margin-top: 2vh; /* Reduced margin, using vh */
+    font-size: 1.5vh; /* Scaled with vh */
+    color: var(--color-text-secondary);
+    text-align: center;
+    transition: color 0.5s ease;
+    z-index: var(--z-index-content);
+    opacity: 0.8;
+}
+
+/* Game Over Styles */
+/* These styles don't directly affect the main layout, but ensure the overlay fits */
+.game-over-bg {
+    background-color: var(--color-background-primary-darker);
+    transition: background-color 0.5s ease;
+}
+
+.game-over-overlay {
+    position: fixed; /* Changed to fixed to ensure it covers the whole viewport */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Use vw for full width */
+    height: 100vh; /* Use vh for full height */
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: var(--z-index-modal);
+    animation: fadeIn 1s ease-out;
+}
+
+.game-over-content {
+    background-color: var(--color-background-secondary);
+    border-radius: 15px;
+    padding: 3vh 4vw; /* Scaled padding with vh and vw */
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    animation: slideInUp 0.8s ease-out;
+    max-width: 90vw; /* Adjusted max-width for smaller screens */
+    width: 90%;
+}
+
+.game-over-content h2 {
+    font-size: 4vh; /* Scaled with vh */
+    color: var(--color-highlight-tertiary);
+    margin-bottom: 1.5vh; /* Scaled with vh */
+    text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+}
+
+.game-over-reason {
+    font-size: 2.2vh; /* Scaled with vh */
+    color: var(--color-text-primary);
+    margin-bottom: 2vh; /* Scaled with vh */
+    line-height: 1.4;
+}
+
+.final-stats {
+    font-size: 1.8vh; /* Scaled with vh */
+    color: var(--color-text-secondary);
+    margin-bottom: 1vh; /* Scaled with vh */
+}
+
+.game-over-restart-btn {
+    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
+    color: var(--color-button-text);
+    border: none;
+    border-radius: 18px;
+    padding: 1.2vh 30px; /* Scaled with vh */
+    font-size: 2vh; /* Scaled with vh */
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 2.5vh; /* Scaled with vh */
+    box-shadow: 0 5px 15px var(--color-button-shadow-primary);
+}
+
+.game-over-restart-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px var(--color-button-shadow-hover);
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Responsive Adjustments for MainGameScreen - Refined */
 @media (max-width: 768px) {
+    .main-game-screen {
+        padding: 1.5vh 15px; /* Further reduced padding */
+    }
+
     .main-game-screen__title {
-        font-size: 2.8rem;
-        margin-bottom: 1.5rem;
+        font-size: 4vh; /* Adjusted font size */
     }
+
     .main-game-screen__stats {
-        flex-direction: column;
-        gap: 15px;
-        margin-bottom: 30px;
+        grid-template-columns: 1fr;
+        padding: 1vh 20px;
+        margin-bottom: 1.5vh;
     }
+
     .game-stat {
-        font-size: 1.1rem;
-        padding: 12px 20px;
-        min-width: unset; /* Rimuovi larghezza minima per permettere il restringimento */
-        width: 90%; /* Occupa più spazio disponibile */
+        font-size: 1.6vh;
     }
-    .game-stat .icon {
-        font-size: 1.5rem;
+
+    .main-game-screen__actions {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Even smaller min-width */
+        gap: 8px;
     }
+
+    .main-game-screen__action-btn {
+        padding: 1vh 12px;
+        font-size: 1.7vh;
+    }
+
     .main-game-screen__ai-suggestion {
-        padding: 15px;
-        margin-bottom: 20px;
+        padding: 1.5vh;
     }
     .ai-suggestion__text {
-        font-size: 1rem;
+        font-size: 1.7vh;
     }
     .ai-suggestion__btn {
-        padding: 0.7rem 1.5rem;
-        font-size: 0.9rem;
-        min-width: 100px;
+        padding: 0.8vh 12px;
+        font-size: 1.5vh;
     }
-    .main-game-screen__actions {
-        flex-direction: column;
-        gap: 15px;
-        margin-bottom: 30px;
+
+    .game-over-content h2 {
+        font-size: 3.5vh;
     }
-    .main-game-screen__action-btn {
-        padding: 0.8rem 2rem;
-        font-size: 1rem;
-        min-width: unset; /* Rimuovi larghezza minima */
-        width: 90%; /* Occupa più spazio disponibile */
+
+    .game-over-reason {
+        font-size: 1.8vh;
     }
-    .main-game-screen__back-btn {
-        padding: 8px 12px;
-        font-size: 12px;
-    }
-    .main-game-screen__back-btn .back-icon {
-        width: 16px;
-        height: 16px;
+
+    .game-over-restart-btn {
+        font-size: 1.8vh;
+        padding: 1vh 20px;
     }
 }
 
-/* --- Stili per i Messaggi Globali dell'App (Caricamento, Errori, IA) --- */
-.app-message-overlay {
+@media (max-width: 480px) {
+    .main-game-screen__title {
+        font-size: 3.5vh;
+        margin-bottom: 1.5vh;
+    }
+
+    .main-game-screen__back-btn {
+        top: 1vh;
+        left: 10px;
+        padding: 0.6vh 10px;
+        font-size: 1.4vh;
+    }
+
+    .main-game-screen__stats {
+        padding: 0.8vh 10px;
+        margin-bottom: 1vh;
+    }
+
+    .game-stat {
+        font-size: 1.4vh;
+    }
+
+    .game-stat .icon {
+        font-size: 1.8vh;
+    }
+
+    .main-game-screen__actions {
+        grid-template-columns: 1fr; /* Stack buttons on very small screens */
+        gap: 6px;
+    }
+
+    .main-game-screen__action-btn {
+        padding: 0.8vh 10px;
+        font-size: 1.6vh;
+    }
+
+    .main-game-screen__ai-suggestion {
+        padding: 1vh;
+    }
+    .ai-suggestion__actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .ai-suggestion__btn {
+        width: 100%;
+        font-size: 1.4vh;
+    }
+
+    .game-message {
+        font-size: 1.5vh;
+        padding: 0.8vh 12px;
+        margin-bottom: 1.5vh;
+    }
+
+    .game-over-content h2 {
+        font-size: 3vh;
+    }
+
+    .game-over-reason {
+        font-size: 1.6vh;
+    }
+
+    .game-over-restart-btn {
+        font-size: 1.7vh;
+        padding: 0.8vh 18px;
+    }
+    .main-game-screen__footer {
+        margin-top: 1.5vh;
+        font-size: 1.3vh;
+    }
+}
+
+
+
+
+
+
+
+
+/* Stili per gli slot in modalità eliminazione */
+.game-slot.delete-mode-slot {
+    border: 2px solid var(--color-button-danger); /* Bordo rosso per indicare eliminazione */
+    box-shadow: 0 0 15px rgba(220, 53, 69, 0.4); /* Ombra rossa */
+}
+
+.game-slot.delete-mode-slot:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 0 25px rgba(220, 53, 69, 0.6);
+}
+
+/* Stile per gli slot con partita terminata */
+.game-slot.game-over-slot {
+    opacity: 0.7; /* Rendi leggermente opaco */
+    border: 2px dashed var(--color-text-secondary); /* Bordo diverso */
+    background-color: var(--color-background-primary-darker); /* Sfondo più scuro */
+}
+
+.game-slot.game-over-slot h3,
+.game-slot.game-over-slot p {
+    color: var(--color-text-secondary); /* Testo più sbiadito */
+}
+
+.game-slot.game-over-slot:hover {
+    transform: none; /* Disabilita il transform sull'hover */
+    box-shadow: 0 3px 6px var(--color-shadow-secondary); /* Ombra normale */
+    cursor: default; /* Cambia cursore */
+}
+
+.game-over-info {
+    font-weight: bold;
+    color: var(--color-button-danger); /* Rendi il testo GAME OVER più evidente */
+    margin-top: 5px;
+}
+
+
+/* Overlay per il modale di conferma */
+.game-slot-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.6); /* Sfondo semi-trasparente */
-    backdrop-filter: blur(3px); /* Effetto sfocato sullo sfondo */
+    background-color: rgba(0, 0, 0, 0.7); /* Sfondo semi-trasparente */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: var(--z-index-overlay); /* Usa la variabile z-index per overlay */
-    animation: fadeInOverlay 0.3s ease-out forwards;
+    z-index: var(--z-index-modal); /* Assicurati che sia sopra tutto */
+    animation: fadeIn 0.3s ease-out;
 }
 
-.app-message-box {
-    background: var(--color-background-secondary); /* Usa il colore di sfondo secondario del tema */
-    color: var(--color-text-primary); /* Usa il colore del testo primario del tema */
-    padding: 1.5rem 2.5rem;
+/* Stile specifico per il modale (riutilizza .game-slot ma lo rende più grande e centrato) */
+.game-slot-modal {
+    width: 90%; /* Occupa più larghezza */
+    max-width: 400px; /* Massima larghezza */
+    min-height: 180px; /* Altezza minima maggiore per il modale */
+    padding: 25px; /* Padding aumentato */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); /* Ombra più pronunciata */
+    animation: slideInUp 0.4s ease-out; /* Animazione di ingresso */
+    /* Assicurati che non ci siano margin-top o margin-bottom che lo spostino */
+    margin: 0; /* Rimuovi margini automatici che potrebbero interferire con il posizionamento fisso */
+}
+
+.game-slot-modal h3 {
+    font-size: 1.5em; /* Titolo più grande */
+    margin-bottom: 15px;
+}
+
+.game-slot-modal p {
+    font-size: 1em; /* Testo più grande */
+    margin-bottom: 25px;
+    line-height: 1.4;
+}
+
+/* Contenitore per i pulsanti del modale */
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Spazio tra i pulsanti */
+    margin-top: 15px;
+}
+
+/* Stili per i pulsanti del modale (riutilizza e adatta da .game-slot button) */
+.modal-btn {
+    border: none;
     border-radius: 12px;
-    box-shadow: 0 8px 20px var(--color-shadow-primary); /* Usa l'ombra del tema */
-    text-align: center;
-    font-size: 1.2rem;
+    padding: 10px 20px;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 600;
-    max-width: 400px;
-    width: 90%;
-    animation: fadeInPopup 0.3s ease-out forwards; /* Riutilizza l'animazione popup */
-    transition: background-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
-.app-message-box p {
-    margin: 0; /* Rimuovi margini predefiniti */
+.modal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-btn--danger {
+    background: linear-gradient(90deg, #dc3545, #c82333); /* Rosso per eliminare */
+    color: white;
+}
+
+.modal-btn--danger:hover {
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+}
+
+.modal-btn--cancel {
+    background-color: var(--color-background-tertiary); /* Colore neutro per annulla */
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border-primary);
+}
+
+.modal-btn--cancel:hover {
+    background-color: var(--color-background-primary);
+}
+
+/* Animazioni (se non le hai già) */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Stili per il pulsante delete-button all'interno dello slot */
+.delete-button {
+    background: linear-gradient(90deg, #dc3545, #c82333); /* Rosso per eliminare */
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.delete-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+}
+
+/* Stile per il testo info-text */
+.info-text {
+    color: var(--color-text-secondary);
+    font-style: italic;
+    font-size: 0.8em;
+    margin-top: 5px;
 }
