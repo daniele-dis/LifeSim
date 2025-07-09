@@ -36,11 +36,12 @@
         },
         "figli": [],
         "current_suggestion": {
-            "action": "divertiti",
-            "text": "La vita \u00e8 anche divertimento! Che ne dici di goderti un po' di tempo libero, Gaia?"
+            "action": "esci_con_partner",
+            "text": "Perch\u00e9 non passi un po' di tempo con Sofia Russo?"
         },
         "message": "Hai passato del tempo di qualit\u00e0 con Sofia Russo. La relazione \u00e8 migliorata!",
         "is_game_over": false,
         "death_reason": null
     }
+
 }

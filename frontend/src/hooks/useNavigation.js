@@ -233,7 +233,13 @@ const useGameNavigation = () => {
         setCurrentPhase('gameSlots');
     }, [fetchGameSlotSummaries]);
 
-
+    // ************* ADD THIS FUNCTION *************
+    const handleDeleteGameSelection = useCallback(() => {
+        setGameSlotsMode('delete');
+        fetchGameSlotSummaries();
+        setCurrentPhase('gameSlots');
+    }, [fetchGameSlotSummaries]);
+    // **********************************************
 
     const handleBackFromInputToSlots = useCallback(() => {
         setCurrentPhase('gameSlots');
@@ -258,44 +264,44 @@ const useGameNavigation = () => {
     }, []);
 
     const deleteSlot = useCallback(async (slotNumber) => {
-    setMessage(`Eliminazione slot ${slotNumber}...`);
-    try {
-        const response = await fetch(`${API_BASE_URL}/delete_slot/${slotNumber}`, {
-            method: 'DELETE',
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP Error: ${response.status}`);
+        setMessage(`Eliminazione slot ${slotNumber}...`);
+        try {
+            const response = await fetch(`${API_BASE_URL}/delete_slot/${slotNumber}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status}`);
+            }
+            const data = await response.json();
+            setMessage(data.message || 'Slot eliminato.');
+
+            // Aggiorna la lista degli slot dopo eliminazione
+            fetchGameSlotSummaries();
+
+            // Se stavi giocando su questo slot, resetta lo stato
+            if (selectedSlot === slotNumber) {
+                setGameState(null);
+                setSelectedSlot(null);
+                setCurrentPhase('gameSelection');
+            }
+
+        } catch (error) {
+            console.error("Errore eliminando slot:", error);
+            setMessage('Errore durante l\'eliminazione dello slot.');
         }
-        const data = await response.json();
-        setMessage(data.message || 'Slot eliminato.');
+    }, [selectedSlot, fetchGameSlotSummaries]);
 
-        // Aggiorna la lista degli slot dopo eliminazione
-        fetchGameSlotSummaries();
 
-        // Se stavi giocando su questo slot, resetta lo stato
-        if (selectedSlot === slotNumber) {
-            setGameState(null);
-            setSelectedSlot(null);
-            setCurrentPhase('gameSelection');
+    const handleSlotSelect = useCallback((slotNumber) => {
+        setSelectedSlot(slotNumber);
+        if (gameSlotsMode === 'new') {
+            setCurrentPhase('nameInput');
+        } else if (gameSlotsMode === 'load') {
+            loadGameState(slotNumber);
+        } else if (gameSlotsMode === 'delete') {
+            deleteSlot(slotNumber); // This will now correctly trigger the deletion
         }
-
-    } catch (error) {
-        console.error("Errore eliminando slot:", error);
-        setMessage('Errore durante l\'eliminazione dello slot.');
-    }
-}, [selectedSlot, fetchGameSlotSummaries]);
-
-
-const handleSlotSelect = useCallback((slotNumber) => {
-    setSelectedSlot(slotNumber);
-    if (gameSlotsMode === 'new') {
-        setCurrentPhase('nameInput');
-    } else if (gameSlotsMode === 'load') {
-        loadGameState(slotNumber);
-    } else if (gameSlotsMode === 'delete') {
-        deleteSlot(slotNumber); // questa funzione deve essere definita da te
-    }
-}, [gameSlotsMode, loadGameState, deleteSlot]); // ⬅️ aggiunto deleteSlot qui
+    }, [gameSlotsMode, loadGameState, deleteSlot]);
 
     return {
         gameState,
@@ -315,6 +321,7 @@ const handleSlotSelect = useCallback((slotNumber) => {
         handleBackToStart,
         handleNewGameSelection,
         handleLoadGameSelection,
+        handleDeleteGameSelection, // <--- EXPOSE THIS FUNCTION
         aiSuggestion,
         handleAcceptSuggestion,
         handleRejectSuggestion,

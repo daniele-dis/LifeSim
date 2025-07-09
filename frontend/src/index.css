@@ -73,9 +73,10 @@ html, body {
     --z-index-content: 2;
     --z-index-menu: 4;
     --z-index-overlay: 5;
-    --z-index-popup: 10; /* Changed from 100 to make room for higher values if needed */
-    --z-index-back-button: 11; /* Slightly higher than popup if it overlaps */
+    --z-index-popup: 1000; /* <--- MODIFICATO: Valore molto più alto per il popup */
+    --z-index-back-button: 1001; /* <--- MODIFICATO: Di conseguenza, anche questo deve essere più alto */
 }
+
 
 /* --- Stili per l'elemento Root (Gestione del Tema) --- */
 #root {
@@ -755,7 +756,21 @@ SI REFERENZIA A QUESTO FOOTER  */
 /* ========================================================================== */
 /* --- STILI SPECIFICI PER LA SCHERMATA DI SELEZIONE SLOT (GameSlotsScreen) --- */
 /* ========================================================================== */
-
+/* Overlay per il modale di conferma */
+.game-slot-modal-overlay {
+    position: fixed; /* Cruciale per il posizionamento indipendente */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7); /* Sfondo semi-trasparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* QUESTA È LA RIGA FONDAMENTALE MODIFICATA */
+    z-index: var(--z-index-popup); /* Assicurati che sia sopra tutto con un valore alto */
+    animation: fadeIn 0.3s ease-out;
+}
 .game-slots-container {
     display: flex;
     flex-direction: column;
@@ -864,8 +879,7 @@ SI REFERENZIA A QUESTO FOOTER  */
     margin: 0 auto;
     padding: 0 20px;
     box-sizing: border-box;
-    position: relative;
-    z-index: var(--z-index-content);
+    position: relative; /* Puoi mantenere 'relative' se ti serve per posizionare figli assoluti all'interno */
 }
 
 .game-slot {
@@ -986,6 +1000,162 @@ SI REFERENZIA A QUESTO FOOTER  */
 .back-button:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Stili per gli slot in modalità eliminazione */
+.game-slot.delete-mode-slot {
+    border: 2px solid var(--color-button-danger); /* Bordo rosso per indicare eliminazione */
+    box-shadow: 0 0 15px rgba(220, 53, 69, 0.4); /* Ombra rossa */
+}
+
+.game-slot.delete-mode-slot:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 0 25px rgba(220, 53, 69, 0.6);
+}
+
+/* Stile per gli slot con partita terminata */
+.game-slot.game-over-slot {
+    opacity: 0.7; /* Rendi leggermente opaco */
+    border: 2px dashed var(--color-text-secondary); /* Bordo diverso */
+    background-color: var(--color-background-primary-darker); /* Sfondo più scuro */
+}
+
+.game-slot.game-over-slot h3,
+.game-slot.game-over-slot p {
+    color: var(--color-text-secondary); /* Testo più sbiadito */
+}
+
+.game-slot.game-over-slot:hover {
+    transform: none; /* Disabilita il transform sull'hover */
+    box-shadow: 0 3px 6px var(--color-shadow-secondary); /* Ombra normale */
+    cursor: default; /* Cambia cursore */
+}
+
+.game-over-info {
+    font-weight: bold;
+    color: var(--color-button-danger); /* Rendi il testo GAME OVER più evidente */
+    margin-top: 5px;
+}
+
+
+/* Overlay per il modale di conferma */
+.game-slot-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7); /* Sfondo semi-trasparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: var(--z-index-modal); /* Assicurati che sia sopra tutto */
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Stile specifico per il modale (riutilizza .game-slot ma lo rende più grande e centrato) */
+.game-slot-modal {
+    width: 90%; /* Occupa più larghezza */
+    max-width: 400px; /* Massima larghezza */
+    min-height: 180px; /* Altezza minima maggiore per il modale */
+    padding: 25px; /* Padding aumentato */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); /* Ombra più pronunciata */
+    animation: slideInUp 0.4s ease-out; /* Animazione di ingresso */
+    /* Assicurati che non ci siano margin-top o margin-bottom che lo spostino */
+    margin: 0; /* Rimuovi margini automatici che potrebbero interferire con il posizionamento fisso */
+}
+
+.game-slot-modal h3 {
+    font-size: 1.5em; /* Titolo più grande */
+    margin-bottom: 15px;
+}
+
+.game-slot-modal p {
+    font-size: 1em; /* Testo più grande */
+    margin-bottom: 25px;
+    line-height: 1.4;
+}
+
+/* Contenitore per i pulsanti del modale */
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Spazio tra i pulsanti */
+    margin-top: 15px;
+}
+
+/* Stili per i pulsanti del modale (riutilizza e adatta da .game-slot button) */
+.modal-btn {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-btn--danger {
+    background: linear-gradient(90deg, #dc3545, #c82333); /* Rosso per eliminare */
+    color: white;
+}
+
+.modal-btn--danger:hover {
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+}
+
+.modal-btn--cancel {
+    background-color: var(--color-background-tertiary); /* Colore neutro per annulla */
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border-primary);
+}
+
+.modal-btn--cancel:hover {
+    background-color: var(--color-background-primary);
+}
+
+/* Animazioni (se non le hai già) */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Stili per il pulsante delete-button all'interno dello slot */
+.delete-button {
+    background: linear-gradient(90deg, #dc3545, #c82333); /* Rosso per eliminare */
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.delete-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+}
+
+/* Stile per il testo info-text */
+.info-text {
+    color: var(--color-text-secondary);
+    font-style: italic;
+    font-size: 0.8em;
+    margin-top: 5px;
 }
 
 /* ========================================================================== */
@@ -1363,10 +1533,6 @@ SI REFERENZIA A QUESTO FOOTER  */
     box-shadow: 0 8px 20px var(--color-button-shadow-hover);
 }
 
-.ai-suggestion__btn--accept {
-    /* Specific styles if needed */
-}
-
 .ai-suggestion__btn--reject {
     background: linear-gradient(90deg, var(--color-button-gradient-end), var(--color-button-gradient-start));
     opacity: 0.8;
@@ -1646,165 +1812,3 @@ SI REFERENZIA A QUESTO FOOTER  */
     }
 }
 
-
-
-
-
-
-
-
-/* Stili per gli slot in modalità eliminazione */
-.game-slot.delete-mode-slot {
-    border: 2px solid var(--color-button-danger); /* Bordo rosso per indicare eliminazione */
-    box-shadow: 0 0 15px rgba(220, 53, 69, 0.4); /* Ombra rossa */
-}
-
-.game-slot.delete-mode-slot:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 0 25px rgba(220, 53, 69, 0.6);
-}
-
-/* Stile per gli slot con partita terminata */
-.game-slot.game-over-slot {
-    opacity: 0.7; /* Rendi leggermente opaco */
-    border: 2px dashed var(--color-text-secondary); /* Bordo diverso */
-    background-color: var(--color-background-primary-darker); /* Sfondo più scuro */
-}
-
-.game-slot.game-over-slot h3,
-.game-slot.game-over-slot p {
-    color: var(--color-text-secondary); /* Testo più sbiadito */
-}
-
-.game-slot.game-over-slot:hover {
-    transform: none; /* Disabilita il transform sull'hover */
-    box-shadow: 0 3px 6px var(--color-shadow-secondary); /* Ombra normale */
-    cursor: default; /* Cambia cursore */
-}
-
-.game-over-info {
-    font-weight: bold;
-    color: var(--color-button-danger); /* Rendi il testo GAME OVER più evidente */
-    margin-top: 5px;
-}
-
-
-/* Overlay per il modale di conferma */
-.game-slot-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7); /* Sfondo semi-trasparente */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: var(--z-index-modal); /* Assicurati che sia sopra tutto */
-    animation: fadeIn 0.3s ease-out;
-}
-
-/* Stile specifico per il modale (riutilizza .game-slot ma lo rende più grande e centrato) */
-.game-slot-modal {
-    width: 90%; /* Occupa più larghezza */
-    max-width: 400px; /* Massima larghezza */
-    min-height: 180px; /* Altezza minima maggiore per il modale */
-    padding: 25px; /* Padding aumentato */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); /* Ombra più pronunciata */
-    animation: slideInUp 0.4s ease-out; /* Animazione di ingresso */
-    /* Assicurati che non ci siano margin-top o margin-bottom che lo spostino */
-    margin: 0; /* Rimuovi margini automatici che potrebbero interferire con il posizionamento fisso */
-}
-
-.game-slot-modal h3 {
-    font-size: 1.5em; /* Titolo più grande */
-    margin-bottom: 15px;
-}
-
-.game-slot-modal p {
-    font-size: 1em; /* Testo più grande */
-    margin-bottom: 25px;
-    line-height: 1.4;
-}
-
-/* Contenitore per i pulsanti del modale */
-.modal-actions {
-    display: flex;
-    justify-content: center;
-    gap: 15px; /* Spazio tra i pulsanti */
-    margin-top: 15px;
-}
-
-/* Stili per i pulsanti del modale (riutilizza e adatta da .game-slot button) */
-.modal-btn {
-    border: none;
-    border-radius: 12px;
-    padding: 10px 20px;
-    font-size: 0.95em;
-    cursor: pointer;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 600;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-}
-
-.modal-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.modal-btn--danger {
-    background: linear-gradient(90deg, #dc3545, #c82333); /* Rosso per eliminare */
-    color: white;
-}
-
-.modal-btn--danger:hover {
-    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
-}
-
-.modal-btn--cancel {
-    background-color: var(--color-background-tertiary); /* Colore neutro per annulla */
-    color: var(--color-text-primary);
-    border: 1px solid var(--color-border-primary);
-}
-
-.modal-btn--cancel:hover {
-    background-color: var(--color-background-primary);
-}
-
-/* Animazioni (se non le hai già) */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideInUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-/* Stili per il pulsante delete-button all'interno dello slot */
-.delete-button {
-    background: linear-gradient(90deg, #dc3545, #c82333); /* Rosso per eliminare */
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 8px 15px;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-}
-
-.delete-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
-}
-
-/* Stile per il testo info-text */
-.info-text {
-    color: var(--color-text-secondary);
-    font-style: italic;
-    font-size: 0.8em;
-    margin-top: 5px;
-}
