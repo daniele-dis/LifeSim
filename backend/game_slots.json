@@ -24,24 +24,42 @@
     "2": {
         "nome": "Gaia",
         "avatar": 2,
-        "soldi": 257,
-        "energia": 73,
-        "felicita": 98,
+        "soldi": 390,
+        "energia": 97,
+        "felicita": 97,
         "eta": 19,
-        "giorni_passati": 33,
+        "giorni_passati": 49,
         "relazione": {
             "stato": "fidanzato",
             "partner_nome": "Sofia Russo",
-            "felicita_relazione": 86
+            "felicita_relazione": 100
+        },
+        "figli": [],
+        "current_suggestion": null,
+        "message": "Una bella dormita ti ha ricaricato le batterie.",
+        "is_game_over": false,
+        "death_reason": null
+    },
+    "3": {
+        "nome": "Davide",
+        "avatar": 3,
+        "soldi": 200,
+        "energia": 70,
+        "felicita": 80,
+        "eta": 18,
+        "giorni_passati": 0,
+        "relazione": {
+            "stato": "single",
+            "partner_nome": null,
+            "felicita_relazione": 0
         },
         "figli": [],
         "current_suggestion": {
-            "action": "esci_con_partner",
-            "text": "Perch\u00e9 non passi un po' di tempo con Sofia Russo?"
+            "action": "cerca_partner",
+            "text": "Davide, sei giovane e single. \u00c8 il momento di trovare qualcuno di speciale!"
         },
-        "message": "Hai passato del tempo di qualit\u00e0 con Sofia Russo. La relazione \u00e8 migliorata!",
+        "message": "Benvenuto nella tua nuova vita!",
         "is_game_over": false,
         "death_reason": null
     }
-
 }

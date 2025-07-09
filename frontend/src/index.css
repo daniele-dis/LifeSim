@@ -75,6 +75,7 @@ html, body {
     --z-index-overlay: 5;
     --z-index-popup: 1000; /* <--- MODIFICATO: Valore molto più alto per il popup */
     --z-index-back-button: 1001; /* <--- MODIFICATO: Di conseguenza, anche questo deve essere più alto */
+    --z-index-modal: 1002;
 }
 
 
@@ -520,20 +521,12 @@ html, body {
 
 /* Animazione per i popup (generale) */
 @keyframes fadeInPopup {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 /* --- Stili per il Footer della StartScreen --- */
-/* TUTTI I FOOTER FANNO RIFERIMENTO A QUESTO, PERCIò OGNI CLASS NAME FOOTER
-SI REFERENZIA A QUESTO FOOTER  */
-
+/* TUTTI I FOOTER FANNO RIFERIMENTO A QUESTO, PERCIò OGNI CLASS NAME FOOTER SI REFERENZIA A QUESTO FOOTER */
 .footer {
     position: absolute;
     bottom: 0;
@@ -551,11 +544,9 @@ SI REFERENZIA A QUESTO FOOTER  */
     margin: 0.2rem 0;
 }
 
-
 /* ========================================================================== */
 /* --- STILI SPECIFICI PER LA SCHERMATA DI SELEZIONE GIOCO (GameSelectionScreen) --- */
 /* ========================================================================== */
-
 /* Contenitore principale della GameSelectionScreen, simulando un ambiente "portale". */
 .game-selection-portal-container {
     position: relative;
@@ -612,10 +603,10 @@ SI REFERENZIA A QUESTO FOOTER  */
     position: relative;
     z-index: var(--z-index-content); /* Using variable */
     font-size: 3.8rem;
-    margin-top: -120px;
+    margin-top: -120px; /* AGGIORNATO */
     margin-bottom: 0.8rem;
     font-weight: 700;
-    letter-spacing: 3px;
+    letter-spacing: 3px; /* AGGIORNATO */
     color: var(--color-highlight-primary);
     animation: fadeInSlideDown 1s ease-out;
     transition: color 0.5s ease, text-shadow 0.3s ease;
@@ -636,9 +627,9 @@ SI REFERENZIA A QUESTO FOOTER  */
 .portal-subtitle {
     position: relative;
     z-index: var(--z-index-content); /* Using variable */
-    margin-top: 0.5rem;
-    margin-bottom: 3.5rem;
-    font-size: 1.3rem;
+    margin-top: 0.5rem; /* AGGIORNATO */
+    margin-bottom: 3.5rem; /* AGGIORNATO */
+    font-size: 1.3rem; /* AGGIORNATO */
     font-weight: 400;
     font-style: italic;
     letter-spacing: 0.8px;
@@ -663,13 +654,13 @@ SI REFERENZIA A QUESTO FOOTER  */
 .portal-options-grid {
     position: relative;
     z-index: var(--z-index-content); /* Using variable */
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    width: 90%;
-    max-width: 800px;
-    margin-top: 20px;
-    align-items: center;
+    display: flex; /* AGGIORNATO */
+    flex-direction: column; /* AGGIORNATO */
+    gap: 30px; /* AGGIORNATO */
+    width: 90%; /* AGGIORNATO */
+    max-width: 800px; /* AGGIORNATO */
+    margin-top: 20px; /* AGGIUNTO */
+    align-items: center; /* AGGIUNTO */
 }
 
 /* --- Stili per i Pulsanti "Portali" (Nuova Partita, Carica Partita) --- */
@@ -678,7 +669,7 @@ SI REFERENZIA A QUESTO FOOTER  */
     /* @extend .base-button; */
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     border: none;
-    border-radius: 16px; /* Changed from 20px to 16px for consistency with base-button */
+    border-radius: 16px; /* AGGIORNATO */
     font-weight: 700;
     color: var(--color-button-text);
     box-shadow: 0 12px 25px var(--color-button-shadow-primary);
@@ -689,19 +680,19 @@ SI REFERENZIA A QUESTO FOOTER  */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.8rem 3rem;
-    font-size: 1.8rem;
-    width: 100%;
-    max-width: 300px;
-    height: 75px;
-    overflow: hidden;
+    padding: 0.8rem 3rem; /* AGGIORNATO */
+    font-size: 1.8rem; /* AGGIORNATO */
+    width: 100%; /* AGGIUNTO */
+    max-width: 300px; /* AGGIUNTO */
+    height: 75px; /* AGGIUNTO */
+    overflow: hidden; /* AGGIUNTO */
 }
 
 
 /* Testo all'interno del pulsante, posizionato sopra il glow */
 .portal-button-text {
     position: relative;
-    z-index: var(--z-index-content); /* Higher z-index for text inside button */
+    z-index: var(--z-index-content); /* AGGIORNATO */
 }
 
 /* Effetto "glow" interno al pulsante al passaggio del mouse */
@@ -710,46 +701,46 @@ SI REFERENZIA A QUESTO FOOTER  */
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 0;
-    height: 0;
-    background: var(--portal-button-glow-color);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+    width: 0; /* AGGIORNATO */
+    height: 0; /* AGGIORNATO */
+    background: radial-gradient(circle, var(--portal-button-glow-color) 0%, transparent 70%); /* AGGIORNATO */
+    filter: blur(40px); /* AGGIORNATO */
+    opacity: 0; /* AGGIORNATO */
+    transform: translate(-50%, -50%); /* AGGIORNATO */
+    transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease; /* AGGIORNATO */
     z-index: var(--z-index-base); /* Behind the text */
 }
 
 /* Effetti hover sui pulsanti del portale */
 .portal-button:hover {
     box-shadow: 0 20px 40px var(--color-button-shadow-hover);
-    transform: scale(1.12);
+    transform: scale(1.12); /* AGGIORNATO */
 }
 
 /* --- Media Queries per la Responsività della GameSelectionScreen --- */
 @media (min-width: 768px) {
     .portal-options-grid {
-        gap: 30px;
-        max-width: 700px;
+        gap: 30px; /* AGGIORNATO */
+        max-width: 700px; /* AGGIORNATO */
     }
     .portal-button {
-        padding: 1rem 6rem;
-        font-size: 1.8rem;
+        padding: 1rem 6rem; /* AGGIORNATO */
+        font-size: 1.8rem; /* AGGIORNATO */
     }
 }
 
 @media (max-width: 480px) {
     .portal-title {
-        font-size: 2.5rem;
-        margin-top: -80px;
+        font-size: 2.5rem; /* AGGIORNATO */
+        margin-top: -80px; /* AGGIORNATO */
     }
     .portal-subtitle {
-        font-size: 1.1rem;
-        margin-bottom: 3rem;
+        font-size: 1.1rem; /* AGGIORNATO */
+        margin-bottom: 3rem; /* AGGIORNATO */
     }
     .portal-button {
-        padding: 1rem 2.5rem;
-        font-size: 1.4rem;
+        padding: 1rem 2.5rem; /* AGGIORNATO */
+        font-size: 1.4rem; /* AGGIORNATO */
     }
 }
 
@@ -758,18 +749,25 @@ SI REFERENZIA A QUESTO FOOTER  */
 /* ========================================================================== */
 /* Overlay per il modale di conferma */
 .game-slot-modal-overlay {
-    position: fixed; /* Cruciale per il posizionamento indipendente */
+    position: fixed; /* ESSENZIALE per posizionarlo rispetto alla viewport */
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7); /* Sfondo semi-trasparente */
+    width: 100vw; /* Copre l'intera larghezza della viewport */
+    height: 100vh; /* Copre l'intera altezza della viewport */
+    background-color: rgba(0, 0, 0, 0.7); /* L'overlay semi-trasparente */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    /* QUESTA È LA RIGA FONDAMENTALE MODIFICATA */
-    z-index: var(--z-index-popup); /* Assicurati che sia sopra tutto con un valore alto */
+    justify-content: center; /* Centra orizzontalmente il contenuto */
+    align-items: center; /* Centra verticalmente il contenuto */
+    z-index: var(--z-index-popup); /* Questo deve essere un valore alto, es. 1000 */
     animation: fadeIn 0.3s ease-out;
+}
+
+/* E nel tuo :root block */
+:root {
+    /* ... */
+    --z-index-popup: 1000; /* Assicurati che sia 1000 o più alto */
+    --z-index-content: 2; /* Gli slot avranno questo valore */
+    /* ... */
 }
 .game-slots-container {
     display: flex;
@@ -1013,7 +1011,7 @@ SI REFERENZIA A QUESTO FOOTER  */
     box-shadow: 0 0 25px rgba(220, 53, 69, 0.6);
 }
 
-/* Stile per gli slot con partita terminata */
+/* Stile per gli slots con partita terminata */
 .game-slot.game-over-slot {
     opacity: 0.7; /* Rendi leggermente opaco */
     border: 2px dashed var(--color-text-secondary); /* Bordo diverso */
@@ -1037,87 +1035,102 @@ SI REFERENZIA A QUESTO FOOTER  */
     margin-top: 5px;
 }
 
-
-/* Overlay per il modale di conferma */
-.game-slot-modal-overlay {
-    position: fixed;
+/* ========================================================================== */
+/* --- STILI SPECIFICI PER IL MODALE DI CONFERMA ELIMINAZIONE (GameSlotsScreen) --- */
+/* ========================================================================== */
+.game-slot-modal-overlay { /* Overlay per il modale di conferma */
+    position: fixed; /* Essenziale per l'overlay su tutta la pagina */
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7); /* Sfondo semi-trasparente */
+    width: 100vw; /* Copre l'intera larghezza della viewport */
+    height: 100vh; /* Copre l'intera altezza della viewport */
+    background: var(--color-overlay-secondary); /* Sfondo semi-trasparente */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: var(--z-index-modal); /* Assicurati che sia sopra tutto */
-    animation: fadeIn 0.3s ease-out;
+    justify-content: center; /* Centra orizzontalmente il contenuto */
+    align-items: center; /* Centra verticalmente il contenuto */
+    z-index: var(--z-index-modal); /* Usa la variabile definita, 1000 */
+    animation: fadeInOverlay 0.3s ease-out forwards; /* Animazione di apparizione */
 }
-
-/* Stile specifico per il modale (riutilizza .game-slot ma lo rende più grande e centrato) */
-.game-slot-modal {
-    width: 90%; /* Occupa più larghezza */
-    max-width: 400px; /* Massima larghezza */
-    min-height: 180px; /* Altezza minima maggiore per il modale */
-    padding: 25px; /* Padding aumentato */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); /* Ombra più pronunciata */
-    animation: slideInUp 0.4s ease-out; /* Animazione di ingresso */
-    /* Assicurati che non ci siano margin-top o margin-bottom che lo spostino */
-    margin: 0; /* Rimuovi margini automatici che potrebbero interferire con il posizionamento fisso */
+.game-slot-modal { /* Questo è il container del popup effettivo */
+    background: var(--color-background-secondary); /* Sfondo del modale */
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px var(--color-shadow-primary);
+    max-width: 450px; /* Larghezza massima del contenuto del modale */
+    width: 90%; /* Occupa il 90% della larghezza disponibile */
+    color: var(--color-text-primary);
+    text-align: center;
+    position: relative; /* Necessario se ci sono elementi posizionati al suo interno */
+    animation: fadeInPopup 0.3s ease-out; /* Animazione di apparizione */
+    transition: background 0.5s ease, color 0.5s ease;
 }
-
 .game-slot-modal h3 {
-    font-size: 1.5em; /* Titolo più grande */
-    margin-bottom: 15px;
+    font-size: 2rem;
+    margin-top: 0.1rem;
+    margin-bottom: 1.0rem;
+    color: var(--color-highlight-primary);
 }
-
 .game-slot-modal p {
-    font-size: 1em; /* Testo più grande */
-    margin-bottom: 25px;
-    line-height: 1.4;
+    margin-top: 0.4rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    text-align: center;
 }
-
-/* Contenitore per i pulsanti del modale */
+.game-slot-modal p strong {
+    color: var(--color-highlight-secondary);
+}
 .modal-actions {
     display: flex;
     justify-content: center;
     gap: 15px; /* Spazio tra i pulsanti */
-    margin-top: 15px;
+    margin-top: 20px;
 }
-
-/* Stili per i pulsanti del modale (riutilizza e adatta da .game-slot button) */
 .modal-btn {
+    /* Proprietà comuni per tutti i pulsanti del modale */
     border: none;
-    border-radius: 12px;
-    padding: 10px 20px;
-    font-size: 0.95em;
-    cursor: pointer;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
 }
-
-.modal-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
 .modal-btn--danger {
-    background: linear-gradient(90deg, #dc3545, #c82333); /* Rosso per eliminare */
+    background-color: #dc3545; /* Rosso per eliminazione */
     color: white;
 }
-
 .modal-btn--danger:hover {
-    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
 }
-
 .modal-btn--cancel {
-    background-color: var(--color-background-tertiary); /* Colore neutro per annulla */
-    color: var(--color-text-primary);
-    border: 1px solid var(--color-border-primary);
+    background-color: #6c757d; /* Grigio per annulla */
+    color: white;
 }
-
 .modal-btn--cancel:hover {
-    background-color: var(--color-background-primary);
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+}
+/* Media Query per modale su schermi piccoli */
+@media (max-width: 480px) {
+    .game-slot-modal {
+        padding: 1.5rem;
+        width: 95%;
+    }
+    .game-slot-modal h3 {
+        font-size: 1.6rem;
+    }
+    .game-slot-modal p {
+        font-size: 0.95rem;
+    }
+    .modal-btn {
+        padding: 0.7rem 1.2rem;
+        font-size: 1rem;
+    }
 }
 
 /* Animazioni (se non le hai già) */
@@ -1303,8 +1316,9 @@ SI REFERENZIA A QUESTO FOOTER  */
     }
 }
 
+
 /* ========================================================================== */
-/* --- STILI SPECIFICI PER LA SCHERMATA DI INSERIMENTO NOME (MainGameScreen) --- */
+/* --- STILI SPECIFICI PER LA SCHERMATA DI GIOCO (MainGameScreen) --- */
 /* ========================================================================== */
 
 /* General container */
@@ -1608,6 +1622,7 @@ SI REFERENZIA A QUESTO FOOTER  */
     transition: background-color 0.5s ease;
 }
 
+
 .game-over-overlay {
     position: fixed; /* Changed to fixed to ensure it covers the whole viewport */
     top: 0;
@@ -1811,4 +1826,3 @@ SI REFERENZIA A QUESTO FOOTER  */
         font-size: 1.3vh;
     }
 }
-
