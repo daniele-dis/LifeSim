@@ -1,26 +1,4 @@
 {
-    "1": {
-        "nome": "Daniele",
-        "avatar": "(M)",
-        "soldi": 128,
-        "energia": 0,
-        "felicita": 97,
-        "eta": 18,
-        "giorni_passati": 13,
-        "relazione": {
-            "stato": "fidanzato",
-            "partner_nome": "Sofia Ferrari",
-            "felicita_relazione": 98
-        },
-        "figli": [],
-        "current_suggestion": {
-            "action": "dormi",
-            "text": "Daniele, sei esausto. \u00c8 vitale riposare!"
-        },
-        "message": "GAME OVER! sei morto di sfinimento totale.",
-        "is_game_over": true,
-        "death_reason": "sei morto di sfinimento totale."
-    },
     "2": {
         "nome": "Gaia",
         "avatar": 2,
@@ -56,7 +34,7 @@
         "figli": [],
         "current_suggestion": {
             "action": "cerca_partner",
-            "text": "Davide, sei giovane e single. \u00c8 il momento di trovare qualcuno di speciale!"
+            "text": "Davide, sei giovane e single. È il momento di trovare qualcuno di speciale!"
         },
         "message": "Benvenuto nella tua nuova vita!",
         "is_game_over": false,
