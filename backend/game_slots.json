@@ -2,9 +2,12 @@
     "1": {
         "nome": "Daniele",
         "avatar": "(M)",
-        "soldi": 1620,
-        "energia": 55,
-        "felicita": 100,
-        "current_suggestion": null
+        "soldi": 1650,
+        "energia": 65,
+        "felicita": 90,
+        "current_suggestion": {
+            "action": "lavoro",
+            "text": "Daniele, potresti guadagnare un po' di pi\u00f9. Hai voglia di lavorare?"
+        }
     }
 }
