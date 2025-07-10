@@ -148,7 +148,7 @@ const GameSlotsScreen = ({ mode, onSlotSelect, onDeleteSlot, onBack, savedSlots,
           <div className="game-slot game-slot-modal">
             <div className="slot-content">
               <h3>Conferma Eliminazione</h3>
-              <p>Sei sicuro di voler eliminare la partita nello slot **{slotToConfirmDelete}**?</p>
+              <p>Sei sicuro di voler eliminare la partita nello Slot {slotToConfirmDelete}?</p>
               <div className="modal-actions">
                 <button onClick={handleConfirmDelete} className="modal-btn modal-btn--danger">Elimina</button>
                 <button onClick={handleCancelDelete} className="modal-btn modal-btn--cancel">Annulla</button>

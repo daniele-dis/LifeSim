@@ -28,6 +28,7 @@ html, body {
     --color-background-primary: #121212; /* Sfondo principale scuro */
     --color-background-secondary: rgba(40, 40, 40, 0.95);
     --color-background-tertiary: rgba(0, 0, 0, 0.4);
+    --color-ai-suggestion-bg: rgba(0, 0, 0, 0.54); /* O usa una delle tue esistenti */
 
     /* Colori del testo */
     --color-text-primary: #f0f0f0; /* Testo principale chiaro */
@@ -96,6 +97,7 @@ html, body {
     --color-background-primary: #f0f0f0; /* Sfondo principale chiaro */
     --color-background-secondary: rgba(220, 220, 220, 0.95);
     --color-background-tertiary: rgba(255, 255, 255, 0.6);
+    --color-ai-suggestion-bg: rgba(255, 255, 255, 0.7);
 
     /* Colori del testo (Light Mode) */
     --color-text-primary: #121212;
@@ -1324,11 +1326,11 @@ html, body {
 /* General container */
 
 .lightblue-text{
-    color: #66c9ff 
+    color: #c300ff 
 }
 
 .main-game-screen {
-    margin-top: 10px;
+    margin-top: 0px;
     align-items: center;
     background-color: var(--color-background-primary);
     color: var(--color-text-primary);
@@ -1429,7 +1431,7 @@ html, body {
     box-shadow: 0 4px 15px var(--color-shadow-primary);
     display: grid;
     gap: 20px; /* Aumentato il gap per maggiore spazio tra le colonne */
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Aumentato il min-width a 250px */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Aumentato il min-width a 250px */
     margin-bottom: 4vh;
     padding: 1.5vh 30px;
     max-width: 1000px; /* Potresti anche provare ad aumentare questo a 1200px se 900px è troppo stretto per il tuo schermo */
@@ -1437,13 +1439,14 @@ html, body {
     width: 95%;
     z-index: var(--z-index-content);
     transition: background-color 0.5s ease, box-shadow 0.5s ease;
+    align-items: stretch; /* forza tutti a stessa altezza */
 }
 
 .game-stat {
     align-items: center;
     color: var(--color-text-primary);
     display: flex;
-    font-size: 2.05vh; /* Scaled with vh */
+    font-size: 2.00vh; /* Scaled with vh */
     transition: color 0.5s ease;
 }
 
@@ -1496,7 +1499,7 @@ html, body {
 /* AI Suggestion Section */
 .main-game-screen__ai-suggestion {
     animation: fadeInScale 0.6s ease-out;
-    background-color: var(--color-background-accent);
+    background-color: var(--color-overlay-secondary);
     border: 2px solid var(--color-highlight-primary);
     border-radius: 10px;
     box-shadow: 0 5px 20px var(--color-highlight-primary-hover);
@@ -1507,6 +1510,7 @@ html, body {
     width: 95%; /* Adjusted width */
     z-index: var(--z-index-content);
 }
+
 
 .ai-suggestion__text {
     color: var(--color-text-primary);
@@ -1629,6 +1633,26 @@ html, body {
     z-index: var(--z-index-modal);
 }
 
+.stat-box {
+    background-color: rgba(0, 0, 0, 0.234); /* grigio sfumato */
+    border-radius: 10px;
+    padding: 1.5vh 1vw;
+    box-shadow: 0 4px 10px var(--color-shadow-secondary);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 50px; /* Altezza minima uniforme */
+    height: 100%; /* Cresce uguale nella griglia */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.stat-box:hover {
+    box-shadow: 0 5px 18px rgba(255, 255, 255, 0.833);
+    transform: translateY(-2px);
+}
+
+
 .game-over-content {
     animation: slideInUp 0.8s ease-out;
     background-color: var(--color-background-secondary);
@@ -1678,6 +1702,8 @@ html, body {
     box-shadow: 0 8px 20px var(--color-button-shadow-hover);
     transform: translateY(-3px) scale(1.05);
 }
+
+
 
 @keyframes slideInUp {
     from {
