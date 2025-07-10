@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react'; 
+// Rimosso: useEffect, useContext, ThemeContext. Non sono più necessari qui.
 
 const API_BASE_URL = 'http://127.0.0.1:5050';
 
@@ -9,34 +10,19 @@ const useGameNavigation = () => {
     const [savedSlots, setSavedSlots] = useState({});
     const [isLoadingSlots, setIsLoadingSlots] = useState(false);
     const [gameSlotsMode, setGameSlotsMode] = useState(null);
-    const [isDarkMode, setIsDarkMode] = useState(true);
+    // Rimosso: isDarkMode, setIsDarkMode - ora gestiti globalmente da ThemeContext
     const [aiSuggestion, setAiSuggestion] = useState(null);
-    const [message, setMessage] = useState(''); // This will now display backend messages
+    const [message, setMessage] = useState('');
 
-    const AI_SUGGESTION_COOLDOWN_TURNS = 5; // AI suggests every 5 turns/actions
+    const AI_SUGGESTION_COOLDOWN_TURNS = 5;
     const [turnsSinceLastAiSuggestion, setTurnsSinceLastAiSuggestion] = useState(0);
 
-    useEffect(() => {
-        const savedTheme = localStorage.getItem('isDarkMode');
-        if (savedTheme !== null) {
-            setIsDarkMode(JSON.parse(savedTheme));
-        }
-    }, []);
-
-    useEffect(() => {
-        const root = document.getElementById('root');
-        if (root) {
-            if (isDarkMode) {
-                root.classList.remove('light-mode');
-            } else {
-                root.classList.add('light-mode');
-            }
-        }
-        localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
-    }, [isDarkMode]);
+    // Rimosso: Tutti gli useEffect relativi al tema.
+    // La gestione del tema (caricamento da localStorage, salvataggio, applicazione classi CSS)
+    // è ora esclusivamente in ThemeContext.js
 
     const generateAiSuggestion = useCallback(async (slot, force = false) => {
-        // If game is over, no more suggestions
+        // Se il gioco è finito, nessun altro suggerimento
         if (gameState && gameState.is_game_over) {
             setAiSuggestion(null);
             return;
@@ -79,7 +65,7 @@ const useGameNavigation = () => {
             setGameState(data);
             setSelectedSlot(slotNumber);
             setCurrentPhase('mainGame');
-            setMessage(data.message || ''); // Display initial message from loaded state
+            setMessage(data.message || ''); // Mostra il messaggio iniziale dallo stato caricato
             setTurnsSinceLastAiSuggestion(0);
             generateAiSuggestion(slotNumber, true); 
         } catch (error) {
@@ -104,7 +90,7 @@ const useGameNavigation = () => {
             const data = await response.json();
             setGameState(data);
             setCurrentPhase('mainGame');
-            setMessage(data.message || ''); // Display initial message from new game
+            setMessage(data.message || ''); // Mostra il messaggio iniziale dalla nuova partita
             setTurnsSinceLastAiSuggestion(0);
             generateAiSuggestion(selectedSlot, true); 
         } catch (error) {
@@ -117,15 +103,15 @@ const useGameNavigation = () => {
 
     const doAction = useCallback(async (actionType) => {
         if (!selectedSlot) {
-            setMessage('No active game. Please load or start a new game.');
+            setMessage('Nessuna partita attiva. Carica o inizia una nuova partita.');
             return;
         }
         if (gameState && gameState.is_game_over) {
-            setMessage(gameState.message); // Show death message if already game over
+            setMessage(gameState.message); // Mostra il messaggio di morte se il gioco è già finito
             return;
         }
 
-        setMessage(`Executing action: ${actionType}...`);
+        setMessage(`Esecuzione azione: ${actionType}...`);
         setAiSuggestion(null); 
         setTurnsSinceLastAiSuggestion(prev => prev + 1);
 
@@ -140,9 +126,9 @@ const useGameNavigation = () => {
             }
             const updatedState = await response.json();
             setGameState(updatedState);
-            setMessage(updatedState.message || ''); // Display message from action result
+            setMessage(updatedState.message || ''); // Mostra il messaggio dal risultato dell'azione
 
-            // Only generate new AI suggestion if game is NOT over
+            // Genera un nuovo suggerimento AI solo se il gioco NON è finito
             if (!updatedState.is_game_over) {
                 generateAiSuggestion(selectedSlot);
             }
@@ -154,14 +140,14 @@ const useGameNavigation = () => {
 
     const handleAcceptSuggestion = useCallback(async (actionType) => {
         if (!selectedSlot) {
-            setMessage('No active game to accept suggestion.');
+            setMessage('Nessuna partita attiva per accettare il suggerimento.');
             return;
         }
         if (gameState && gameState.is_game_over) {
             setMessage(gameState.message);
             return;
         }
-        setMessage(`Accepting suggestion: ${actionType}...`);
+        setMessage(`Accettazione suggerimento: ${actionType}...`);
         setAiSuggestion(null); 
         setTurnsSinceLastAiSuggestion(prev => prev + 1);
 
@@ -193,13 +179,13 @@ const useGameNavigation = () => {
             return;
         }
         setAiSuggestion(null);
-        setMessage('AI suggestion rejected. You can choose a manual action.');
+        setMessage('Suggerimento AI rifiutato. Puoi scegliere un\'azione manuale.');
         setTurnsSinceLastAiSuggestion(prev => prev + 1); 
     }, [gameState]);
 
     const fetchGameSlotSummaries = useCallback(async () => {
         setIsLoadingSlots(true);
-        setMessage('Loading game slots...');
+        setMessage('Caricamento slot di gioco...');
         try {
             const response = await fetch(`${API_BASE_URL}/get_all_slots`);
             if (!response.ok) {
@@ -233,13 +219,11 @@ const useGameNavigation = () => {
         setCurrentPhase('gameSlots');
     }, [fetchGameSlotSummaries]);
 
-    // ************* ADD THIS FUNCTION *************
     const handleDeleteGameSelection = useCallback(() => {
         setGameSlotsMode('delete');
         fetchGameSlotSummaries();
         setCurrentPhase('gameSlots');
     }, [fetchGameSlotSummaries]);
-    // **********************************************
 
     const handleBackFromInputToSlots = useCallback(() => {
         setCurrentPhase('gameSlots');
@@ -250,12 +234,12 @@ const useGameNavigation = () => {
         setAiSuggestion(null);
         setSelectedSlot(null);
         setTurnsSinceLastAiSuggestion(0);
-        setMessage(''); // Clear any game-over messages
+        setMessage(''); // Pulisci eventuali messaggi di game-over
         setCurrentPhase('gameSelection');
     }, []);
 
     const handleBackToStart = useCallback(() => {
-        setGameState(null); // Clear game state if going all the way back to start
+        setGameState(null); // Pulisci lo stato del gioco se si torna all'inizio
         setAiSuggestion(null);
         setSelectedSlot(null);
         setTurnsSinceLastAiSuggestion(0);
@@ -299,7 +283,7 @@ const useGameNavigation = () => {
         } else if (gameSlotsMode === 'load') {
             loadGameState(slotNumber);
         } else if (gameSlotsMode === 'delete') {
-            deleteSlot(slotNumber); // This will now correctly trigger the deletion
+            deleteSlot(slotNumber); // Questo ora attiverà correttamente l'eliminazione
         }
     }, [gameSlotsMode, loadGameState, deleteSlot]);
 
@@ -310,8 +294,7 @@ const useGameNavigation = () => {
         savedSlots,
         isLoadingSlots,
         gameSlotsMode,
-        isDarkMode,
-        toggleDarkMode: () => setIsDarkMode(prevMode => !prevMode),
+        // Rimosso: isDarkMode, toggleDarkMode - non sono più gestiti qui
         doAction,
         handleStartGame,
         handleSlotSelect,
@@ -321,7 +304,7 @@ const useGameNavigation = () => {
         handleBackToStart,
         handleNewGameSelection,
         handleLoadGameSelection,
-        handleDeleteGameSelection, // <--- EXPOSE THIS FUNCTION
+        handleDeleteGameSelection, 
         aiSuggestion,
         handleAcceptSuggestion,
         handleRejectSuggestion,

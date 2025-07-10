@@ -2,11 +2,11 @@
     "1": {
         "nome": "Daniele",
         "avatar": 1,
-        "soldi": 133,
-        "energia": 71,
-        "felicita": 90,
-        "eta": 23,
-        "giorni_passati": 157,
+        "soldi": 317,
+        "energia": 98,
+        "felicita": 97,
+        "eta": 24,
+        "giorni_passati": 184,
         "relazione": {
             "stato": "single",
             "partner_nome": null,
@@ -14,13 +14,43 @@
             "preferenza_genere": "indifferent"
         },
         "figli": [],
-        "current_suggestion": null,
-        "message": "Congratulazioni! Hai trovato un lavoro come commesso con uno stipendio di 800 soldi al mese!",
+        "current_suggestion": {
+            "action": "studia",
+            "text": "Migliora le tue conoscenze, Daniele. Un buon titolo di studio apre molte porte!"
+        },
+        "message": "Una bella dormita ti ha ricaricato le batterie.",
         "is_game_over": false,
         "death_reason": null,
         "titolo_studio": "diploma_scuola_superiore",
-        "giorni_per_prossimo_livello_studio": 29,
+        "giorni_per_prossimo_livello_studio": 25,
         "lavoro_attuale": "commesso",
         "stipendio": 800
+    },
+    "2": {
+        "nome": "Gaia",
+        "avatar": 2,
+        "soldi": 200,
+        "energia": 70,
+        "felicita": 80,
+        "eta": 18,
+        "giorni_passati": 0,
+        "relazione": {
+            "stato": "single",
+            "partner_nome": null,
+            "felicita_relazione": 0,
+            "preferenza_genere": "indifferent"
+        },
+        "figli": [],
+        "current_suggestion": {
+            "action": "studia",
+            "text": "Gaia, continua a studiare per ottenere il tuo diploma scuola superiore!"
+        },
+        "message": "Benvenuto nella tua nuova vita!",
+        "is_game_over": false,
+        "death_reason": null,
+        "titolo_studio": "nessuno",
+        "giorni_per_prossimo_livello_studio": 20,
+        "lavoro_attuale": "disoccupato",
+        "stipendio": 0
     }
 }

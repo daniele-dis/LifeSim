@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react'; // Importa useContext
 import useGameNavigation from './hooks/useNavigation'; // Importa il custom hook
-import ThemeContext from './ThemeContext'; // Importa il contesto del tema
+import ThemeContext, { ThemeProvider } from './ThemeContext'; // Importa ThemeContext E ThemeProvider
 
 // Importa i componenti delle schermate
 import StartScreen from './components/StartScreen';
@@ -20,8 +20,6 @@ function App() {
         savedSlots,
         isLoadingSlots,
         gameSlotsMode,
-        isDarkMode,
-        toggleDarkMode,
         doAction,
         handleStartGame,
         handleSlotSelect,
@@ -36,70 +34,74 @@ function App() {
         handleAcceptSuggestion,
         handleRejectSuggestion,
         message,
-        deleteSlot, // <--- ASSICURATI CHE deleteSlot SIA DESTRUTTURATO QUI!
+        deleteSlot, 
     } = useGameNavigation();
+
+    // Ottieni lo stato del tema e la funzione per cambiarlo direttamente dal ThemeContext
+    const { isDarkMode, toggleDarkMode } = useContext(ThemeContext); 
 
     // Debugging: Log per vedere la fase e la modalità prima del rendering
     console.log("App.js - Rendering. currentPhase:", currentPhase, "gameSlotsMode:", gameSlotsMode);
 
     // --- Render delle diverse fasi ---
     return (
-        <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
+        // Avvolgi l'intera applicazione con ThemeProvider per fornire il contesto del tema
+        <ThemeProvider> 
+            <div id="root"> {/* Assicurati che l'ID 'root' sia presente per l'applicazione del tema */}
+                {currentPhase === 'start' && (
+                    <StartScreen
+                        onStart={handleStartGame}
+                        isDarkMode={isDarkMode} 
+                        toggleDarkMode={toggleDarkMode}
+                    />
+                )}
 
+                {currentPhase === 'gameSelection' && (
+                    <GameSelectionScreen
+                        onNewGame={handleNewGameSelection}
+                        onLoadGame={handleLoadGameSelection}
+                        onDeleteGame={handleDeleteGameSelection} 
+                        onBackToStart={handleBackToStart}
+                    />
+                )}
 
-            {currentPhase === 'start' && (
-                <StartScreen
-                    onStart={handleStartGame}
-                    isDarkMode={isDarkMode}
-                    toggleDarkMode={toggleDarkMode}
-                />
-            )}
+                {currentPhase === 'gameSlots' && (
+                    <GameSlotsScreen
+                        mode={gameSlotsMode} 
+                        onSlotSelect={handleSlotSelect} 
+                        onDeleteSlot={deleteSlot} 
+                        onBack={handleBackToGameSelection}
+                        savedSlots={savedSlots}
+                        isLoadingSlots={isLoadingSlots}
+                    />
+                )}
 
-            {currentPhase === 'gameSelection' && (
-                <GameSelectionScreen
-                    onNewGame={handleNewGameSelection}
-                    onLoadGame={handleLoadGameSelection}
-                    onDeleteGame={handleDeleteGameSelection} // <- importante: questa funzione imposta la modalità 'delete'
-                    onBackToStart={handleBackToStart}
-                />
-            )}
+                {currentPhase === 'nameInput' && (
+                    <InputScreen
+                        onNameSubmit={handleNameSubmit}
+                        onBack={handleBackFromInputToSlots}
+                        slotNumber={selectedSlot}
+                    />
+                )}
 
-            {currentPhase === 'gameSlots' && (
-                <GameSlotsScreen
-                    mode={gameSlotsMode} // Passa la modalità al GameSlotsScreen
-                    onSlotSelect={handleSlotSelect} // Questa gestirà la selezione per new/load E l'apertura del modale per delete
-                    onDeleteSlot={deleteSlot} // <--- PASSA deleteSlot A GAMESLOTSSCREEN
-                    onBack={handleBackToGameSelection}
-                    savedSlots={savedSlots}
-                    isLoadingSlots={isLoadingSlots}
-                />
-            )}
+                {currentPhase === 'mainGame' && (
+                    <MainGameScreen
+                        gameState={gameState}
+                        doAction={doAction}
+                        onBack={handleBackToGameSelection}
+                        isDarkMode={isDarkMode} // Passa isDarkMode da ThemeContext
+                        aiSuggestion={aiSuggestion}
+                        onAcceptSuggestion={handleAcceptSuggestion}
+                        onRejectSuggestion={handleRejectSuggestion}
+                        message={message}
+                    />
+                )}
 
-            {currentPhase === 'nameInput' && (
-                <InputScreen
-                    onNameSubmit={handleNameSubmit}
-                    onBack={handleBackFromInputToSlots}
-                    slotNumber={selectedSlot}
-                />
-            )}
-
-            {currentPhase === 'mainGame' && (
-                <MainGameScreen
-                    gameState={gameState}
-                    doAction={doAction}
-                    onBack={handleBackToGameSelection}
-                    isDarkMode={isDarkMode}
-                    aiSuggestion={aiSuggestion}
-                    onAcceptSuggestion={handleAcceptSuggestion}
-                    onRejectSuggestion={handleRejectSuggestion}
-                    message={message}
-                />
-            )}
-
-            {currentPhase === 'unknown' && (
-                <div className="error-screen">Errore: Stato sconosciuto dell'applicazione.</div>
-            )}
-        </ThemeContext.Provider>
+                {currentPhase === 'unknown' && (
+                    <div className="error-screen">Errore: Stato sconosciuto dell'applicazione.</div>
+                )}
+            </div>
+        </ThemeProvider>
     );
 }
 
