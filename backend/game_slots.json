@@ -13,7 +13,10 @@
             "felicita_relazione": 100
         },
         "figli": [],
-        "current_suggestion": null,
+        "current_suggestion": {
+            "action": "proponi_matrimonio",
+            "text": "La tua relazione con Sofia Russo è forte. Forse è tempo di fare il grande passo?"
+        },
         "message": "Una bella dormita ti ha ricaricato le batterie.",
         "is_game_over": false,
         "death_reason": null
@@ -34,7 +37,7 @@
         "figli": [],
         "current_suggestion": {
             "action": "cerca_partner",
-            "text": "Davide, sei giovane e single. È il momento di trovare qualcuno di speciale!"
+            "text": "Davide, sei giovane e single. ÃƒË† il momento di trovare qualcuno di speciale!"
         },
         "message": "Benvenuto nella tua nuova vita!",
         "is_game_over": false,
