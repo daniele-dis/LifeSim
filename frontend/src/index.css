@@ -1387,6 +1387,7 @@ html, body {
     position: absolute;
     top: 1.5vh; /* Use vh for top positioning */
     left: 20px;
+    width: 50px;
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     color: var(--color-button-text);
     border: none;

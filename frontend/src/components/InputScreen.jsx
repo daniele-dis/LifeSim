@@ -26,8 +26,8 @@ const InputScreen = ({ onNameSubmit, onBack, slotNumber }) => {
     <>
       {/* Pulsante "Indietro" - SPOSTATO FUORI DAL CONTENITORE */}
       <button
-        className="back-button" // Applica la classe per lo stile
-        onClick={onBack} // Usa la prop onBack per gestire il ritorno
+        className="back-button" 
+        onClick={onBack}
       >
         &larr; Indietro {/* Freccia a sinistra e testo */}
       </button>

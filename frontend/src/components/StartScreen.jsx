@@ -13,7 +13,7 @@ const ContactPopup = ({ onClose }) => {
           Per qualsiasi domanda o supporto, puoi scriverci a:
         </p>
         <p>
-          <strong>Daniele Di Sarno:</strong> <a href="mailto:daniele.disarno@email.com" className="contact-email-text">daniele.disarno@email.com</a>
+          <strong>Daniele Di Sarno:</strong> <a href="mailto:danieledisarno35@gmail.com" className="contact-email-text">danieledisarno35@gmail.com</a>
         </p>
         <p>
           <strong>Ciro La Rocca:</strong> <a href="mailto:ciro.larocca@email.com" className="contact-email-text">ciro.larocca@email.com</a>
@@ -34,27 +34,26 @@ const HowToPlayPopup = ({ onClose }) => {
       <div className="popup-content" onClick={(e) => e.stopPropagation()}>
         <h2>Come Giocare</h2>
         <p>
-          Benvenuto in LifeSim! Ecco un'idea di come funziona il gioco,
-          mentre la logica completa è ancora in fase di sviluppo.
+          Benvenuto in LifeSim! Ecco un'idea di come funziona il gioco.
         </p>
         <p>
-          1. **Inizia una Nuova Partita:** Prendi decisioni cruciali
+          1. "Inizia una Nuova Partita:" Prendi decisioni cruciali
           che influenzeranno il percorso della tua vita simulata.
         </p>
         <p>
-          2. **Gestisci le Risorse:** Bilancia aspetti come finanze,
+          2. "Gestisci le Risorse:" Bilancia aspetti come finanze,
           salute e relazioni.
         </p>
         <p>
-          3. **Eventi Casuali:** Preparati a sfide inaspettate
+          3. "Eventi Casuali:" Preparati a sfide inaspettate
           che metteranno alla prova le tue abilità decisionali.
         </p>
         <p>
-          4. **Obiettivi e Scopi:** Punta a raggiungere vari traguardi
+          4. "Obiettivi e Scopi:" Punta a raggiungere vari traguardi
           per sbloccare nuove possibilità.
         </p>
         <p>
-          5. **Esplora le Carriere:** Scegli il tuo percorso professionale e
+          5. "Esplora le Carriere:" Scegli il tuo percorso professionale e
           osserva come influisce sulla tua vita.
         </p>
         <br />

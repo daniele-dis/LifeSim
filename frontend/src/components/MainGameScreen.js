@@ -16,17 +16,14 @@ function MainGameScreen({ gameState, doAction, onBack, isDarkMode, aiSuggestion,
 
     return (
         <div className={`main-game-screen ${isDarkMode ? 'dark' : 'light'} ${gameState.is_game_over ? 'game-over-bg' : ''}`}>
-            {/* Back Button - Conditionally render or style for Game Over */}
-            <button
-                onClick={onBack}
-                className="main-game-screen__back-btn"
-                aria-label="Indietro"
-                disabled={gameState.is_game_over} // Disable back button if game is over
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" className="back-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-            </button>
+
+
+        <button
+            className="back-button" 
+            onClick={onBack}
+        >
+            &larr; Indietro {/* Freccia a sinistra e testo */}
+       </button>
 
             {/* Game Over Overlay */}
             {gameState.is_game_over && (
