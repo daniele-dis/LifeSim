@@ -17,13 +17,13 @@ function MainGameScreen({ gameState, doAction, onBack, isDarkMode, aiSuggestion,
     return (
         <div className={`main-game-screen ${isDarkMode ? 'dark' : 'light'} ${gameState.is_game_over ? 'game-over-bg' : ''}`}>
 
-
-        <button
-            className="back-button" 
-            onClick={onBack}
-        >
-            &larr; Indietro {/* Freccia a sinistra e testo */}
-       </button>
+            {/* Pulsante "Indietro" - SPOSTATO FUORI DAL CONTENITORE */}
+            <button
+                className="back-button" 
+                onClick={onBack}
+            >
+                &larr; Indietro {/* Freccia a sinistra e testo */}
+            </button>
 
             {/* Game Over Overlay */}
             {gameState.is_game_over && (
@@ -64,6 +64,26 @@ function MainGameScreen({ gameState, doAction, onBack, isDarkMode, aiSuggestion,
                             <span className="icon energy-icon">⚡</span> Energia: <span className="stat-value">{gameState.energia}</span>
                         </p>
 
+                        {/* New: Education Status */}
+                        <p className="game-stat">
+                            <span className="icon education-icon">🎓</span> Titolo di Studio: <span className="stat-value">{gameState.titolo_studio.charAt(0).toUpperCase() + gameState.titolo_studio.slice(1)}</span>
+                            {gameState.titolo_studio !== "master" && ( // Mostra il progresso se non è al massimo livello
+                                <span className="stat-value" style={{ marginLeft: '5px' }}>
+                                    ({gameState.giorni_per_prossimo_livello_studio > 0 ? `${gameState.giorni_per_prossimo_livello_studio} giorni al prossimo` : 'Completato'})
+                                </span>
+                            )}
+                        </p>
+
+                        {/* New: Job Status */}
+                        <p className="game-stat">
+                            <span className="icon job-icon">💼</span> Lavoro: <span className="stat-value">{gameState.lavoro_attuale.charAt(0).toUpperCase() + gameState.lavoro_attuale.slice(1)}</span>
+                            {gameState.lavoro_attuale !== "disoccupato" && (
+                                <span className="stat-value" style={{ marginLeft: '5px' }}>
+                                    (Stipendio: {new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(gameState.stipendio)})
+                                </span>
+                            )}
+                        </p>
+
                         {/* Relationship Status */}
                         <p className="game-stat">
                             <span className="icon relationship-icon">❤️</span> Relazione: <span className="stat-value">{relationshipStatus.charAt(0).toUpperCase() + relationshipStatus.slice(1)}</span>
@@ -73,14 +93,14 @@ function MainGameScreen({ gameState, doAction, onBack, isDarkMode, aiSuggestion,
                                     <span className="stat-value" style={{ marginLeft: '5px' }}>
                                         ({gameState.relazione.felicita_relazione}%)
                                     </span>
-                                    {/* Aggiungi una barra di progresso per la relazione */}
+                                    {/* Add a progress bar for the relationship */}
                                     <div className="relationship-bar-container" style={{ width: '100px', height: '10px', backgroundColor: '#333', borderRadius: '5px', overflow: 'hidden', marginLeft: '10px' }}>
                                         <div className="relationship-bar" style={{ width: `${gameState.relazione.felicita_relazione}%`, height: '100%', backgroundColor: gameState.relazione.felicita_relazione > 50 ? 'var(--color-highlight-secondary)' : 'var(--color-button-danger)', transition: 'width 0.5s ease' }}></div>
                                     </div>
                                 </>
                             )}
                             {relationshipStatus === "divorziato" && <span className="stat-value" style={{ color: 'var(--color-button-danger)' }}> (Ex)</span>}
-                            {/* Aggiungi altri stati se necessario, es. "rottura" */}
+                            {/* Add other statuses if needed, e.g., "breakup" */}
                         </p>
 
                         {/* Children List */}
@@ -101,9 +121,9 @@ function MainGameScreen({ gameState, doAction, onBack, isDarkMode, aiSuggestion,
                     {/* AI Suggestion Section */}
                     {aiSuggestion && (
                         <div className="main-game-screen__ai-suggestion">
-                            <p className="ai-suggestion__text">**Suggerimento IA:** {aiSuggestion.text}</p>
+                            <p className="ai-suggestion__text"><strong class = "lightblue-text">Suggerimento IA:</strong> {aiSuggestion.text}</p>
                             <div className="ai-suggestion__actions">
-                                <button onClick={() => onAcceptSuggestion(aiSuggestion.action)} className="ai-suggestion__btn ai-suggestion__btn--accept">Accetta ({aiSuggestion.action})</button>
+                                <button onClick={() => onAcceptSuggestion(aiSuggestion.action)} className="ai-suggestion__btn ai-suggestion__btn--accept">Accetta: {aiSuggestion.action}</button>
                                 <button onClick={onRejectSuggestion} className="ai-suggestion__btn ai-suggestion__btn--reject">Rifiuta</button>
                             </div>
                         </div>
@@ -112,19 +132,35 @@ function MainGameScreen({ gameState, doAction, onBack, isDarkMode, aiSuggestion,
                     {/* Action Buttons Container */}
                     <div className="main-game-screen__actions">
                         {/* Core Actions */}
-                        <button onClick={() => doAction('lavoro')} className="main-game-screen__action-btn">Vai a Lavorare</button>
+                        {gameState.lavoro_attuale !== "disoccupato" && ( // Show "Go to Work" only if employed
+                            <button onClick={() => doAction('lavoro')} className="main-game-screen__action-btn">Vai a Lavorare</button>
+                        )}
+                        {gameState.lavoro_attuale === "disoccupato" && ( // Show "Look for Job" only if unemployed
+                            <button onClick={() => doAction('cerca_lavoro')} className="main-game-screen__action-btn">Cerca Lavoro</button>
+                        )}
                         <button onClick={() => doAction('dormi')} className="main-game-screen__action-btn">Dormi</button>
                         <button onClick={() => doAction('divertiti')} className="main-game-screen__action-btn">Divertiti</button>
+
+                        {/* Education Action */}
+                        {gameState.titolo_studio !== "master" && ( // Show "Study" only if not at max level
+                            <button onClick={() => doAction('studia')} className="main-game-screen__action-btn">Studia/Formati</button>
+                        )}
 
                         {/* Relationship Actions */}
                         {relationshipStatus === "single" && gameState.eta >= 18 && gameState.eta < 30 && (
                             <button onClick={() => doAction('cerca_partner')} className="main-game-screen__action-btn">Cerca un Partner</button>
                         )}
                         {hasPartner && (
-                            <button onClick={() => doAction('esci_con_partner')} className="main-game-screen__action-btn">Esci con {gameState.relazione.partner_nome}</button>
+                            <>
+                                <button onClick={() => doAction('esci_con_partner')} className="main-game-screen__action-btn">Esci con {gameState.relazione.partner_nome}</button>
+                                <button onClick={() => doAction('parla_con_partner')} className="main-game-screen__action-btn">Parla con {gameState.relazione.partner_nome}</button> {/* New action */}
+                            </>
                         )}
                         {relationshipStatus === "fidanzato" && gameState.relazione.felicita_relazione >= 70 && gameState.eta >= 20 && (
                             <button onClick={() => doAction('proponi_matrimonio')} className="main-game-screen__action-btn">Proponi Matrimonio</button>
+                        )}
+                        {relationshipStatus === "fidanzato" && ( // New action: Leave partner if engaged
+                            <button onClick={() => doAction('lascia_partner')} className="main-game-screen__action-btn main-game-screen__action-btn--danger">Lascia il Partner</button>
                         )}
                         {relationshipStatus === "sposato" && gameState.eta >= 20 && gameState.eta < 45 && (
                             <button onClick={() => doAction('cerca_figli')} className="main-game-screen__action-btn">Cerca di avere Figli</button>
@@ -137,7 +173,6 @@ function MainGameScreen({ gameState, doAction, onBack, isDarkMode, aiSuggestion,
                         )}
 
                         {/* Other Advanced Actions */}
-                        <button onClick={() => doAction('studia')} className="main-game-screen__action-btn">Studia/Formati</button>
                         <button onClick={() => doAction('viaggia')} className="main-game-screen__action-btn">Viaggia</button>
                         <button onClick={() => doAction('investi')} className="main-game-screen__action-btn">Investi Soldi</button>
                     </div>

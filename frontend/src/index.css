@@ -1322,53 +1322,55 @@ html, body {
 /* ========================================================================== */
 
 /* General container */
+
+.lightblue-text{
+    color: #66c9ff 
+}
+
 .main-game-screen {
-    display: flex;
-    flex-direction: column;
+    margin-top: 10px;
     align-items: center;
-    /* Use 'vh' for padding to be relative to viewport height */
-    padding: 2vh 30px; /* Reduced vertical padding */
-    min-height: 100vh;
-    /* Use space-evenly to distribute space more uniformly if needed,
-       or keep 'center' if you want content clustered.
-       'space-around' or 'space-between' can also work depending on exact layout needs. */
-    justify-content: space-evenly; /* Changed to space-evenly for better distribution */
-    width: 100%;
     background-color: var(--color-background-primary);
     color: var(--color-text-primary);
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; /* Changed to space-evenly for better distribution */
+    min-height: 100vh;
     overflow: hidden; /* Keep this to prevent scroll due to aura effects */
+    padding: 2vh 30px; /* Reduced vertical padding */
+    position: relative;
+    width: 100%;
     transition: background-color 0.5s ease;
 }
 
 /* Background aura effects (assuming you have them from previous CSS) - no changes needed here */
 .main-game-screen::before,
 .main-game-screen::after {
-    content: "";
-    position: absolute;
     border-radius: 50%;
+    content: "";
     filter: blur(160px);
     opacity: 0.2;
+    position: absolute;
     z-index: var(--z-index-base);
     transition: background-color 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
 }
 
 .main-game-screen::before {
-    background: radial-gradient(ellipse at center, var(--aura-color-1) 0%, transparent 85%);
-    width: 200%;
-    height: 220%;
-    top: -60%;
-    left: -50%;
     animation: auroraMove1 30s ease-in-out infinite alternate;
+    background: radial-gradient(ellipse at center, var(--aura-color-1) 0%, transparent 85%);
+    height: 220%;
+    left: -50%;
+    top: -60%;
+    width: 200%;
 }
 
 .main-game-screen::after {
-    background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%);
-    width: 180%;
-    height: 180%;
-    top: -40%;
-    left: 40%;
     animation: auroraMove2 35s ease-in-out infinite alternate;
+    background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%);
+    height: 180%;
+    left: 40%;
+    top: -40%;
+    width: 180%;
 }
 
 /* Keyframes for aura movement (add if not present) */
@@ -1383,42 +1385,14 @@ html, body {
 }
 
 
-.main-game-screen__back-btn {
-    position: absolute;
-    top: 1.5vh; /* Use vh for top positioning */
-    left: 20px;
-    width: 50px;
-    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
-    color: var(--color-button-text);
-    border: none;
-    padding: 0.8vh 15px; /* Use vh for vertical padding */
-    border-radius: 8px;
-    cursor: pointer;
-    z-index: var(--z-index-back-button);
-    font-size: 1.8vh; /* Use vh for font size */
-    transition: all 0.3s ease;
-}
-
-.main-game-screen__back-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.main-game-screen__back-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
 .main-game-screen__title {
-    font-size: 5vh; /* Scale font size with viewport height */
+    animation: fadeInSlideDown 1s ease-out;
     color: var(--color-highlight-primary);
+    font-size: 5vh; /* Scale font size with viewport height */
     margin-bottom: 2vh; /* Use vh for margin */
     text-align: center;
-    transition: color 0.5s ease;
     z-index: var(--z-index-content);
-    animation: fadeInSlideDown 1s ease-out;
+    transition: color 0.5s ease;
 }
 
 .main-game-screen__title .highlight {
@@ -1449,103 +1423,120 @@ html, body {
 }
 
 .main-game-screen__stats {
+
     background-color: var(--color-background-secondary);
     border-radius: 12px;
-    padding: 1.5vh 30px; /* Reduced vertical padding, using vh */
-    margin-bottom: 2.5vh; /* Reduced margin, using vh */
     box-shadow: 0 4px 15px var(--color-shadow-primary);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Slightly reduced min-width for columns */
-    gap: 10px; /* Reduced gap */
-    width: 95%; /* Adjusted width */
-    max-width: 900px;
+    gap: 20px; /* Aumentato il gap per maggiore spazio tra le colonne */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Aumentato il min-width a 250px */
+    margin-bottom: 4vh;
+    padding: 1.5vh 30px;
+    max-width: 1000px; /* Potresti anche provare ad aumentare questo a 1200px se 900px è troppo stretto per il tuo schermo */
     text-align: left;
-    transition: background-color 0.5s ease, box-shadow 0.5s ease;
+    width: 95%;
     z-index: var(--z-index-content);
+    transition: background-color 0.5s ease, box-shadow 0.5s ease;
 }
 
 .game-stat {
-    display: flex;
     align-items: center;
-    font-size: 1.8vh; /* Scaled with vh */
     color: var(--color-text-primary);
+    display: flex;
+    font-size: 2.05vh; /* Scaled with vh */
     transition: color 0.5s ease;
 }
 
 .game-stat .icon {
-    margin-right: 8px; /* Slightly reduced margin */
-    font-size: 2.2vh; /* Scaled with vh */
     filter: drop-shadow(0 0 5px rgba(0,0,0,0.2));
+    font-size: 2.2vh; /* Scaled with vh */
+    margin-right: 8px; /* Slightly reduced margin */
 }
 
 .game-stat .stat-value {
-    font-weight: 600;
     color: var(--color-highlight-primary);
+    font-weight: 600;
     transition: color 0.5s ease;
 }
 
+/* Relationship Bar within stats */
+.relationship-bar-container {
+    background-color: #333;
+    border-radius: 5px;
+    height: 10px;
+    margin-left: 10px;
+    overflow: hidden;
+    width: 100px;
+}
+
+.relationship-bar {
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+
 /* Game Message */
 .game-message {
+    animation: fadeIn 0.5s ease-out;
     background-color: var(--color-background-tertiary);
     border: 1px solid var(--color-border-primary);
     border-radius: 8px;
-    padding: 1vh 15px; /* Reduced padding, using vh */
-    margin-bottom: 2vh; /* Reduced margin, using vh */
-    max-width: 700px;
-    width: 95%; /* Adjusted width */
-    text-align: center;
+    box-shadow: 0 2px 8px var(--color-shadow-secondary);
+    color: var(--color-text-primary);
     font-size: 1.8vh; /* Scaled with vh */
     font-weight: 500;
-    color: var(--color-text-primary);
-    box-shadow: 0 2px 8px var(--color-shadow-secondary);
-    animation: fadeIn 0.5s ease-out;
+    margin-bottom: 2vh; /* Reduced margin, using vh */
+    padding: 1vh 15px; /* Reduced padding, using vh */
+    max-width: 700px;
+    text-align: center;
+    width: 95%; /* Adjusted width */
     z-index: var(--z-index-content);
 }
 
 /* AI Suggestion Section */
 .main-game-screen__ai-suggestion {
+    animation: fadeInScale 0.6s ease-out;
     background-color: var(--color-background-accent);
     border: 2px solid var(--color-highlight-primary);
     border-radius: 10px;
-    padding: 2vh; /* Reduced padding, using vh */
-    margin-bottom: 2.5vh; /* Reduced margin, using vh */
-    max-width: 700px;
-    width: 95%; /* Adjusted width */
-    text-align: center;
     box-shadow: 0 5px 20px var(--color-highlight-primary-hover);
-    animation: fadeInScale 0.6s ease-out;
+    margin-bottom: 4vh;
+    padding: 2vh; /* Reduced padding, using vh */
+    max-width: 700px;
+    text-align: center;
+    width: 95%; /* Adjusted width */
     z-index: var(--z-index-content);
 }
 
 .ai-suggestion__text {
-    font-size: 2vh; /* Scaled with vh */
     color: var(--color-text-primary);
-    margin-bottom: 1.5vh; /* Reduced margin, using vh */
+    font-size: 2vh; /* Scaled with vh */
     font-style: italic;
+    margin-bottom: 1.5vh; /* Reduced margin, using vh */
 }
 
 .ai-suggestion__actions {
     display: flex;
-    justify-content: center;
     gap: 10px; /* Reduced gap */
+    justify-content: center;
 }
 
 .ai-suggestion__btn {
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
-    color: var(--color-button-text);
     border: none;
     border-radius: 12px;
-    padding: 1vh 15px; /* Reduced padding, using vh */
-    font-size: 1.7vh; /* Scaled with vh */
-    cursor: pointer;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 600;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    color: var(--color-button-text);
+    cursor: pointer;
+    font-size: 1.7vh; /* Scaled with vh */
+    font-weight: 600;
+    padding: 1vh 15px; /* Reduced padding, using vh */
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .ai-suggestion__btn:hover {
-    transform: translateY(-2px) scale(1.03);
     box-shadow: 0 8px 20px var(--color-button-shadow-hover);
+    transform: translateY(-2px) scale(1.03);
 }
 
 .ai-suggestion__btn--reject {
@@ -1567,35 +1558,35 @@ html, body {
 
 .main-game-screen__actions {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Further reduced min-width for columns */
     gap: 10px; /* Reduced gap */
-    width: 95%; /* Adjusted width */
-    max-width: 900px;
-    z-index: var(--z-index-content);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Further reduced min-width for columns */
     margin-bottom: 2.5vh; /* Reduced margin, using vh */
+    max-width: 900px;
+    width: 95%; /* Adjusted width */
+    z-index: var(--z-index-content);
 }
 
 .main-game-screen__action-btn {
+    align-items: center;
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
-    color: var(--color-button-text);
     border: none;
     border-radius: 14px;
-    padding: 1.2vh 15px; /* Reduced padding, using vh */
-    font-size: 1.9vh; /* Scaled with vh */
-    cursor: pointer;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 700;
-    letter-spacing: 0.5px; /* Slightly reduced letter spacing */
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     box-shadow: 0 6px 15px var(--color-button-shadow-primary);
+    color: var(--color-button-text);
+    cursor: pointer;
     display: flex;
+    font-size: 1.9vh; /* Scaled with vh */
+    font-weight: 700;
     justify-content: center;
-    align-items: center;
+    letter-spacing: 0.5px; /* Slightly reduced letter spacing */
+    padding: 1.2vh 15px; /* Reduced padding, using vh */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .main-game-screen__action-btn:hover {
-    transform: translateY(-4px);
     box-shadow: 0 10px 25px var(--color-button-shadow-hover);
+    transform: translateY(-4px);
 }
 
 .main-game-screen__action-btn--danger {
@@ -1607,13 +1598,13 @@ html, body {
 }
 
 .main-game-screen__footer {
-    margin-top: 2vh; /* Reduced margin, using vh */
-    font-size: 1.5vh; /* Scaled with vh */
     color: var(--color-text-secondary);
-    text-align: center;
-    transition: color 0.5s ease;
-    z-index: var(--z-index-content);
+    font-size: 1.5vh; /* Scaled with vh */
+    margin-top: 2vh; /* Reduced margin, using vh */
     opacity: 0.8;
+    text-align: center;
+    z-index: var(--z-index-content);
+    transition: color 0.5s ease;
 }
 
 /* Game Over Styles */
@@ -1623,70 +1614,69 @@ html, body {
     transition: background-color 0.5s ease;
 }
 
-
 .game-over-overlay {
-    position: fixed; /* Changed to fixed to ensure it covers the whole viewport */
-    top: 0;
-    left: 0;
-    width: 100vw; /* Use vw for full width */
-    height: 100vh; /* Use vh for full height */
+    animation: fadeIn 1s ease-out;
+    align-items: center;
     background-color: rgba(0, 0, 0, 0.7);
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
+    height: 100vh; /* Use vh for full height */
+    justify-content: center;
+    left: 0;
+    position: fixed; /* Changed to fixed to ensure it covers the whole viewport */
+    top: 0;
+    width: 100vw; /* Use vw for full width */
     z-index: var(--z-index-modal);
-    animation: fadeIn 1s ease-out;
 }
 
 .game-over-content {
+    animation: slideInUp 0.8s ease-out;
     background-color: var(--color-background-secondary);
     border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    max-width: 90vw; /* Adjusted max-width for smaller screens */
     padding: 3vh 4vw; /* Scaled padding with vh and vw */
     text-align: center;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-    animation: slideInUp 0.8s ease-out;
-    max-width: 90vw; /* Adjusted max-width for smaller screens */
     width: 90%;
 }
 
 .game-over-content h2 {
-    font-size: 4vh; /* Scaled with vh */
     color: var(--color-highlight-tertiary);
+    font-size: 4vh; /* Scaled with vh */
     margin-bottom: 1.5vh; /* Scaled with vh */
     text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
 }
 
 .game-over-reason {
-    font-size: 2.2vh; /* Scaled with vh */
     color: var(--color-text-primary);
-    margin-bottom: 2vh; /* Scaled with vh */
+    font-size: 2.2vh; /* Scaled with vh */
     line-height: 1.4;
+    margin-bottom: 2vh; /* Scaled with vh */
 }
 
 .final-stats {
-    font-size: 1.8vh; /* Scaled with vh */
     color: var(--color-text-secondary);
+    font-size: 1.8vh; /* Scaled with vh */
     margin-bottom: 1vh; /* Scaled with vh */
 }
 
 .game-over-restart-btn {
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
-    color: var(--color-button-text);
     border: none;
     border-radius: 18px;
-    padding: 1.2vh 30px; /* Scaled with vh */
+    box-shadow: 0 5px 15px var(--color-button-shadow-primary);
+    color: var(--color-button-text);
+    cursor: pointer;
     font-size: 2vh; /* Scaled with vh */
     font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
     margin-top: 2.5vh; /* Scaled with vh */
-    box-shadow: 0 5px 15px var(--color-button-shadow-primary);
+    padding: 1.2vh 30px; /* Scaled with vh */
+    transition: all 0.3s ease;
 }
 
 .game-over-restart-btn:hover {
-    transform: translateY(-3px) scale(1.05);
     box-shadow: 0 8px 20px var(--color-button-shadow-hover);
+    transform: translateY(-3px) scale(1.05);
 }
 
 @keyframes slideInUp {
@@ -1713,8 +1703,8 @@ html, body {
 
     .main-game-screen__stats {
         grid-template-columns: 1fr;
-        padding: 1vh 20px;
         margin-bottom: 1.5vh;
+        padding: 1vh 20px;
     }
 
     .game-stat {
@@ -1722,13 +1712,13 @@ html, body {
     }
 
     .main-game-screen__actions {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Even smaller min-width */
         gap: 8px;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Even smaller min-width */
     }
 
     .main-game-screen__action-btn {
-        padding: 1vh 12px;
         font-size: 1.7vh;
+        padding: 1vh 12px;
     }
 
     .main-game-screen__ai-suggestion {
@@ -1738,8 +1728,8 @@ html, body {
         font-size: 1.7vh;
     }
     .ai-suggestion__btn {
-        padding: 0.8vh 12px;
         font-size: 1.5vh;
+        padding: 0.8vh 12px;
     }
 
     .game-over-content h2 {
@@ -1762,16 +1752,9 @@ html, body {
         margin-bottom: 1.5vh;
     }
 
-    .main-game-screen__back-btn {
-        top: 1vh;
-        left: 10px;
-        padding: 0.6vh 10px;
-        font-size: 1.4vh;
-    }
-
     .main-game-screen__stats {
-        padding: 0.8vh 10px;
         margin-bottom: 1vh;
+        padding: 0.8vh 10px;
     }
 
     .game-stat {
@@ -1783,13 +1766,13 @@ html, body {
     }
 
     .main-game-screen__actions {
-        grid-template-columns: 1fr; /* Stack buttons on very small screens */
         gap: 6px;
+        grid-template-columns: 1fr; /* Stack buttons on very small screens */
     }
 
     .main-game-screen__action-btn {
-        padding: 0.8vh 10px;
         font-size: 1.6vh;
+        padding: 0.8vh 10px;
     }
 
     .main-game-screen__ai-suggestion {
@@ -1800,14 +1783,14 @@ html, body {
         gap: 8px;
     }
     .ai-suggestion__btn {
-        width: 100%;
         font-size: 1.4vh;
+        width: 100%;
     }
 
     .game-message {
         font-size: 1.5vh;
-        padding: 0.8vh 12px;
         margin-bottom: 1.5vh;
+        padding: 0.8vh 12px;
     }
 
     .game-over-content h2 {
@@ -1822,8 +1805,5 @@ html, body {
         font-size: 1.7vh;
         padding: 0.8vh 18px;
     }
-    .main-game-screen__footer {
-        margin-top: 1.5vh;
-        font-size: 1.3vh;
-    }
+
 }

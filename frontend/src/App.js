@@ -45,14 +45,7 @@ function App() {
     // --- Render delle diverse fasi ---
     return (
         <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
-            {/* Display di un messaggio globale se presente */}
-            {message && (
-                <div className="app-message-overlay">
-                    <div className="app-message-box">
-                        <p>{message}</p>
-                    </div>
-                </div>
-            )}
+
 
             {currentPhase === 'start' && (
                 <StartScreen

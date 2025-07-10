@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 import random
+import tempfile 
 
 app = Flask(__name__)
 # Abilita CORS per tutta l'applicazione. Questo gestisce automaticamente le richieste OPTIONS.
@@ -15,7 +16,7 @@ SAVE_FOLDER = 'data'
 def load_game_slots():
     """Carica gli slot di gioco dal file JSON."""
     if os.path.exists(SAVE_FILE):
-        with open(SAVE_FILE, 'r') as f:
+        with open(SAVE_FILE, 'r', encoding='utf-8') as f: # Specifica encoding anche qui
             try:
                 data = json.load(f)
                 print(f"Backend: Caricati slot da {SAVE_FILE}: {data}")
@@ -27,10 +28,30 @@ def load_game_slots():
     return {}
 
 def save_game_slots(slots):
-    """Salva gli slot di gioco sul file JSON."""
-    with open(SAVE_FILE, 'w') as f:
-        json.dump(slots, f, indent=4)
+    """Salva gli slot di gioco sul file JSON in modo più robusto usando un file temporaneo."""
+    temp_file_path = None
+    try:
+        # Crea la cartella di salvataggio se non esiste
+        os.makedirs(os.path.dirname(SAVE_FILE) or '.', exist_ok=True)
+        
+        # Crea un file temporaneo nello stesso direttorio del file di salvataggio
+        # `mkstemp` restituisce un file descriptor (fd) e il percorso del file
+        fd, temp_file_path = tempfile.mkstemp(dir=os.path.dirname(SAVE_FILE) or '.', suffix='.tmp')
+        
+        # Apri il file temporaneo usando il file descriptor per assicurare che sia chiuso correttamente
+        with os.fdopen(fd, 'w', encoding='utf-8') as f: # Specifica encoding per compatibilità
+            json.dump(slots, f, indent=4, ensure_ascii=False) # ensure_ascii=False per caratteri non-ASCII
+        
+        # Se la scrittura sul file temporaneo ha avuto successo, sposta/rinomina per sovrascrivere l'originale
+        shutil.move(temp_file_path, SAVE_FILE)
         print(f"Backend: Salvati slot su {SAVE_FILE}: {slots}")
+    except Exception as e:
+        # Gestisce qualsiasi errore durante la scrittura
+        print(f"Backend ERRORE CRITICO SALVATAGGIO: Impossibile salvare gli slot su {SAVE_FILE}. Errore: {e}")
+    finally:
+        # Pulisce il file temporaneo se per qualche motivo esiste ancora (es. errore prima di shutil.move)
+        if temp_file_path and os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
 
 # --- Helper Functions for Game Logic ---
 
@@ -38,11 +59,20 @@ def clamp(value, min_val, max_val):
     """Limita un valore all'interno di un intervallo."""
     return max(min_val, min(value, max_val))
 
-def get_random_partner_name():
-    """Genera un nome casuale per il partner."""
-    first_names = ["Marco", "Giulia", "Andrea", "Sofia", "Luca", "Chiara", "Francesco", "Martina"]
+def get_random_partner_name(gender_preference=None):
+    """Genera un nome casuale per il partner, con preferenza di genere."""
+    male_first_names = ["Marco", "Andrea", "Luca", "Francesco", "Alessandro", "Gabriele"]
+    female_first_names = ["Giulia", "Sofia", "Chiara", "Martina", "Aurora", "Beatrice"]
     last_names = ["Rossi", "Bianchi", "Verdi", "Russo", "Ferrari", "Esposito"]
-    return f"{random.choice(first_names)} {random.choice(last_names)}"
+
+    if gender_preference == "male":
+        first_name = random.choice(male_first_names)
+    elif gender_preference == "female":
+        first_name = random.choice(female_first_names)
+    else: # "indifferent" or no preference
+        first_name = random.choice(male_first_names + female_first_names)
+        
+    return f"{first_name} {random.choice(last_names)}"
 
 def generate_random_child_name():
     """Genera un nome casuale per un figlio."""
@@ -62,7 +92,7 @@ def check_game_over(state):
         return True, "sei morto di tristezza e disperazione."
     if state["energia"] <= 0:
         return True, "sei morto di sfinimento totale."
-    if state["soldi"] <= -50: # Esempio: debito profondo
+    if state["soldi"] <= -5000: # Esempio: debito profondo
         return True, "sei morto di stenti e povertà estrema."
     
     # Incidenti casuali (es. 0.5% di probabilità per turno dopo i 30 anni)
@@ -77,6 +107,46 @@ def check_game_over(state):
         
     return False, None
 
+# --- Education and Job Helper Functions ---
+EDUCATION_LEVELS = ["nessuno", "diploma_scuola_superiore", "laurea_triennale", "laurea_magistrale", "master"]
+DAYS_TO_NEXT_LEVEL = {
+    "nessuno": 20, # Per ottenere il diploma
+    "diploma_scuola_superiore": 30, # Per ottenere la triennale
+    "laurea_triennale": 40, # Per ottenere la magistrale
+    "laurea_magistrale": 50, # Per ottenere il master
+    "master": 60 # Già al massimo
+}
+
+JOBS = {
+    "disoccupato": {"stipendio": 0, "requirements": "nessuno"},
+    "lavoretto_saltuario": {"stipendio": 400, "requirements": "nessuno"}, # Nuovo lavoro base
+    "commesso": {"stipendio": 800, "requirements": "diploma_scuola_superiore"},
+    "impiegato_amministrativo": {"stipendio": 1200, "requirements": "laurea_triennale"},
+    "manager": {"stipendio": 2500, "requirements": "laurea_magistrale"},
+    "dirigente": {"stipendio": 4000, "requirements": "master"},
+}
+
+def get_next_study_level(current_level):
+    try:
+        current_index = EDUCATION_LEVELS.index(current_level)
+        if current_index < len(EDUCATION_LEVELS) - 1:
+            return EDUCATION_LEVELS[current_index + 1]
+        return current_level # Already at max level
+    except ValueError:
+        return "nessuno" # Fallback
+
+def get_job_opportunities(current_education_level):
+    """Restituisce i lavori disponibili in base al livello di istruzione."""
+    available_jobs = []
+    for job_title, details in JOBS.items():
+        if job_title == "disoccupato":
+            continue
+        req_index = EDUCATION_LEVELS.index(details["requirements"])
+        current_index = EDUCATION_LEVELS.index(current_education_level)
+        if current_index >= req_index:
+            available_jobs.append(job_title)
+    return available_jobs
+
 # --- API Endpoints ---
 
 @app.route("/initialize_game", methods=["POST"])
@@ -87,6 +157,7 @@ def initialize_game():
     slot_number = str(data.get("slot"))
     player_name = data.get("playerName")
     selected_avatar = data.get("selectedAvatar")
+    partner_gender_preference = data.get("partnerGenderPreference", "indifferent") # Nuovo campo
 
     if not all([slot_number, player_name, selected_avatar]):
         return jsonify({"message": "Dati insufficienti per inizializzare il gioco."}), 400
@@ -102,13 +173,19 @@ def initialize_game():
         "relazione": {
             "stato": "single",
             "partner_nome": None,
-            "felicita_relazione": 0
+            "felicita_relazione": 0,
+            "preferenza_genere": partner_gender_preference # Salva la preferenza del giocatore
         },
         "figli": [],
         "current_suggestion": None,
         "message": "Benvenuto nella tua nuova vita!",
         "is_game_over": False,
-        "death_reason": None
+        "death_reason": None,
+        # Nuovi campi per istruzione e lavoro
+        "titolo_studio": "nessuno",
+        "giorni_per_prossimo_livello_studio": DAYS_TO_NEXT_LEVEL["nessuno"],
+        "lavoro_attuale": "disoccupato",
+        "stipendio": 0 # Stipendio associato al lavoro attuale
     }
     save_game_slots(game_slots)
     return jsonify(game_slots[slot_number])
@@ -119,7 +196,19 @@ def get_game_state(slot_num):
     game_slots = load_game_slots()
     slot_key = str(slot_num)
     if slot_key in game_slots:
-        return jsonify(game_slots[slot_key])
+        state = game_slots[slot_key]
+        
+        # Ensure new fields are always present, even for old saves
+        # Set titolo_studio first, as others depend on it
+        state.setdefault("titolo_studio", "nessuno") 
+        state.setdefault("giorni_per_prossimo_livello_studio", DAYS_TO_NEXT_LEVEL.get(state["titolo_studio"], 0)) # Use .get with default 0 if level not found
+        state.setdefault("lavoro_attuale", "disoccupato")
+        state.setdefault("stipendio", JOBS.get(state["lavoro_attuale"], {"stipendio": 0})["stipendio"]) # Use .get with default dict
+        state["relazione"].setdefault("preferenza_genere", "indifferent") 
+
+        # It's good practice to save if we modified the state to ensure consistency
+        save_game_slots(game_slots) 
+        return jsonify(state)
     return jsonify({"message": f"Slot {slot_num} non trovato."}), 404
 
 @app.route("/debug_slots", methods=["GET"])
@@ -149,8 +238,17 @@ def generate_ai_suggestion():
             suggestion = {"action": "esci_con_partner", "text": f"{state['nome']}, la tua felicità è bassa, e anche quella di {state['relazione']['partner_nome']} non è al top. Un'uscita insieme potrebbe aiutare entrambi!"}
         else:
             suggestion = {"action": "divertiti", "text": f"{state['nome']}, la tua felicità è bassa. Fai qualcosa che ti piace!"}
+    # NUOVA LOGICA: Prioritizza il cambio lavoro se qualificato e non disoccupato
+    elif state["lavoro_attuale"] != "disoccupato" and \
+         EDUCATION_LEVELS.index(state["titolo_studio"]) > EDUCATION_LEVELS.index(JOBS[state["lavoro_attuale"]]["requirements"]) and \
+         random.random() < 0.8: # Alta probabilità di suggerire il cambio lavoro se qualificato
+        suggestion = {"action": "cerca_lavoro", "text": f"{state['nome']}, hai un {state['titolo_studio'].replace('_', ' ')}! È ora di cercare un lavoro migliore rispetto a {state['lavoro_attuale'].replace('_', ' ')}!"}
     elif state["soldi"] < 100:
-        suggestion = {"action": "lavoro", "text": f"I tuoi soldi stanno scarseggiando, {state['nome']}. È tempo di guadagnare!"}
+        # Se i soldi sono bassi, suggerisci di lavorare o cercare lavoro (dopo il controllo di upgrade)
+        if state["lavoro_attuale"] == "disoccupato":
+            suggestion = {"action": "cerca_lavoro", "text": f"I tuoi soldi stanno scarseggiando, {state['nome']}. Trova un lavoro per guadagnare!"}
+        else:
+            suggestion = {"action": "lavoro", "text": f"I tuoi soldi stanno scarseggiando, {state['nome']}. È tempo di guadagnare con il tuo lavoro!"}
     elif state["relazione"]["stato"] in ["fidanzato", "sposato"] and state["relazione"]["felicita_relazione"] < 40:
         # Suggerimento per crisi di relazione
         if state["relazione"]["felicita_relazione"] < 20 and random.random() < 0.5: # Più probabile se molto bassa
@@ -158,9 +256,16 @@ def generate_ai_suggestion():
         else:
             suggestion = {"action": "esci_con_partner", "text": f"Il rapporto con {state['relazione']['partner_nome']} non è al massimo, {state['nome']}. Passa del tempo di qualità insieme."}
     
-    # Priorità 2: Fasi della vita e opportunità
+    # Priorità 2: Fasi della vita e opportunità (inclusi istruzione e lavoro)
     if not suggestion:
-        if state["eta"] >= 18 and state["eta"] < 30 and state["relazione"]["stato"] == "single" and random.random() < 0.3:
+        # Suggerimento per l'istruzione se non al massimo livello e giorni rimanenti bassi
+        if state["titolo_studio"] != "master" and state["giorni_per_prossimo_livello_studio"] <= 30 and random.random() < 0.4:
+            next_study_level = get_next_study_level(state["titolo_studio"])
+            suggestion = {"action": "studia", "text": f"{state['nome']}, continua a studiare per ottenere il tuo {next_study_level.replace('_', ' ')}!"}
+        # Suggerimento per cercare lavoro se disoccupato (se non già coperto dalla priorità 1)
+        elif state["lavoro_attuale"] == "disoccupato" and random.random() < 0.5: 
+            suggestion = {"action": "cerca_lavoro", "text": f"{state['nome']}, hai bisogno di un impiego. Cerca un lavoro per iniziare a guadagnare!"}
+        elif state["eta"] >= 18 and state["eta"] < 30 and state["relazione"]["stato"] == "single" and random.random() < 0.3:
             suggestion = {"action": "cerca_partner", "text": f"{state['nome']}, sei giovane e single. È il momento di trovare qualcuno di speciale!"}
         elif state["relazione"]["stato"] == "fidanzato" and state["relazione"]["felicita_relazione"] >= 70 and random.random() < 0.2:
             suggestion = {"action": "proponi_matrimonio", "text": f"La tua relazione con {state['relazione']['partner_nome']} è forte. Forse è tempo di fare il grande passo?"}
@@ -174,7 +279,8 @@ def generate_ai_suggestion():
         possible_suggestions = [
             {"action": "lavoro", "text": f"{state['nome']}, potresti guadagnare un po' di più. Hai voglia di lavorare?"},
             {"action": "dormi", "text": f"Un po' di riposo non guasta mai, {state['nome']}. Vuoi fare un pisolino?"},
-            {"action": "divertiti", "text": f"La vita è anche divertimento! Che ne dici di goderti un po' di tempo libero, {state['nome']}?"}
+            {"action": "divertiti", "text": f"La vita è anche divertimento! Che ne dici di goderti un po' di tempo libero, {state['nome']}?"},
+            {"action": "studia", "text": f"Migliora le tue conoscenze, {state['nome']}. Un buon titolo di studio apre molte porte!"} # Suggerimento generale per studiare
         ]
         if state["relazione"]["stato"] in ["fidanzato", "sposato"]:
             possible_suggestions.append({"action": "esci_con_partner", "text": f"Perché non passi un po' di tempo con {state['relazione']['partner_nome']}?"})
@@ -190,6 +296,7 @@ def generate_ai_suggestion():
     state["current_suggestion"] = suggestion 
     save_game_slots(game_slots)
     return jsonify(suggestion)
+
 
 
 @app.route("/do_action", methods=["POST"])
@@ -217,12 +324,16 @@ def do_action():
     state["message"] = None # Cancella il messaggio precedente
     state["current_suggestion"] = None # Cancella il suggerimento dopo l'azione
 
-    # --- Core Actions (Esistenti) ---
+    # --- Core Actions ---
     if azione == "lavoro":
-        state["soldi"] += random.randint(30, 70)
-        state["energia"] -= random.randint(20, 30)
-        state["felicita"] = clamp(state["felicita"] - random.randint(5, 15), 0, 100)
-        state["message"] = "Hai lavorato sodo e guadagnato un po' di soldi."
+        if state["lavoro_attuale"] == "disoccupato":
+            state["message"] = "Non hai un lavoro da cui andare!"
+        else:
+            job_details = JOBS[state["lavoro_attuale"]]
+            state["soldi"] += job_details["stipendio"] // 30 # Guadagno giornaliero (approssimato)
+            state["energia"] -= random.randint(20, 30)
+            state["felicita"] = clamp(state["felicita"] - random.randint(5, 15), 0, 100)
+            state["message"] = f"Hai lavorato sodo e guadagnato un po' di soldi."
     elif azione == "dormi":
         state["energia"] = clamp(state["energia"] + random.randint(30, 50), 0, 100)
         state["felicita"] = clamp(state["felicita"] + random.randint(5, 15), 0, 100)
@@ -237,7 +348,7 @@ def do_action():
     elif azione == "cerca_partner":
         if state["relazione"]["stato"] == "single" and state["eta"] >= 18:
             if state["soldi"] >= 30 and state["felicita"] >= 60 and random.random() < 0.6: # Probabilità di trovare partner
-                partner_name = get_random_partner_name()
+                partner_name = get_random_partner_name(state["relazione"]["preferenza_genere"]) # Usa la preferenza
                 state["relazione"]["stato"] = "fidanzato"
                 state["relazione"]["partner_nome"] = partner_name
                 state["relazione"]["felicita_relazione"] = random.randint(50, 80)
@@ -357,17 +468,66 @@ def do_action():
         else:
             state["message"] = "Non sei fidanzato per lasciare qualcuno."
             
-    # --- Altre azioni avanzate (Esempi) ---
+    # --- Education and Job Actions ---
     elif azione == "studia":
-        if state["energia"] >= 15:
+        if state["titolo_studio"] == "master":
+            state["message"] = "Hai già raggiunto il massimo livello di istruzione!"
+        elif state["energia"] < 15:
+            state["message"] = "Sei troppo stanco per studiare."
+        else:
             state["soldi"] = clamp(state["soldi"] - 10, -100, state["soldi"]) # Costo di libri/corsi
             state["felicita"] = clamp(state["felicita"] - 5, 0, 100)
             state["energia"] = clamp(state["energia"] - 15, 0, 100)
-            # Forse una statistica "conoscenza" nascosta che aumenta le possibilità di lavori migliori
-            state["message"] = "Hai studiato duramente. Chissà quali opportunità si apriranno!"
-        else:
-            state["message"] = "Sei troppo stanco per studiare."
+            state["giorni_per_prossimo_livello_studio"] -= 1 # Un giorno di studio in meno
 
+            if state["giorni_per_prossimo_livello_studio"] <= 0:
+                current_index = EDUCATION_LEVELS.index(state["titolo_studio"])
+                if current_index < len(EDUCATION_LEVELS) - 1:
+                    state["titolo_studio"] = EDUCATION_LEVELS[current_index + 1]
+                    state["message"] = f"Congratulazioni! Hai ottenuto il tuo {state['titolo_studio'].replace('_', ' ')}!"
+                    # Resetta i giorni per il prossimo livello, se non è il master
+                    if state["titolo_studio"] != "master":
+                        state["giorni_per_prossimo_livello_studio"] = DAYS_TO_NEXT_LEVEL[state["titolo_studio"]]
+                else:
+                    state["message"] = "Hai completato tutti i tuoi studi!"
+            else:
+                state["message"] = f"Stai studiando per il {get_next_study_level(state['titolo_studio']).replace('_', ' ')}. Ti mancano {state['giorni_per_prossimo_livello_studio']} giorni."
+    
+    elif azione == "cerca_lavoro":
+        # Rimosso il controllo "disoccupato" per permettere il cambio lavoro
+        if state["energia"] < 20:
+            state["message"] = "Sei troppo stanco per cercare lavoro."
+        else:
+            available_jobs = get_job_opportunities(state["titolo_studio"])
+            
+            # Filtra i lavori disponibili per quelli migliori del tuo attuale (se ne hai uno)
+            current_job_stipendio = JOBS.get(state["lavoro_attuale"], {"stipendio": 0})["stipendio"]
+            better_jobs = [job for job in available_jobs if JOBS[job]["stipendio"] > current_job_stipendio]
+            
+            state["energia"] = clamp(state["energia"] - 20, 0, 100)
+            state["soldi"] = clamp(state["soldi"] - 10, -100, state["soldi"]) # Costo per la ricerca
+
+            # Ora cerca solo tra i lavori migliori, o tra tutti se non ce ne sono di migliori (es. disoccupato)
+            jobs_to_consider = better_jobs if better_jobs else available_jobs
+
+            if jobs_to_consider and random.random() < 0.7: # Alta probabilità di trovare un lavoro se qualificato
+                # Scegli casualmente tra i lavori migliori disponibili
+                new_job = random.choice(jobs_to_consider)
+                
+                # Aggiungi una piccola logica per non downgradare il lavoro
+                if JOBS[new_job]["stipendio"] > current_job_stipendio or state["lavoro_attuale"] == "disoccupato":
+                    state["lavoro_attuale"] = new_job
+                    state["stipendio"] = JOBS[new_job]["stipendio"]
+                    state["felicita"] = clamp(state["felicita"] + 20, 0, 100)
+                    state["message"] = f"Congratulazioni! Hai trovato un lavoro come {new_job.replace('_', ' ')} con uno stipendio di {state['stipendio']} soldi al mese!"
+                else:
+                    state["felicita"] = clamp(state["felicita"] - 5, 0, 100)
+                    state["message"] = "Hai cercato lavoro, ma non hai trovato nulla di meglio questa volta."
+            else:
+                state["felicita"] = clamp(state["felicita"] - 10, 0, 100)
+                state["message"] = "Hai cercato lavoro, ma non hai trovato nulla di adatto questa volta. Continua a provare o studia!"
+    
+    # --- Other Advanced Actions (Esempi) ---
     elif azione == "viaggia":
         if state["soldi"] >= 100 and state["energia"] >= 30:
             state["soldi"] = clamp(state["soldi"] - 100, -100, state["soldi"])
@@ -405,7 +565,7 @@ def do_action():
             state["relazione"]["partner_nome"] = None
             state["relazione"]["felicita_relazione"] = 0
             state["felicita"] = clamp(state["felicita"] - 30, 0, 100)
-            state["message"] = f"Il tuo amato/a {state['relazione']['partner_nome']} è venuto a mancare. Ti senti un vuoto incolmabile."
+            state["message"] = f"Il tuo amato/a è venuto a mancare. Ti senti un vuoto incolmabile."
             # Potremmo anche aggiungere un costo per il funerale o una piccola eredità
 
     # Decadimento giornaliero per le statistiche (anche se non è stata intrapresa alcuna azione specifica)
@@ -453,6 +613,7 @@ def do_action():
 
     save_game_slots(game_slots)
     return jsonify(state)
+
 
 @app.route("/get_all_slots", methods=["GET"])
 def get_all_slots():
