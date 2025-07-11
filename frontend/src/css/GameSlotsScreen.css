@@ -1,0 +1,426 @@
+/* ========================================================================== */
+/* --- STILI SPECIFICI PER LA SCHERMATA DI SELEZIONE SLOT (GameSlotsScreen) --- */
+/* ========================================================================== */
+
+.game-slot-modal-overlay {
+    position: fixed; /* ESSENZIALE per posizionarlo rispetto alla viewport */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Copre l'intera larghezza della viewport */
+    height: 100vh; /* Copre l'intera altezza della viewport */
+    background-color: rgba(0, 0, 0, 0.7); /* L'overlay semi-trasparente */
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente il contenuto */
+    align-items: center; /* Centra verticalmente il contenuto */
+    z-index: var(--z-index-popup); /* Questo deve essere un valore alto, es. 1000 */
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* E nel tuo :root block */
+:root {
+    /* ... */
+    --z-index-popup: 1000; /* Assicurati che sia 1000 o più alto */
+    --z-index-content: 2; /* Gli slot avranno questo valore */
+    /* ... */
+}
+.game-slots-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+    justify-content: center;
+    width: 100%;
+    background-color: transparent;
+    color: var(--color-text-primary);
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.5s ease;
+    
+}
+
+/* Applica gli effetti "Aura" anche al container degli slot */
+.game-slots-container::before,
+.game-slots-container::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(160px);
+    opacity: 0.2;
+    z-index: var(--z-index-base);
+    transition: background-color 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
+}
+
+/* Aura 1 (per GameSlotsScreen): Dalle profondità, più scura e grande */
+.game-slots-container::before {
+    background: radial-gradient(ellipse at center, var(--aura-color-1) 0%, transparent 85%);
+    width: 200%;
+    height: 220%;
+    top: -60%;
+    left: -50%;
+    animation: auroraMove1 30s ease-in-out infinite alternate;
+}
+
+.game-slots-container::after {
+    background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%);
+    width: 180%;
+    height: 180%;
+    top: -40%;
+    left: 40%;
+    animation: auroraMove2 35s ease-in-out infinite alternate;
+}
+
+.game-slots-container h2 {
+    color: var(--color-highlight-primary);
+    margin-bottom: 25px;
+    font-size: 2.2em;
+    text-align: center;
+    transition: color 0.5s ease;
+    position: relative;
+    z-index: var(--z-index-content); /* Using variable */
+}
+
+.game-slots-title {
+    position: relative;
+    z-index: var(--z-index-content);
+    font-size: 3.8rem;
+    margin-top: -75px;
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--color-highlight-primary);
+    animation: fadeInSlideDown 1s ease-out;
+    transition: color 0.5s ease, text-shadow 0.3s ease;
+}
+
+.game-slots-title:hover {
+    text-shadow: 0 0 30px var(--color-highlight-primary-hover),
+                 0 0 60px var(--color-highlight-primary);
+}
+
+.game-slots-subtitle {
+    position: relative;
+    z-index: var(--z-index-content);
+    margin-top: 0.1rem;
+    margin-bottom: 2.1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.8px;
+    color: var(--color-text-secondary);
+    opacity: 0.9;
+    animation: fadeIn 1.2s ease-out 0.2s forwards;
+    transition: color 0.5s ease, opacity 0.5s ease;
+    text-shadow: 0 0 5px var(--color-shadow-tertiary);
+}
+
+.game-slots-subtitle:hover {
+    color: var(--color-highlight-secondary);
+}
+
+
+/* Stili per gli slot individuali, potrebbero aver bisogno di adattarsi al tema */
+.slots-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    max-width: 320px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    position: relative; /* Puoi mantenere 'relative' se ti serve per posizionare figli assoluti all'interno */
+}
+
+.game-slot {
+    background-color: var(--color-background-secondary);
+    border: 2px dashed var(--color-border-primary);
+    border-radius: 8px;
+    padding: 15px;
+    width: 250px;
+
+    /* Rimossa l'altezza fissa - CORREZIONE CHIAVE */
+    min-height: 130px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribuisce lo spazio verticalmente */
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 3px 6px var(--color-shadow-secondary);
+    transition: background-color 0.3s ease, border-color 0.3s ease,
+                box-shadow 0.3s ease, transform 0.2s ease-in-out;
+    cursor: pointer;
+    position: relative;
+    z-index: var(--z-index-content);
+}
+
+.slot-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-grow: 1; /* Occupa tutto lo spazio disponibile */
+    justify-content: center; /* Centra verticalmente il contenuto */
+}
+
+.game-slot h3 {
+    color: var(--color-highlight-primary);
+    margin-top: 2px;
+    margin-bottom: 2px; 
+    font-size: 1em;
+    transition: color 0.5s ease;
+}
+
+.game-slot p {
+    color: var(--color-text-secondary);
+    font-style: italic;
+    font-size: 0.75em;
+    line-height: 1.2;
+    transition: color 0.5s ease;
+}
+
+.game-slot:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px var(--color-shadow-primary); /* Use primary shadow on hover */
+}
+
+.game-slot button {
+    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
+    color: var(--color-button-text); 
+    border: none;
+    border-radius: 12px;
+    padding: 4px 10px;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s ease-in-out, box-shadow 0.2s ease;
+    margin-top: 8px;
+}
+
+.game-slot button:hover {
+    transform: translateY(-1px); 
+    box-shadow: 0 4px 8px var(--color-button-shadow-hover);
+}
+
+/* Media Queries per la responsività */
+@media (max-width: 768px) {
+    .game-slots-container h2 {
+        font-size: 1.7em;
+        margin-bottom: 10px;
+    }
+    .slots-wrapper {
+        gap: 15px;
+        max-width: 300px;
+        padding: 0 15px;
+    }
+    .game-slot {
+        padding: 12px;
+        max-width: 280px;
+        min-width: 220px;
+    }
+    .game-slot h3 {
+        font-size: 0.95em;
+    }
+    .game-slot p {
+        font-size: 0.7em;
+    }
+    .game-slot button {
+        padding: 3px 8px;
+        font-size: 0.75em;
+        margin-top: 6px;
+    }
+}
+
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
+  color: var(--color-button-text);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: var(--z-index-back-button);
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Stili per gli slot in modalità eliminazione */
+.game-slot.delete-mode-slot {
+    border: 2px solid var(--color-button-danger); /* Bordo rosso per indicare eliminazione */
+    box-shadow: 0 0 15px rgba(220, 53, 69, 0.4); /* Ombra rossa */
+}
+
+.game-slot.delete-mode-slot:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 0 25px rgba(220, 53, 69, 0.6);
+}
+
+/* Stile per gli slots con partita terminata */
+.game-slot.game-over-slot {
+    opacity: 0.7; /* Rendi leggermente opaco */
+    border: 2px dashed var(--color-text-secondary); /* Bordo diverso */
+    background-color: var(--color-background-primary-darker); /* Sfondo più scuro */
+}
+
+.game-slot.game-over-slot h3,
+.game-slot.game-over-slot p {
+    color: var(--color-text-secondary); /* Testo più sbiadito */
+}
+
+.game-slot.game-over-slot:hover {
+    transform: none; /* Disabilita il transform sull'hover */
+    box-shadow: 0 3px 6px var(--color-shadow-secondary); /* Ombra normale */
+    cursor: default; /* Cambia cursore */
+}
+
+.game-over-info {
+    font-weight: bold;
+    color: var(--color-button-danger); /* Rendi il testo GAME OVER più evidente */
+    margin-top: 5px;
+}
+
+/* ========================================================================== */
+/* --- STILI SPECIFICI PER IL MODALE DI CONFERMA ELIMINAZIONE (GameSlotsScreen) --- */
+/* ========================================================================== */
+.game-slot-modal-overlay { /* Overlay per il modale di conferma */
+    position: fixed; /* Essenziale per l'overlay su tutta la pagina */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Copre l'intera larghezza della viewport */
+    height: 100vh; /* Copre l'intera altezza della viewport */
+    background: var(--color-overlay-secondary); /* Sfondo semi-trasparente */
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente il contenuto */
+    align-items: center; /* Centra verticalmente il contenuto */
+    z-index: var(--z-index-modal); /* Usa la variabile definita, 1000 */
+    animation: fadeInOverlay 0.3s ease-out forwards; /* Animazione di apparizione */
+}
+.game-slot-modal { /* Questo è il container del popup effettivo */
+    background: var(--color-background-secondary); /* Sfondo del modale */
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px var(--color-shadow-primary);
+    max-width: 450px; /* Larghezza massima del contenuto del modale */
+    width: 90%; /* Occupa il 90% della larghezza disponibile */
+    color: var(--color-text-primary);
+    text-align: center;
+    position: relative; /* Necessario se ci sono elementi posizionati al suo interno */
+    animation: fadeInPopup 0.3s ease-out; /* Animazione di apparizione */
+    transition: background 0.5s ease, color 0.5s ease;
+}
+.game-slot-modal h3 {
+    font-size: 2rem;
+    margin-top: 0.1rem;
+    margin-bottom: 1.0rem;
+    color: var(--color-highlight-primary);
+}
+.game-slot-modal p {
+    margin-top: 0.4rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    text-align: center;
+}
+.game-slot-modal p strong {
+    color: var(--color-highlight-secondary);
+}
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Spazio tra i pulsanti */
+    margin-top: 20px;
+}
+.modal-btn {
+    /* Proprietà comuni per tutti i pulsanti del modale */
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+.modal-btn--danger {
+    background-color: #dc3545; /* Rosso per eliminazione */
+    color: white;
+}
+.modal-btn--danger:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
+}
+.modal-btn--cancel {
+    background-color: #6c757d; /* Grigio per annulla */
+    color: white;
+}
+.modal-btn--cancel:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+}
+/* Media Query per modale su schermi piccoli */
+@media (max-width: 480px) {
+    .game-slot-modal {
+        padding: 1.5rem;
+        width: 95%;
+    }
+    .game-slot-modal h3 {
+        font-size: 1.6rem;
+    }
+    .game-slot-modal p {
+        font-size: 0.95rem;
+    }
+    .modal-btn {
+        padding: 0.7rem 1.2rem;
+        font-size: 1rem;
+    }
+}
+
+/* Animazioni (se non le hai già) */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Stili per il pulsante delete-button all'interno dello slot */
+.delete-button {
+    background: linear-gradient(90deg, #dc3545, #c82333); /* Rosso per eliminare */
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.delete-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+}
+
+/* Stile per il testo info-text */
+.info-text {
+    color: var(--color-text-secondary);
+    font-style: italic;
+    font-size: 0.8em;
+    margin-top: 5px;
+}

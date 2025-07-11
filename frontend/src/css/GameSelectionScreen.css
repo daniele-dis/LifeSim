@@ -1,0 +1,200 @@
+/* ========================================================================== */
+/* --- STILI SPECIFICI PER LA SCHERMATA DI SELEZIONE GIOCO (GameSelectionScreen) --- */
+/* ========================================================================== */
+
+
+.game-selection-portal-container {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    padding: 0 1rem;
+    background: transparent; /* Inherit from #root */
+    color: var(--color-text-primary);
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* **AGGIUNTO**: Applica gli effetti "Aura" anche al container del portale */
+.game-selection-portal-container::before,
+.game-selection-portal-container::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(160px);
+    opacity: 0.2;
+    z-index: var(--z-index-base); /* Using variable */
+    transition: background-color 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
+}
+
+/* Aura 1: Dalle profondità, più scura e grande */
+.game-selection-portal-container::before {
+    background: radial-gradient(ellipse at center, var(--aura-color-1) 0%, transparent 85%);
+    width: 200%;
+    height: 220%;
+    top: -60%;
+    left: -50%;
+    animation: auroraMove1 30s ease-in-out infinite alternate;
+}
+
+/* Aura 2: Dall'alto, più chiara e dinamica */
+.game-selection-portal-container::after {
+    background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%);
+    width: 180%;
+    height: 180%;
+    top: -40%;
+    left: 40%;
+    animation: auroraMove2 35s ease-in-out infinite alternate;
+}
+
+/* --- Stili per il Titolo della Schermata di Selezione Gioco ("Scegli La Modalità") --- */
+.portal-title {
+    position: relative;
+    z-index: var(--z-index-content); /* Using variable */
+    font-size: 3.8rem;
+    margin-top: -120px; /* AGGIORNATO */
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 3px; /* AGGIORNATO */
+    color: var(--color-highlight-primary);
+    animation: fadeInSlideDown 1s ease-out;
+    transition: color 0.5s ease, text-shadow 0.3s ease;
+}
+
+/* Animazione per il titolo del portale (resta invariata) */
+@keyframes fadeInSlideDown {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.portal-title:hover {
+    text-shadow: 0 0 30px var(--color-highlight-primary-hover),
+                 0 0 60px var(--color-highlight-primary);
+}
+
+/* --- Stili per il Sottotitolo della Schermata di Selezione Gioco --- */
+.portal-subtitle {
+    position: relative;
+    z-index: var(--z-index-content); /* Using variable */
+    margin-top: 0.5rem; /* AGGIORNATO */
+    margin-bottom: 3.5rem; /* AGGIORNATO */
+    font-size: 1.3rem; /* AGGIORNATO */
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.8px;
+    color: var(--color-text-secondary);
+    opacity: 0.9;
+    animation: fadeIn 1.2s ease-out 0.2s forwards;
+    transition: color 0.5s ease, opacity 0.5s ease;
+    text-shadow: 0 0 5px var(--color-shadow-tertiary);
+}
+
+.portal-subtitle:hover{
+    color: var(--color-highlight-secondary);
+}
+
+/* Animazione generica di fade-in */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* --- Stili per la Griglia dei Pulsanti "Portali" --- */
+.portal-options-grid {
+    position: relative;
+    z-index: var(--z-index-content); /* Using variable */
+    display: flex; /* AGGIORNATO */
+    flex-direction: column; /* AGGIORNATO */
+    gap: 30px; /* AGGIORNATO */
+    width: 90%; /* AGGIORNATO */
+    max-width: 800px; /* AGGIORNATO */
+    margin-top: 20px; /* AGGIUNTO */
+    align-items: center; /* AGGIUNTO */
+}
+
+/* --- Stili per i Pulsanti "Portali" (Nuova Partita, Carica Partita) --- */
+.portal-button {
+    /* Se non usi un precompilatore, copia qui le proprietà da .base-button */
+    /* @extend .base-button; */
+    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
+    border: none;
+    border-radius: 16px; /* AGGIORNATO */
+    font-weight: 700;
+    color: var(--color-button-text);
+    box-shadow: 0 12px 25px var(--color-button-shadow-primary);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 1.2px;
+    user-select: none;
+    cursor: pointer; /* Aggiunto cursor: pointer */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 3rem; /* AGGIORNATO */
+    font-size: 1.8rem; /* AGGIORNATO */
+    width: 100%; /* AGGIUNTO */
+    max-width: 300px; /* AGGIUNTO */
+    height: 75px; /* AGGIUNTO */
+    overflow: hidden; /* AGGIUNTO */
+}
+
+
+/* Testo all'interno del pulsante, posizionato sopra il glow */
+.portal-button-text {
+    position: relative;
+    z-index: var(--z-index-content); /* AGGIORNATO */
+}
+
+/* Effetto "glow" interno al pulsante al passaggio del mouse */
+.portal-glow {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0; /* AGGIORNATO */
+    height: 0; /* AGGIORNATO */
+    background: radial-gradient(circle, var(--portal-button-glow-color) 0%, transparent 70%); /* AGGIORNATO */
+    filter: blur(40px); /* AGGIORNATO */
+    opacity: 0; /* AGGIORNATO */
+    transform: translate(-50%, -50%); /* AGGIORNATO */
+    transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease; /* AGGIORNATO */
+    z-index: var(--z-index-base); /* Behind the text */
+}
+
+/* Effetti hover sui pulsanti del portale */
+.portal-button:hover {
+    box-shadow: 0 20px 40px var(--color-button-shadow-hover);
+    transform: scale(1.12); /* AGGIORNATO */
+}
+
+/* --- Media Queries per la Responsività della GameSelectionScreen --- */
+@media (min-width: 768px) {
+    .portal-options-grid {
+        gap: 30px; /* AGGIORNATO */
+        max-width: 700px; /* AGGIORNATO */
+    }
+    .portal-button {
+        padding: 1rem 6rem; /* AGGIORNATO */
+        font-size: 1.8rem; /* AGGIORNATO */
+    }
+}
+
+@media (max-width: 480px) {
+    .portal-title {
+        font-size: 2.5rem; /* AGGIORNATO */
+        margin-top: -80px; /* AGGIORNATO */
+    }
+    .portal-subtitle {
+        font-size: 1.1rem; /* AGGIORNATO */
+        margin-bottom: 3rem; /* AGGIORNATO */
+    }
+    .portal-button {
+        padding: 1rem 2.5rem; /* AGGIORNATO */
+        font-size: 1.4rem; /* AGGIORNATO */
+    }
+}

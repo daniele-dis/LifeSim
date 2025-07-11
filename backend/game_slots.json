@@ -2,11 +2,11 @@
     "1": {
         "nome": "Daniele",
         "avatar": 1,
-        "soldi": 126,
-        "energia": 68,
-        "felicita": 83,
+        "soldi": 137,
+        "energia": 98,
+        "felicita": 96,
         "eta": 27,
-        "giorni_passati": 274,
+        "giorni_passati": 277,
         "relazione": {
             "stato": "sposato",
             "partner_nome": "Chiara Verdi",
@@ -19,43 +19,13 @@
                 "eta_nascita_genitore": 26
             }
         ],
-        "current_suggestion": {
-            "action": "studia",
-            "text": "Daniele, continua a studiare per ottenere il tuo laurea triennale!"
-        },
-        "message": "Hai lavorato sodo e guadagnato un po' di soldi.",
+        "current_suggestion": null,
+        "message": "Una bella dormita ti ha ricaricato le batterie.",
         "is_game_over": false,
         "death_reason": null,
         "titolo_studio": "diploma_scuola_superiore",
         "giorni_per_prossimo_livello_studio": 15,
         "lavoro_attuale": "commesso",
         "stipendio": 800
-    },
-    "2": {
-        "nome": "Antonio",
-        "avatar": 2,
-        "soldi": 200,
-        "energia": 70,
-        "felicita": 80,
-        "eta": 18,
-        "giorni_passati": 0,
-        "relazione": {
-            "stato": "single",
-            "partner_nome": null,
-            "felicita_relazione": 0,
-            "preferenza_genere": "indifferent"
-        },
-        "figli": [],
-        "current_suggestion": {
-            "action": "cerca_lavoro",
-            "text": "Antonio, hai bisogno di un impiego. Cerca un lavoro per iniziare a guadagnare!"
-        },
-        "message": "Benvenuto nella tua nuova vita!",
-        "is_game_over": false,
-        "death_reason": null,
-        "titolo_studio": "nessuno",
-        "giorni_per_prossimo_livello_studio": 20,
-        "lavoro_attuale": "disoccupato",
-        "stipendio": 0
     }
 }

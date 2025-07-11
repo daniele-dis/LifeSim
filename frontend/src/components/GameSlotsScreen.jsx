@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'; // Aggiunto useState
 import ThemeContext from '../ThemeContext';
 import '../css/index.css';
+import '../css/GameSlotsScreen.css';
 
 /**
  * Componente GameSlotsScreen

@@ -1,0 +1,395 @@
+/* ========================================================================== */
+/* --- STILI SPECIFICI PER LA SCHERMATA INIZIALE (StartScreen) --- */
+/* ========================================================================== */
+
+.container {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    padding: 0 1rem;
+    background: transparent; /* Inherit from #root */
+    color: inherit; /* Inherit from #root */
+}
+
+/* Effetti "Aura" di sfondo per StartScreen (pseudo-elementi ::before e ::after) */
+.container::before,
+.container::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%; /* Ensuring circular blur source */
+    filter: blur(160px);
+    z-index: var(--z-index-base); /* Using variable */
+    transition: background 0.5s ease, filter 0.5s ease, opacity 0.5s ease; /* Add opacity transition */
+}
+
+.container::before {
+    top: -60%;
+    left: -50%;
+    width: 200%;
+    height: 220%;
+    background: radial-gradient(ellipse at center, var(--aura-color-1) 0%, transparent 85%);
+    animation: auroraMove1 30s ease-in-out infinite alternate;
+}
+
+.container::after {
+    top: -40%;
+    left: 40%;
+    width: 180%;
+    height: 180%;
+    background: radial-gradient(ellipse at center, var(--aura-color-2) 0%, transparent 90%);
+    filter: blur(110px); /* Slightly less blur for the second aura */
+    animation: auroraMove2 35s ease-in-out infinite alternate;
+}
+
+/* Animazioni per gli effetti "Aura" */
+@keyframes auroraMove1 {
+    0% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
+    50% { transform: translateX(10%) translateY(-10%) rotate(2deg) scale(1.02); }
+    100% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
+}
+
+@keyframes auroraMove2 {
+    0% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
+    50% { transform: translateX(-10%) translateY(10%) rotate(-2deg) scale(1.03); }
+    100% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
+}
+
+/* Stili per il titolo, i pulsanti e il sottotitolo della StartScreen */
+.title, .button, .subtitle {
+    position: relative;
+    z-index: var(--z-index-content); /* Using variable */
+    transition: color 0.5s ease;
+}
+
+.title {
+    font-size: 4rem;
+    margin-top: -50px;
+    margin-bottom: 0.1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--color-highlight-primary);
+    transition: text-shadow 0.3s ease, color 0.5s ease;
+}
+
+.title:hover {
+    text-shadow: 0 0 30px var(--color-highlight-primary-hover);
+}
+
+/* Stili per il pulsante principale (es. "Inizia Nuova Partita") */
+.button {
+    /* Se non usi un precompilatore, copia qui le proprietà da .base-button */
+    /* @extend .base-button; */
+    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
+    border: none;
+    border-radius: 16px;
+    font-weight: 700;
+    color: var(--color-button-text);
+    box-shadow: 0 12px 25px var(--color-button-shadow-primary);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 1.2px;
+    user-select: none;
+    cursor: pointer; /* Aggiunto cursor: pointer */
+    padding: 1rem 6rem;
+    font-size: 1.8rem;
+}
+
+.button:hover {
+    box-shadow: 0 20px 40px var(--color-button-shadow-hover);
+    transform: scale(1.12);
+}
+
+/* Stili per il pulsante "Chiudi" nei popup */
+.button_chiudi {
+    /* Se non usi un precompilatore, copia qui le proprietà da .base-button */
+    /* @extend .base-button; */
+    background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
+    border: none;
+    border-radius: 16px;
+    font-weight: 700;
+    color: var(--color-button-text);
+    box-shadow: 0 12px 25px var(--color-button-shadow-primary);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 1.2px;
+    user-select: none;
+    cursor: pointer; /* Aggiunto cursor: pointer */
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    /* Overwrite specific hover scale for chiudi button */
+}
+.button_chiudi:hover { /* Chiusura corretta del blocco &:hover */
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px var(--color-button-shadow-hover); /* Aggiunto box-shadow mancante */
+}
+
+
+/* Stili per il sottotitolo della StartScreen */
+.subtitle {
+    margin-top: 0.2rem;
+    margin-bottom: 3.5rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.6px;
+    color: var(--color-text-secondary);
+    transition: color 0.3s ease;
+}
+
+.subtitle:hover {
+    color: var(--color-highlight-secondary);
+}
+
+/* Media Queries per la responsività della StartScreen */
+@media (max-width: 480px) {
+    .title {
+        font-size: 3rem;
+    }
+    .button {
+        padding: 0.9rem 4rem;
+        font-size: 1.3rem;
+    }
+    .button_chiudi {
+        padding: 0.8rem 2.5rem;
+        font-size: 1.1rem;
+    }
+    .subtitle {
+        font-size: 1rem;
+    }
+}
+
+/* --- Stili per il Menu Toggle (StartScreen) --- */
+.menu-container {
+    position: absolute;
+    top: 1rem;
+    left: 1.2rem;
+    z-index: var(--z-index-menu); /* Using variable */
+}
+
+.menu-toggle {
+    font-size: 2rem;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.3s ease, color 0.5s ease;
+}
+
+.menu-toggle:hover {
+    transform: scale(1.1);
+}
+
+/* --- Stili per l'Overlay del Menu (StartScreen) --- */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--color-overlay-primary);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    z-index: var(--z-index-overlay); /* Using variable */
+    animation: fadeInOverlay 0.4s ease forwards;
+}
+
+/* Animazione per l'overlay del menu */
+@keyframes fadeInOverlay {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Stili per il Pannello del Menu (StartScreen) --- */
+.menu-panel {
+    position: relative;
+    width: 100%;
+    max-width: 240px;
+    height: 100vh;
+    background: var(--color-background-secondary);
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    box-shadow: 8px 0 20px var(--color-shadow-primary);
+    display: flex;
+    flex-direction: column;
+    padding-top: 5.5rem;
+    padding-left: 0.8rem;
+    transition: background 0.5s ease;
+}
+
+/* --- Stili per le Voci del Menu (StartScreen) --- */
+.menu-item {
+    color: var(--color-text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    transition: background 0.3s ease, color 0.3s ease;
+    text-align: left;
+}
+
+.menu-item:hover {
+    background: var(--color-highlight-hover);
+    color: var(--color-highlight-primary);
+}
+
+/* --- Stili per i Popup (Generici, usati in StartScreen per Contatti/Impostazioni) --- */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--color-overlay-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: var(--z-index-popup); /* Using variable */
+}
+
+.popup-content {
+    background: var(--color-background-secondary);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px var(--color-shadow-primary);
+    max-width: 500px;
+    width: 90%;
+    color: var(--color-text-primary);
+    text-align: center;
+    position: relative;
+    animation: fadeInPopup 0.3s ease-out;
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+.popup-content h2 {
+    font-size: 2rem;
+    margin-top: 0.1rem;
+    margin-bottom: 1.0rem;
+    color: var(--color-highlight-primary);
+    transition: color 0.5s ease;
+}
+
+.popup-content p {
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    text-align: center;
+    color: var(--color-text-primary);
+    transition: color 0.5s ease;
+}
+
+.popup-content p strong {
+    color: var(--color-highlight-secondary);
+    transition: color 0.5s ease;
+}
+
+/* Colore specifico per le email nel popup di contatto */
+.contact-email-text {
+    color: var(--color-highlight-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+/* Stili per le opzioni nelle impostazioni (all'interno di un popup) */
+.settings-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border-primary);
+}
+
+.settings-option p {
+    margin: 0;
+    font-size: 1.2rem;
+    text-align: left;
+    flex-grow: 1;
+    color: var(--color-text-primary);
+}
+
+/* --- Stili per il Toggle Switch (Interruttore ON/OFF nelle Impostazioni) --- */
+.react-switch-checkbox {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.react-switch-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 50px;
+    height: 26px;
+    background: var(--color-text-secondary);
+    border-radius: 26px;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.react-switch-label .react-switch-button {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--color-button-text);
+    transition: 0.3s ease;
+    box-shadow: 0 0 2px 0 var(--color-shadow-tertiary);
+}
+
+.react-switch-checkbox:checked + .react-switch-label {
+    background: linear-gradient(90deg, var(--color-highlight-primary), var(--color-highlight-secondary));
+}
+
+.react-switch-checkbox:checked + .react-switch-label .react-switch-button {
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
+}
+
+/* Animazione per i popup (generale) */
+@keyframes fadeInPopup {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* --- Stili per il Footer della StartScreen --- */
+/* TUTTI I FOOTER FANNO RIFERIMENTO A QUESTO, PERCIò OGNI CLASS NAME FOOTER SI REFERENZIA A QUESTO FOOTER */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 1rem;
+    background: var(--color-background-tertiary);
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+    text-align: center;
+    z-index: var(--z-index-content); /* Using variable */
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+.footer p {
+    margin: 0.2rem 0;
+}
+
+
+
+
+
+
+

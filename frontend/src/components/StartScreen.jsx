@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import ThemeContext from "../ThemeContext"; 
 import '../css/index.css';
+import '../css/StartScreen.css';
 
 // --- Componente Popup "Contattaci" ---
 const ContactPopup = ({ onClose }) => {

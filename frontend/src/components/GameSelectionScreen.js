@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'; 
 import ThemeContext from '../ThemeContext';
 import '../css/index.css';
+import '../css/GameSelectionScreen.css';
 
 const GameSelectionScreen = ({ onNewGame, onLoadGame, onDeleteGame, onBackToStart }) => {
 
