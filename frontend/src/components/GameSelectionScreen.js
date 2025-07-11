@@ -1,15 +1,10 @@
-import React, { useContext } from 'react'; // Rimosso useState
+import React, { useContext } from 'react'; 
 import ThemeContext from '../ThemeContext';
-// Rimosso l'import di GameSlotsScreen, non è più renderizzato qui
+import '../css/index.css';
 
 const GameSelectionScreen = ({ onNewGame, onLoadGame, onDeleteGame, onBackToStart }) => {
 
   const { isDarkMode } = useContext(ThemeContext);
-
-  // Rimosse le funzioni handleNewGameClick, handleLoadGameClick, handleBackFromSlots, handleSlotSelection
-  // e gli stati currentSubScreen, gameMode.
-  // La navigazione è ora gestita interamente dal componente padre (App.js)
-  // tramite le prop onNewGame e onLoadGame.
 
   return (
     <div className={`game-selection-portal-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>

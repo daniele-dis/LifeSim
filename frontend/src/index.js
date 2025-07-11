@@ -1,7 +1,7 @@
 // src/main.jsx (o src/index.js)
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css'; // Importa il CSS globale che gestisce il tema
+import './css/index.css';
 import App from './App'; // App includerà MainRouter
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from './ThemeContext'; // Importa il ThemeProvider

@@ -1,4 +1,6 @@
 import React from 'react';
+import '../css/index.css';
+
 
 function MainGameScreen({ gameState, doAction, onBack, isDarkMode, aiSuggestion, onAcceptSuggestion, onRejectSuggestion, message }) {
     if (!gameState) {

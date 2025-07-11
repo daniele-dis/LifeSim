@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import ThemeContext from '../ThemeContext';
-import './../index.css';
+import '../css/index.css';
 
 // Importa le tue immagini avatar
 import maleAvatar from '../img/raw.png'; // Aggiusta il percorso se necessario

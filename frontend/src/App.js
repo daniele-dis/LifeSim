@@ -9,7 +9,7 @@ import GameSlotsScreen from './components/GameSlotsScreen';
 import InputScreen from './components/InputScreen';
 import MainGameScreen from './components/MainGameScreen';
 
-import './index.css'; // Assicurati che il tuo CSS sia importato
+import './css/index.css';
 
 function App() {
     // Utilizza il custom hook per ottenere tutti gli stati e le funzioni di navigazione
