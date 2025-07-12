@@ -19,7 +19,10 @@
                 "eta_nascita_genitore": 26
             }
         ],
-        "current_suggestion": null,
+        "current_suggestion": {
+            "action": "dormi",
+            "text": "Un po' di riposo non guasta mai, Daniele. Vuoi fare un pisolino?"
+        },
         "message": "Una bella dormita ti ha ricaricato le batterie.",
         "is_game_over": false,
         "death_reason": null,

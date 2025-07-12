@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'; // Aggiunto useState
+import React, { useContext, useState } from 'react';
 import ThemeContext from '../ThemeContext';
 import '../css/index.css';
 import '../css/GameSlotsScreen.css';
@@ -69,18 +69,24 @@ const GameSlotsScreen = ({ mode, onSlotSelect, onDeleteSlot, onBack, savedSlots,
             const slotData = savedSlots?.[slotNumber];
             const hasSave = !!slotData;
 
+            // Determina se lo slot è cliccabile
+            // Non cliccabile se:
+            // 1. In modalità 'delete' (il click è sul bottone interno)
+            // 2. In modalità 'new' E lo slot è occupato
+            const isClickable = mode !== 'delete' && !(mode === 'new' && hasSave);
+
             return (
               <div
                 key={slotNumber}
-                className={`game-slot 
-                  ${hasSave ? 'occupied' : 'empty'} 
-                  ${mode === 'delete' ? 'delete-mode-slot' : ''} 
+                className={`game-slot
+                  ${hasSave ? 'occupied' : 'empty'}
+                  ${mode === 'delete' ? 'delete-mode-slot' : ''}
                   ${hasSave && slotData.is_game_over ? 'game-over-slot' : ''}
+                  ${!isClickable ? 'disabled-slot' : ''} {/* Aggiungi una classe per lo stile del disabled */}
                 `}
-                // L'onClick principale del div non fa nulla in modalità delete,
-                // l'azione è sul bottone interno.
-                // In modalità new/load, il click sul div potrebbe selezionare lo slot
-                onClick={mode !== 'delete' ? () => onSlotSelect(slotNumber) : undefined}
+                onClick={isClickable ? () => onSlotSelect(slotNumber) : undefined}
+                // Se non è cliccabile, puoi anche aggiungere un attributo 'aria-disabled'
+                aria-disabled={!isClickable}
               >
                 <div className="slot-content">
                   <h3>Slot {slotNumber}</h3>
@@ -103,7 +109,7 @@ const GameSlotsScreen = ({ mode, onSlotSelect, onDeleteSlot, onBack, savedSlots,
                       {mode === 'delete' && (
                         <button
                           className="delete-button"
-                          onClick={() => handleOpenDeleteConfirm(slotNumber)} // Apre il modale
+                          onClick={() => handleOpenDeleteConfirm(slotNumber)}
                         >
                           Elimina Partita
                         </button>
@@ -111,7 +117,6 @@ const GameSlotsScreen = ({ mode, onSlotSelect, onDeleteSlot, onBack, savedSlots,
                     </>
                   ) : (
                     <>
-
                       {mode === 'new' && (
                         <button onClick={() => onSlotSelect(slotNumber)}>Nuova Partita</button>
                       )}
