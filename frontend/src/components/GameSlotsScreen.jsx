@@ -85,7 +85,7 @@ const GameSlotsScreen = ({ mode, onSlotSelect, onDeleteSlot, onBack, savedSlots,
                   ${!isClickable ? 'disabled-slot' : ''} {/* Aggiungi una classe per lo stile del disabled */}
                 `}
                 onClick={isClickable ? () => onSlotSelect(slotNumber) : undefined}
-                // Se non è cliccabile, puoi anche aggiungere un attributo 'aria-disabled'
+                // Visto che non è cliccabile, aggiungiamo un attributo 'aria-disabled'
                 aria-disabled={!isClickable}
               >
                 <div className="slot-content">

@@ -24,7 +24,6 @@
     transition: background-color 0.5s ease;
 }
 
-/* Background aura effects (assuming you have them from previous CSS) - no changes needed here */
 .main-game-screen::before,
 .main-game-screen::after {
     border-radius: 50%;

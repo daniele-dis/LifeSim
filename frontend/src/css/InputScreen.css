@@ -54,8 +54,7 @@
 }
 
 .name-input-container button {
-    /* Se non usi un precompilatore, copia qui le proprietà da .base-button */
-    /* @extend .base-button; */
+
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     border: none;
     border-radius: 16px;

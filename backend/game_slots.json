@@ -2,15 +2,15 @@
     "1": {
         "nome": "Daniele",
         "avatar": 1,
-        "soldi": 137,
-        "energia": 98,
-        "felicita": 96,
-        "eta": 27,
-        "giorni_passati": 277,
+        "soldi": 310,
+        "energia": 68,
+        "felicita": 48,
+        "eta": 30,
+        "giorni_passati": 387,
         "relazione": {
             "stato": "sposato",
             "partner_nome": "Chiara Verdi",
-            "felicita_relazione": 95,
+            "felicita_relazione": 96,
             "preferenza_genere": "indifferent"
         },
         "figli": [
@@ -19,16 +19,13 @@
                 "eta_nascita_genitore": 26
             }
         ],
-        "current_suggestion": {
-            "action": "dormi",
-            "text": "Un po' di riposo non guasta mai, Daniele. Vuoi fare un pisolino?"
-        },
-        "message": "Una bella dormita ti ha ricaricato le batterie.",
         "is_game_over": false,
         "death_reason": null,
-        "titolo_studio": "diploma_scuola_superiore",
-        "giorni_per_prossimo_livello_studio": 15,
-        "lavoro_attuale": "commesso",
-        "stipendio": 800
+        "titolo_studio": "laurea_triennale",
+        "giorni_per_prossimo_livello_studio": 40,
+        "lavoro_attuale": "impiegato_amministrativo",
+        "stipendio": 1200,
+        "current_suggestion": null,
+        "message": "Hai lavorato sodo e guadagnato un po' di soldi."
     }
 }
