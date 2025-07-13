@@ -135,10 +135,6 @@ html, body {
     --portal-button-glow-color: var(--color-highlight-primary);
 }
 
-/* --- Base Button Style to reduce repetition --- */
-/* NOTA: Se non usi un precompilatore CSS (es. Sass, Less),
-   NON puoi usare @extend. In quel caso, dovrai copiare manualmente
-   queste proprietà in ogni classe di pulsante che le utilizza. */
 .base-button {
     border: none;
     border-radius: 16px;
@@ -152,8 +148,213 @@ html, body {
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
 }
 
+/* --- Tema Blu (Dark Mode) --- */
+#root.blue-theme{
+    --color-highlight-primary: #3498db; /* Blu vibrante */
+    --color-highlight-secondary: #87ceeb; /* Blu chiaro */
+    --color-highlight-primary-hover: #217dbb;
+    --color-highlight-hover: rgba(52, 152, 219, 0.053);
+    --aura-color-1: rgba(52, 152, 219, 0.055);
+    --aura-color-2: rgba(135, 207, 235, 0);
+    --color-button-gradient-start: #2980b9;
+    --color-button-gradient-end: #3498db;
+    --color-button-shadow-primary: rgba(52, 152, 219, 0.7);
+    --color-button-shadow-hover: rgba(135, 206, 235, 0.9);
+    --portal-button-glow-color: var(--color-highlight-primary);
+}
+
+/* --- Tema Blu (Light Mode) --- */
+#root.light-mode.blue-theme {
+    --color-highlight-primary: #25brgb(0, 0, 0)
+    --color-highlight-secondary: #0056b3; /* Un grigio-blu */
+    --color-highlight-primary-hover: #0056b3;
+    --color-highlight-hover: rgba(0, 123, 255, 0.1);
+    --aura-color-1: rgba(0, 123, 255, 0.05);
+    --aura-color-2: rgba(108, 117, 125, 0.03);
+    --color-button-gradient-start: #007bff;
+    --color-button-gradient-end: #0056b3;
+    --color-button-shadow-primary: rgba(0, 123, 255, 0.2);
+    --color-button-shadow-hover: rgba(0, 123, 255, 0.3);
+    --portal-button-glow-color: var(--color-highlight-primary);
+}
+
+/* --- Tema Rosso (Dark Mode) --- */
+#root.red-theme{
+    --color-highlight-primary: #e74c3c; /* Rosso acceso */
+    --color-highlight-secondary: #f08080; /* Rosso chiaro */
+    --color-highlight-primary-hover: #c0392b;
+    --color-highlight-hover: rgba(231, 76, 60, 0.2);
+    --aura-color-1: rgba(231, 77, 60, 0.059);
+    --aura-color-2: rgba(240, 128, 128, 0);
+    --color-button-gradient-start: #c0392b;
+    --color-button-gradient-end: #e74c3c;
+    --color-button-shadow-primary: rgba(231, 76, 60, 0.7);
+    --color-button-shadow-hover: rgba(240, 128, 128, 0.9);
+    --portal-button-glow-color: var(--color-highlight-primary);
+}
+
+/* --- Tema Rosso (Light Mode) --- */
+#root.light-mode.red-theme {
+    --color-highlight-primary: #25brgb(0, 0, 0)
+    --color-highlight-secondary: #c82333; /* Arancione/rosso */
+    --color-highlight-primary-hover: #c82333;
+    --color-highlight-hover: rgba(220, 53, 69, 0.1);
+    --aura-color-1: rgba(220, 53, 69, 0.05);
+    --aura-color-2: rgba(253, 126, 20, 0.03);
+    --color-button-gradient-start: #dc3545;
+    --color-button-gradient-end: #c82333;
+    --color-button-shadow-primary: rgba(220, 53, 69, 0.2);
+    --color-button-shadow-hover: rgba(220, 53, 69, 0.3);
+    --portal-button-glow-color: var(--color-highlight-primary);
+}
+
+/* --- Tema Rosa (Dark Mode) --- */
+#root.pink-theme {
+    --color-highlight-primary: #ff69b4; /* Hot Pink */
+    --color-highlight-secondary: #ffb6c1; /* Light Pink */
+    --color-highlight-primary-hover: #e0529d;
+    --color-highlight-hover: rgba(255, 105, 180, 0.2);
+    --aura-color-1: rgba(255, 105, 180, 0.038);
+    --aura-color-2: rgba(255, 182, 193, 0);
+    --color-button-gradient-start: #e0529d;
+    --color-button-gradient-end: #ff69b4;
+    --color-button-shadow-primary: rgba(255, 105, 180, 0.7);
+    --color-button-shadow-hover: rgba(255, 182, 193, 0.9);
+    --portal-button-glow-color: var(--color-highlight-primary);
+}
+
+/* --- Tema Rosa (Light Mode) --- */
+#root.light-mode.pink-theme {
+    --color-highlight-primary: #25brgb(0, 0, 0)
+    --color-highlight-secondary: #ff69b4; /* Hot Pink */
+    --color-highlight-primary-hover: #c71585;
+    --color-highlight-hover: rgba(255, 20, 147, 0.1);
+    --aura-color-1: rgba(255, 20, 147, 0.05);
+    --aura-color-2: rgba(255, 105, 180, 0.03);
+    --color-button-gradient-start: #ff1493;
+    --color-button-gradient-end: #c71585;
+    --color-button-shadow-primary: rgba(255, 20, 147, 0.2);
+    --color-button-shadow-hover: rgba(255, 20, 145, 0.041);
+    --portal-button-glow-color: var(--color-highlight-primary);
+}
+
+/* --- Tema Verde (Dark Mode) --- */
+#root.green-theme {
+    --color-highlight-primary: #25ba54; 
+    --color-highlight-secondary: #87ff8c; 
+    --color-highlight-primary-hover: #10cc49; 
+    --color-highlight-hover: rgba(22, 255, 92, 0.2); 
+    --aura-color-1: rgba(22, 255, 92, 0.019); 
+    --aura-color-2: rgba(135, 255, 141, 0);
+    --color-button-gradient-start: #16ff5cb5;
+    --color-button-gradient-end: #16ff5cb5;
+    --color-button-shadow-primary: rgba(105, 255, 110, 0.485);
+     --color-button-shadow-hover: rgba(105, 255, 110, 0.485);
+    --portal-button-glow-color: var(--color-highlight-primary);
+}
+
+/* --- Tema Verde (Light Mode) --- */
+#root.light-mode.green-theme {
+    --color-highlight-primary: #25brgb(0, 0, 0);
+    --color-highlight-secondary: #16ff5cb5;
+    --color-highlight-primary-hover: #16ff5c79;
+    --color-highlight-hover: rgba(105, 255, 130, 0.2);
+    --aura-color-1: rgba(182, 255, 189, 0.08);
+    --aura-color-2: rgba(182, 255, 189, 0.08);
+    --color-button-gradient-start: #16ff5cb5;
+    --color-button-gradient-end: #16ff5cb5;
+    --color-button-shadow-primary: rgba(105, 255, 110, 0.485);
+    --color-button-shadow-primary: rgba(105, 255, 110, 0.485);
+    --portal-button-glow-color: var(--color-highlight-primary);
+}
+
+/* --- Stili per il Menu a Tendina Colore Secondario nel Popup --- */
+
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 150px; /* Larghezza del selettore */
+    margin-top: 10px; /* Esempio di spaziatura */
+}
+
+.dropdown-toggle {
+    background-color: var(--color-background-secondary); /* Sfondo dal tema */
+    color: var(--color-text-primary); /* Testo dal tema */
+    border: 1px solid var(--color-border-primary);
+    border-radius: 8px;
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 2px 5px var(--color-shadow-primary);
+}
+
+.dropdown-toggle:hover {
+    background-color: var(--color-highlight-hover); /* Usa un colore hover dal tema */
+    border-color: var(--color-highlight-primary);
+}
+
+.dropdown-arrow {
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+/* Questa regola è importante per ruotare la freccia quando il dropdown è aperto */
+.dropdown-toggle[aria-expanded="true"] .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%; /* Posiziona sotto il pulsante */
+    left: 0;
+    right: 0; /* Si estende per tutta la larghezza del genitore */
+    background-color: var(--color-background-secondary);
+    border: 1px solid var(--color-border-primary);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px var(--color-shadow-primary);
+    z-index: var(--z-index-modal); /* Assicurati che sia sopra altri elementi */
+    margin-top: 5px; /* Spazio tra toggle e menu */
+    overflow: hidden; /* Per bordi arrotondati e non far uscire l'ombra del colore */
+}
+
+.dropdown-item {
+    background-color: transparent;
+    color: var(--color-text-primary);
+    border: none;
+    padding: 10px 15px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item:hover,
+.dropdown-item.active {
+    background-color: var(--color-highlight-hover);
+    color: var(--color-highlight-primary); /* Rendi il testo del colore primario */
+}
+
+/* Colore dell'icona del pallino nel menu a tendina */
+.color-preview {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2); /* Bordo leggero per visibilità */
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+    /* background-color verrà impostato con la variabile --item-color in JS */
+}
+
 .base-button:hover {
     box-shadow: 0 20px 40px var(--color-button-shadow-hover);
     transform: scale(1.12);
 }
+
 

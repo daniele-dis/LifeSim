@@ -66,8 +66,11 @@ const HowToPlayPopup = ({ onClose }) => {
 };
 
 // --- Componente Popup "Impostazioni" ---
-// Il componente SettingsPopup riceve isDarkMode e toggleDarkMode come props
-const SettingsPopup = ({ onClose, isDarkMode, toggleDarkMode }) => {
+// Il componente SettingsPopup riceve isDarkMode, toggleDarkMode, secondaryColor e changeSecondaryColor come props
+const SettingsPopup = ({ onClose, isDarkMode, toggleDarkMode, secondaryColor, changeSecondaryColor }) => {
+
+  const [isColorDropdownOpen, setIsColorDropdownOpen] = useState(false);
+
   const ToggleSwitch = ({ isOn, handleToggle }) => (
     <>
       <input
@@ -86,6 +89,23 @@ const SettingsPopup = ({ onClose, isDarkMode, toggleDarkMode }) => {
     </>
   );
 
+  const colorOptions = [
+    { name: 'purple', label: 'Viola', colorCode: '#ae7fff' },
+    { name: 'blue', label: 'Blu', colorCode: '#3498db' },
+    { name: 'red', label: 'Rosso', colorCode: '#e74c3c' },
+    { name: 'pink', label: 'Rosa', colorCode: '#ff69b4' },
+    { name: 'green', label: 'Verde', colorCode: '#16ff5cb5'},
+  ];
+
+  const currentSelectedColorLabel = colorOptions.find(
+    (option) => option.name === secondaryColor
+  )?.label || 'Seleziona';
+
+  const handleColorChange = (colorName) => {
+    changeSecondaryColor(colorName);
+    setIsColorDropdownOpen(false);
+  };
+
   return (
     <div className="popup-overlay" onClick={onClose}>
       <div className="popup-content" onClick={(e) => e.stopPropagation()}>
@@ -95,6 +115,36 @@ const SettingsPopup = ({ onClose, isDarkMode, toggleDarkMode }) => {
           {/* Usa le props isDarkMode e toggleDarkMode ricevute */}
           <ToggleSwitch isOn={isDarkMode} handleToggle={toggleDarkMode} /> 
         </div>
+
+        {/* Sezione per il menu a tendina del colore secondario */}
+        <div className="settings-option">
+          <p>Colore Secondario:</p>
+          <div className="custom-dropdown">
+            <button
+              className="dropdown-toggle"
+              onClick={() => setIsColorDropdownOpen(!isColorDropdownOpen)}
+            >
+              {currentSelectedColorLabel}
+              <span className="dropdown-arrow">▼</span>
+            </button>
+            {isColorDropdownOpen && (
+              <div className="dropdown-menu">
+                {colorOptions.map((option) => (
+                  <button
+                    key={option.name}
+                    className={`dropdown-item ${secondaryColor === option.name ? 'active' : ''}`}
+                    onClick={() => handleColorChange(option.name)}
+                    style={{ '--item-color': option.colorCode }}
+                  >
+                    <span className="color-preview" style={{ backgroundColor: option.colorCode }}></span>
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
         <br />
         <button type="button" className="button_chiudi" onClick={onClose}>Chiudi</button>
       </div>
@@ -104,8 +154,9 @@ const SettingsPopup = ({ onClose, isDarkMode, toggleDarkMode }) => {
 
 // --- Componente Principale StartScreen ---
 function StartScreen({ onStart }) {
-  // Ottieni isDarkMode e toggleDarkMode direttamente dal contesto
-  const { isDarkMode, toggleDarkMode } = useContext(ThemeContext); 
+  // Ottieni isDarkMode, toggleDarkMode, secondaryColor e changeSecondaryColor direttamente dal contesto
+  // Qui li estrai perché DEVI passarli come props a SettingsPopup
+  const { isDarkMode, toggleDarkMode, secondaryColor, changeSecondaryColor } = useContext(ThemeContext); 
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [contactPopupOpen, setContactPopupOpen] = useState(false);
@@ -134,7 +185,7 @@ function StartScreen({ onStart }) {
   const closeSettingsPopup = () => setSettingsPopupOpen(false);
 
   return (
-    <div className="container"> {/* Questo .container è un elemento interno, non id="root" */}
+    <div className="container">
       {/* Pulsante menu */}
       <div className="menu-container">
         <div className="menu-toggle" onClick={toggleMenu}>
@@ -167,6 +218,8 @@ function StartScreen({ onStart }) {
           onClose={closeSettingsPopup}
           isDarkMode={isDarkMode} 
           toggleDarkMode={toggleDarkMode}
+          secondaryColor={secondaryColor} // Passa il colore secondario
+          changeSecondaryColor={changeSecondaryColor} // Passa la funzione per cambiarlo
         />
       )}
 

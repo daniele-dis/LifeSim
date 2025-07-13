@@ -4,55 +4,80 @@ import React, { createContext, useState, useEffect } from "react";
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
+  // --- Gestione della Modalità Scuro/Chiaro ---
   const [isDarkMode, setIsDarkMode] = useState(() => {
     try {
-      // Leggi il tema salvato da localStorage all'avvio
-      const saved = localStorage.getItem("lifeSimDarkMode");
-      // Se c'è un valore salvato, usalo; altrimenti, imposta dark mode come default
-      return saved !== null ? JSON.parse(saved) : true;
+      const savedMode = localStorage.getItem("lifeSimDarkMode");
+      return savedMode !== null ? JSON.parse(savedMode) : true; // Default a true (modalità scura)
     } catch (error) {
-      // In caso di errore (es. localStorage non disponibile), imposta dark mode
       console.error("Errore nel leggere il tema da localStorage:", error);
-      return true;
+      return true; // Fallback a dark mode in caso di errore
     }
   });
 
+  // --- NUOVO STATO: Gestione del Colore Secondario ---
+  const [secondaryColor, setSecondaryColor] = useState(() => {
+    try {
+      const savedColor = localStorage.getItem("lifeSimSecondaryColor"); // Nuovo key per localStorage
+      return savedColor ? savedColor : 'purple'; // Default al viola se non salvato
+    } catch (error) {
+      console.error("Errore nel leggere il colore secondario da localStorage:", error);
+      return 'purple'; // Fallback a purple in caso di errore
+    }
+  });
+
+  // Effetto per applicare la classe 'light-mode'/'dark-mode' e salvare la preferenza
   useEffect(() => {
-    // Il targetElement è l'elemento HTML effettivo a cui applicheremo le classi CSS.
-    // Usiamo #root perché è il contenitore principale della tua app React
-    // e il tuo index.css è configurato per ascoltare le classi su #root.
     const targetElement = document.getElementById('root'); 
     
-    // Controlla che l'elemento #root esista prima di provare a manipolarlo
     if (targetElement) {
+      // Rimuovi entrambe le classi prima di aggiungere quella corretta per evitare conflitti
+      targetElement.classList.remove('light-mode', 'dark-mode'); 
       if (isDarkMode) {
-        // Se è dark mode, rimuovi light-mode e aggiungi dark-mode
-        targetElement.classList.remove('light-mode');
-        // Aggiungiamo esplicitamente 'dark-mode' se vuoi una classe specifica
-        // Altrimenti, basterebbe solo rimuovere 'light-mode' se dark è il default senza classe.
-        // Per chiarezza, le mettiamo entrambe.
         targetElement.classList.add('dark-mode'); 
       } else {
-        // Se è light mode, rimuovi dark-mode e aggiungi light-mode
-        targetElement.classList.remove('dark-mode');
         targetElement.classList.add('light-mode');
       }
     }
 
-    // Salva la preferenza del tema in localStorage ogni volta che isDarkMode cambia
     try {
       localStorage.setItem("lifeSimDarkMode", JSON.stringify(isDarkMode));
     } catch (error) {
       console.error("Errore nel salvare il tema in localStorage:", error);
     }
-  }, [isDarkMode]); // Questo useEffect si esegue ogni volta che isDarkMode cambia
+  }, [isDarkMode]);
 
-  // Funzione per invertire il tema
+  // --- NUOVO EFFETTO: Applica la classe del colore secondario e salva la preferenza ---
+  useEffect(() => {
+    const targetElement = document.getElementById('root');
+
+    if (targetElement) {
+      // Rimuovi tutte le classi di colore secondario prima di aggiungerne una nuova
+      // Assicurati che questa lista includa tutti i possibili colori secondari che supporti
+      targetElement.classList.remove('purple-theme', 'blue-theme', 'red-theme', 'pink-theme', 'green-theme'); 
+      
+      // Aggiungi la classe corrispondente al colore secondario corrente
+      targetElement.classList.add(`${secondaryColor}-theme`);
+    }
+
+    try {
+      localStorage.setItem("lifeSimSecondaryColor", secondaryColor);
+    } catch (error) {
+      console.error("Errore nel salvare il colore secondario in localStorage:", error);
+    }
+  }, [secondaryColor]); // Questo useEffect si esegue ogni volta che secondaryColor cambia
+
+  // Funzione per invertire il tema (dark/light)
   const toggleDarkMode = () => setIsDarkMode((prev) => !prev);
 
-  // Fornisce isDarkMode e toggleDarkMode a tutti i componenti figli
+  // --- NUOVA FUNZIONE: Per cambiare il colore secondario ---
+  const changeSecondaryColor = (color) => {
+    setSecondaryColor(color);
+  };
+
+  // Fornisce tutti gli stati e le funzioni ai componenti figli
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
+    <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode, secondaryColor, changeSecondaryColor }}>
       {children}
     </ThemeContext.Provider>
   );
