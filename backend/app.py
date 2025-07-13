@@ -16,6 +16,8 @@ app = Flask(__name__)
 # Abilita CORS per tutta l'applicazione. Questo gestisce automaticamente le richieste OPTIONS.
 CORS(app)
 
+
+# Inizializzazione di un nuovo game dopo aver confermato la scelta di avatar e game
 @app.route("/initialize_game", methods=["POST"])
 def initialize_game():
     """Inizializza un nuovo slot di gioco."""
@@ -32,23 +34,22 @@ def initialize_game():
     game_slots[slot_number] = {
         "nome": player_name,
         "avatar": selected_avatar,
-        "soldi": 200,      # Inizia con più soldi
-        "energia": 70,     # Inizia con più energia
-        "felicita": 80,    # Inizia con più felicità
+        "soldi": 200,      # Parametri iniziali
+        "energia": 70,     
+        "felicita": 80,    
         "eta": 18,
         "giorni_passati": 0,
         "relazione": {
             "stato": "single",
             "partner_nome": None,
             "felicita_relazione": 0,
-            "preferenza_genere": partner_gender_preference # Salva la preferenza del giocatore
+            "preferenza_genere": partner_gender_preference # Preferenza Sesso Partner Giocatore
         },
         "figli": [],
         "current_suggestion": None,
         "message": "Benvenuto nella tua nuova vita!",
         "is_game_over": False,
         "death_reason": None,
-        # Nuovi campi per istruzione e lavoro
         "titolo_studio": "nessuno",
         "giorni_per_prossimo_livello_studio": DAYS_TO_NEXT_LEVEL["nessuno"],
         "lavoro_attuale": "disoccupato",
@@ -64,16 +65,11 @@ def get_game_state(slot_num):
     slot_key = str(slot_num)
     if slot_key in game_slots:
         state = game_slots[slot_key]
-        
-        # Ensure new fields are always present, even for old saves
-        # Set titolo_studio first, as others depend on it
         state.setdefault("titolo_studio", "nessuno") 
-        state.setdefault("giorni_per_prossimo_livello_studio", DAYS_TO_NEXT_LEVEL.get(state["titolo_studio"], 0)) # Use .get with default 0 if level not found
+        state.setdefault("giorni_per_prossimo_livello_studio", DAYS_TO_NEXT_LEVEL.get(state["titolo_studio"], 0)) 
         state.setdefault("lavoro_attuale", "disoccupato")
-        state.setdefault("stipendio", JOBS.get(state["lavoro_attuale"], {"stipendio": 0})["stipendio"]) # Use .get with default dict
+        state.setdefault("stipendio", JOBS.get(state["lavoro_attuale"], {"stipendio": 0})["stipendio"]) 
         state["relazione"].setdefault("preferenza_genere", "indifferent") 
-
-        # It's good practice to save if we modified the state to ensure consistency
         save_game_slots(game_slots) 
         return jsonify(state)
     return jsonify({"message": f"Slot {slot_num} non trovato."}), 404
@@ -93,13 +89,13 @@ def get_all_slots():
         slot_summaries[slot_num] = {
             "nome": data.get("nome"),
             "avatar": data.get("avatar"),
-            "eta": data.get("eta", 18), # Include l'età nel riepilogo
-            "relazione_stato": data.get("relazione", {}).get("stato", "single") # Include lo stato della relazione
+            "eta": data.get("eta", 18), 
+            "relazione_stato": data.get("relazione", {}).get("stato", "single") 
         }
     print(f"Backend: Restituiti riepiloghi slot: {slot_summaries}")
     return jsonify(slot_summaries)
 
-
+# delete slot permettere l'eliminazione dello slot, dato uno slot number e controllando che effettivamente sia popolato
 @app.route('/delete_slot/<int:slot_number>', methods=['DELETE'])
 def delete_slot(slot_number):
     """Elimina uno slot di gioco e la sua cartella associata."""
@@ -133,7 +129,9 @@ def delete_slot(slot_number):
     except Exception as e:
         print(f"Errore eliminazione slot: {e}")
         return jsonify({'error': f"Errore: {str(e)}"}), 500
-    
+
+
+# Route che permette di, data una data azione in input scelta dall'utente, di avere una conseguenza
 @app.route("/do_action", methods=["POST"])
 def do_action():
     """Esegue un'azione nel gioco e aggiorna lo stato."""
@@ -147,7 +145,7 @@ def do_action():
 
     state = game_slots[current_slot]
     
-    # Controlla il game over prima di elaborare l'azione
+    # Controlla il game over prima di elaborare l'azione, perchè il game over è bloccante 
     is_game_over, death_reason = check_game_over(state)
     if is_game_over:
         state["is_game_over"] = True
@@ -159,27 +157,34 @@ def do_action():
     state["message"] = None # Cancella il messaggio precedente
     state["current_suggestion"] = None # Cancella il suggerimento dopo l'azione
 
-    # --- Core Actions ---
+    # -- Principali Azioni --
+
+    # se l'azioene è lavoro, fai tot
     if azione == "lavoro":
         if state["lavoro_attuale"] == "disoccupato":
             state["message"] = "Non hai un lavoro da cui andare!"
         else:
             job_details = JOBS[state["lavoro_attuale"]]
-            state["soldi"] += job_details["stipendio"] // 30 # Guadagno giornaliero (approssimato)
+            state["soldi"] += job_details["stipendio"] // 30 # il lavoro attuale, diviso per 30 gg, con questa operazione si indica
+                                                             # il guadagno giornaliero (es: 1400/30 = 46,67 euro)
             state["energia"] -= random.randint(20, 30)
             state["felicita"] = clamp(state["felicita"] - random.randint(5, 15), 0, 100)
             state["message"] = f"Hai lavorato sodo e guadagnato un po' di soldi."
+
+    # altrimenti, se l'azione è dormi, divertiti, cerca partner e così via
     elif azione == "dormi":
         state["energia"] = clamp(state["energia"] + random.randint(30, 50), 0, 100)
         state["felicita"] = clamp(state["felicita"] + random.randint(5, 15), 0, 100)
         state["message"] = "Una bella dormita ti ha ricaricato le batterie."
+
+    # esci e divertiti un pò
     elif azione == "divertiti":
         state["felicita"] = clamp(state["felicita"] + random.randint(20, 40), 0, 100)
         state["soldi"] = clamp(state["soldi"] - random.randint(10, 30), -100, state["soldi"]) 
         state["energia"] = clamp(state["energia"] - random.randint(10, 20), 0, 100)
         state["message"] = "Ti sei divertito un mondo! Ma è costato un po'."
     
-    # --- Nuove azioni per relazioni/famiglia ---
+    # cerca un partner
     elif azione == "cerca_partner":
         if state["relazione"]["stato"] == "single" and state["eta"] >= 18:
             if state["soldi"] >= 30 and state["felicita"] >= 60 and random.random() < 0.6: # Probabilità di trovare partner
@@ -197,6 +202,7 @@ def do_action():
         else:
             state["message"] = "Non puoi cercare un partner in questo momento."
 
+    # esci con il tuo partner
     elif azione == "esci_con_partner":
         if state["relazione"]["stato"] in ["fidanzato", "sposato"]:
             if state["soldi"] >= 20 and state["energia"] >= 10:
@@ -210,7 +216,7 @@ def do_action():
         else:
             state["message"] = "Non hai un partner con cui uscire."
 
-    # Nuova Azione: Parla con Partner (per migliorare o peggiorare)
+    # parla con partner
     elif azione == "parla_con_partner":
         if state["relazione"]["stato"] in ["fidanzato", "sposato"]:
             if state["energia"] >= 5:
@@ -228,6 +234,7 @@ def do_action():
         else:
             state["message"] = "Non hai un partner con cui parlare."
 
+    # proponi matrimonio al tuo partner
     elif azione == "proponi_matrimonio":
         if state["relazione"]["stato"] == "fidanzato" and state["relazione"]["felicita_relazione"] >= 70:
             if state["soldi"] >= 200 and random.random() < 0.8: # Alta probabilità se le condizioni sono soddisfatte
@@ -237,13 +244,15 @@ def do_action():
                 state["relazione"]["felicita_relazione"] = clamp(state["relazione"]["felicita_relazione"] + 10, 0, 100)
                 state["message"] = f"Congratulazioni! Ti sei sposato con {state['relazione']['partner_nome']}!"
             else:
-                state["soldi"] = clamp(state["soldi"] - 50, -100, state["soldi"]) # Danno finanziario per proposta fallita
+                # se la proposta non è andata a buon fine, decremento soldi, felicià, stato relazione e messaggio inerente
+                state["soldi"] = clamp(state["soldi"] - 50, -100, state["soldi"])
                 state["felicita"] = clamp(state["felicita"] - 15, 0, 100)
-                state["relazione"]["felicita_relazione"] = clamp(state["relazione"]["felicita_relazione"] - 30, 0, 100) # Danno alla relazione
+                state["relazione"]["felicita_relazione"] = clamp(state["relazione"]["felicita_relazione"] - 30, 0, 100) 
                 state["message"] = "La proposta non è andata come speravi... la relazione ha preso una botta."
         else:
             state["message"] = "Non puoi proporre il matrimonio in questo momento."
 
+    # prova ad aver figli
     elif azione == "cerca_figli":
         if state["relazione"]["stato"] == "sposato" and state["eta"] >= 20 and state["eta"] <= 45: # Limite di età per i figli
             if state["relazione"]["felicita_relazione"] >= 60 and state["soldi"] >= 150 and random.random() < 0.7:
@@ -259,7 +268,8 @@ def do_action():
                 state["message"] = "Cercare di avere figli non è facile, non è successo nulla questa volta."
         else:
             state["message"] = "Non puoi avere figli in questo momento."
-            
+    
+    # sblocco di una nuova azione, dopo aver avuto figli puoi passar del tempo con 
     elif azione == "passa_tempo_figli":
         if len(state["figli"]) > 0:
             if state["energia"] >= 10:
@@ -274,6 +284,7 @@ def do_action():
         else:
             state["message"] = "Non hai figli con cui passare il tempo."
 
+    #divorzio dal partner
     elif azione == "divorzia":
         if state["relazione"]["stato"] == "sposato":
             # Il divorzio ora ha più impatto e non è garantito se la relazione è ancora buona
@@ -292,7 +303,7 @@ def do_action():
         else:
             state["message"] = "Non sei sposato per divorziare."
     
-    # Nuova Azione: Lasciare il partner (se fidanzato)
+    # Possibilitàà di lasciar il partner, se si è fidanzati
     elif azione == "lascia_partner":
         if state["relazione"]["stato"] == "fidanzato":
             state["relazione"]["stato"] = "single"
@@ -303,7 +314,7 @@ def do_action():
         else:
             state["message"] = "Non sei fidanzato per lasciare qualcuno."
             
-    # --- Education and Job Actions ---
+    # Studia per ottenere nuovi titolo di studio e migliorare la tua posizione lavorativa
     elif azione == "studia":
         if state["titolo_studio"] == "master":
             state["message"] = "Hai già raggiunto il massimo livello di istruzione!"
@@ -329,7 +340,6 @@ def do_action():
                 state["message"] = f"Stai studiando per il {get_next_study_level(state['titolo_studio']).replace('_', ' ')}. Ti mancano {state['giorni_per_prossimo_livello_studio']} giorni."
     
     elif azione == "cerca_lavoro":
-        # Rimosso il controllo "disoccupato" per permettere il cambio lavoro
         if state["energia"] < 20:
             state["message"] = "Sei troppo stanco per cercare lavoro."
         else:
@@ -362,7 +372,7 @@ def do_action():
                 state["felicita"] = clamp(state["felicita"] - 10, 0, 100)
                 state["message"] = "Hai cercato lavoro, ma non hai trovato nulla di adatto questa volta. Continua a provare o studia!"
     
-    # --- Other Advanced Actions (Esempi) ---
+    # Viaggia, che aumenta la felicità, diminuisce i soldi, come se fosse un divertiti dai
     elif azione == "viaggia":
         if state["soldi"] >= 100 and state["energia"] >= 30:
             state["soldi"] = clamp(state["soldi"] - 50, -50, state["soldi"])
@@ -372,9 +382,10 @@ def do_action():
         else:
             state["message"] = "Non hai abbastanza soldi o energia per viaggiare."
     
+    # probabilità di investir soldi, con conseguente perdita o guadagno, o semplicemente se troppi pochi soldi, non puoi investire
     elif azione == "investi":
         if state["soldi"] >= 150:
-            investment_gain = random.randint(-100, 200) # Può perdere o guadagnare
+            investment_gain = random.randint(-100, 200) 
             state["soldi"] = clamp(state["soldi"] + investment_gain, -100, state["soldi"] + investment_gain)
             if investment_gain > 0:
                 state["message"] = f"Hai investito e guadagnato {investment_gain} soldi! Ben fatto!"
@@ -450,7 +461,7 @@ def do_action():
     return jsonify(state)
 
 
-
+# route chee gestisce tutti i mssaggi di AI gestiti nel gioco
 @app.route("/generate_ai_suggestion", methods=["POST"])
 def generate_ai_suggestion():
     """Genera un suggerimento AI basato sullo stato del gioco."""

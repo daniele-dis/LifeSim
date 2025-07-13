@@ -26,8 +26,8 @@
         "lavoro_attuale": "impiegato_amministrativo",
         "stipendio": 1400,
         "current_suggestion": {
-            "action": "divertiti",
-            "text": "La vita è anche divertimento! Che ne dici di goderti un po' di tempo libero, Daniele?"
+            "action": "lavoro",
+            "text": "Daniele, potresti guadagnare un po' di più. Hai voglia di lavorare?"
         },
         "message": "Hai lavorato sodo e guadagnato un po' di soldi."
     }
