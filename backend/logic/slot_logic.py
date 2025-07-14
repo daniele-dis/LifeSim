@@ -11,7 +11,7 @@ app = Flask(__name__)
 def load_game_slots():
     """Carica gli slot di gioco dal file JSON."""
     if os.path.exists(SAVE_FILE):
-        with open(SAVE_FILE, 'r', encoding='utf-8') as f: # Specifica encoding anche qui
+        with open(SAVE_FILE, 'r', encoding='utf-8') as f: 
             try:
                 data = json.load(f)
                 print(f"Backend: Caricati slot da {SAVE_FILE}: {data}")

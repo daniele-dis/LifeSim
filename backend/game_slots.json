@@ -2,33 +2,34 @@
     "1": {
         "nome": "Daniele",
         "avatar": 1,
-        "soldi": 310,
-        "energia": 68,
-        "felicita": 48,
-        "eta": 30,
-        "giorni_passati": 387,
+        "soldi": 453,
+        "energia": 67,
+        "felicita": 89,
+        "eta": 32,
+        "giorni_passati": 425,
         "relazione": {
             "stato": "sposato",
             "partner_nome": "Chiara Verdi",
-            "felicita_relazione": 96,
+            "felicita_relazione": 98,
             "preferenza_genere": "indifferent"
         },
         "figli": [
             {
                 "nome": "Aurora",
                 "eta_nascita_genitore": 26
+            },
+            {
+                "nome": "Gaia",
+                "eta_nascita_genitore": 31
             }
         ],
         "is_game_over": false,
         "death_reason": null,
         "titolo_studio": "laurea_triennale",
-        "giorni_per_prossimo_livello_studio": 40,
+        "giorni_per_prossimo_livello_studio": 38,
         "lavoro_attuale": "impiegato_amministrativo",
         "stipendio": 1400,
-        "current_suggestion": {
-            "action": "divertiti",
-            "text": "La vita è anche divertimento! Che ne dici di goderti un po' di tempo libero, Daniele?"
-        },
+        "current_suggestion": null,
         "message": "Hai lavorato sodo e guadagnato un po' di soldi."
     }
 }

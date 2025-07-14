@@ -543,6 +543,6 @@ def generate_ai_suggestion():
     return jsonify(suggestion)
 
 
-# Assicurati che app.run() sia l'ultima cosa nel file, dopo tutte le definizioni delle route.
+# Sempre dopo tutte le definizioni delle route
 if __name__ == "__main__":
     app.run(debug=True, port=5050)

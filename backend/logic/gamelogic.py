@@ -27,7 +27,7 @@ def generate_random_child_name():
     """Genera un nome casuale per un figlio."""
     gender = random.choice(['male', 'female'])
     male_names = ["Alessandro", "Gabriele", "Leonardo", "Riccardo", "Tommaso"]
-    female_names = ["Aurora", "Beatrice", "Camilla", "Elena", "Emma"]
+    female_names = ["Aurora", "Beatrice", "Camilla", "Elena", "Emma", "Gaia", "Cecilia"]
     return random.choice(male_names) if gender == 'male' else random.choice(female_names)
 
 
