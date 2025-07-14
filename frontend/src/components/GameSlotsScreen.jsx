@@ -26,7 +26,6 @@ const GameSlotsScreen = ({ mode, onSlotSelect, onDeleteSlot, onBack, savedSlots,
   const handleOpenDeleteConfirm = (slotNumber) => {
     // Non permettere l'eliminazione di slot vuoti
     if (!savedSlots?.[slotNumber]) {
-      // Potresti aggiungere un messaggio all'utente qui se vuoi
       return;
     }
     setSlotToConfirmDelete(slotNumber);

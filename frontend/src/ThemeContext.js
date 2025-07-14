@@ -52,7 +52,6 @@ export const ThemeProvider = ({ children }) => {
     const targetElement = document.getElementById('root');
 
     if (targetElement) {
-      // Rimuovi tutte le classi di colore secondario prima di aggiungerne una nuova
       // Assicurati che questa lista includa tutti i possibili colori secondari che supporti
       targetElement.classList.remove('purple-theme', 'blue-theme', 'red-theme', 'pink-theme', 'green-theme'); 
       

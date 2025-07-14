@@ -44,69 +44,82 @@ function MainGameScreen({ gameState, doAction, onBack, isDarkMode, aiSuggestion,
                         Benvenuto, <span className="highlight">{gameState.nome}!</span>
                     </h1>
 
-                    <div className="main-game-screen__stats">
-                        {[
-                            //blocco stats //
-                            
-                            { icon: '🎂', label: 'Età', value: gameState.eta },
-                            { icon: '😄', label: 'Felicità', value: gameState.felicita },
-                            { icon: '💰', label: 'Soldi', value: new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(gameState.soldi) },
-                            { icon: '⚡', label: 'Energia', value: gameState.energia }
-                        ].map((stat, index) => (
-                            <div key={index} className="stat-box">
-                                <p className="game-stat"><span className="icon">{stat.icon}</span> {stat.label}: <span className="stat-value">{stat.value}</span></p>
-                            </div>
-                        ))}
-
-                        <div className="stat-box">
-                            <p className="game-stat"><span className="icon education-icon">🎓</span> Titolo di Studio:</p>
-                            <p className="game-stat-value">
-                                {formatName(gameState.titolo_studio)}
-                                {gameState.titolo_studio !== "master" && (
-                                    <span className="stat-detail">
-                                        ({gameState.giorni_per_prossimo_livello_studio > 0 ? `${gameState.giorni_per_prossimo_livello_studio} giorni al prossimo` : 'Completato'})
-                                    </span>
-                                )}
-                            </p>
-                        </div>
-
-                        <div className="stat-box">
-                            <p className="game-stat"><span className="icon job-icon">💼</span> Lavoro:</p>
-                            <p className="game-stat-value">
-                                {formatName(gameState.lavoro_attuale)}
-                                {gameState.lavoro_attuale !== "disoccupato" && (
-                                    <span className="stat-detail">
-                                        (Stipendio: {new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(gameState.stipendio)})
-                                    </span>
-                                )}
-                            </p>
-                        </div>
-
-                        <div className="stat-box">
-                            <p className="game-stat"><span className="icon relationship-icon">❤️</span> Relazione:</p>
-                            <p className="game-stat-value">
-                                {formatName(relationshipStatus)}
-                                {hasPartner && (
-                                    <span className="stat-detail">
-                                        con {gameState.relazione.partner_nome} ({gameState.relazione.felicita_relazione}% felicità)
-                                    </span>
-                                )}
-                                {relationshipStatus === "divorziato" && <span className="stat-detail" style={{ color: 'var(--color-button-danger)' }}> (Ex)</span>}
-                            </p>
-                            {hasPartner && (
-                                <div className="relationship-bar-container">
-                                    <div className="relationship-bar" style={{ width: `${gameState.relazione.felicita_relazione}%`, backgroundColor: gameState.relazione.felicita_relazione > 50 ? 'var(--color-highlight-secondary)' : 'var(--color-button-danger)' }}></div>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="stat-box">
-                            <p className="game-stat"><span className="icon children-icon">👨‍👩‍👧‍👦</span> Figli:</p>
-                            <p className="game-stat-value">
-                                {hasChildren ? gameState.figli.map(f => f.nome).join(', ') : "Nessuno"}
-                            </p>
-                        </div>
+            <div className="main-game-screen__stats">
+                {/* Blocco Stats di base (Età, Felicità, Soldi, Energia)*/}
+                {[
+                    { icon: '🎂', label: 'Età', value: gameState.eta },
+                    { icon: '😄', label: 'Felicità', value: gameState.felicita },
+                    { icon: '💰', label: 'Soldi', value: new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(gameState.soldi) },
+                    { icon: '⚡', label: 'Energia', value: gameState.energia }
+                ].map((stat, index) => (
+                    <div key={index} className="stat-box">
+                        <p className="game-stat"> {/* Qui game-stat gestisce icona e valore sulla stessa riga, come mostrato nella tua screenshot */}
+                            <span className="icon">{stat.icon}</span> {stat.label}: <span className="stat-value">{stat.value}</span>
+                        </p>
                     </div>
+                ))}
+
+                {/* Blocco Titolo di Studio*/}
+                <div className="stat-box">
+                    <p className="stat-label-row"> 
+                        <span className="icon education-icon">🎓</span> Titolo di Studio:
+                    </p>
+                    <p className="stat-value-row">
+                        {formatName(gameState.titolo_studio)}
+                        {gameState.titolo_studio !== "master" && (
+                            <span className="stat-detail">
+                                {" "}({gameState.giorni_per_prossimo_livello_studio > 0 ? `${gameState.giorni_per_prossimo_livello_studio} giorni al prossimo` : 'Completato'})
+                            </span>
+                        )}
+                    </p>
+                </div>
+
+                {/* Blocco Lavoro */}
+                <div className="stat-box">
+                    <p className="stat-label-row">
+                        <span className="icon job-icon">💼</span> Lavoro:
+                    </p>
+                    <p className="stat-value-row">
+                        {formatName(gameState.lavoro_attuale)}
+                        {gameState.lavoro_attuale !== "disoccupato" && (
+                            <span className="stat-detail">
+                                {" "} (Stipendio: {new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(gameState.stipendio)})
+                            </span>
+                        )}
+                    </p>
+                </div>
+
+                {/* Blocco Relazione  */}
+                <div className="stat-box">
+                    <p className="stat-label-row"> 
+                        <span className="icon relationship-icon">❤️</span> Relazione:
+                    </p>
+                    <p className="stat-value-row">
+                        {formatName(relationshipStatus)}
+                        {hasPartner && (
+                            <span className="stat-detail">
+                                {" "}con { gameState.relazione.partner_nome} ({gameState.relazione.felicita_relazione}% felicità)
+                            </span>
+                        )}
+                        {relationshipStatus === "divorziato" && <span className="stat-detail" style={{ color: 'var(--color-button-danger)' }}> (Ex)</span>}
+                    </p>
+                    {hasPartner && (
+                        <div className="relationship-bar-container">
+                            <div className="relationship-bar" style={{ width: `${gameState.relazione.felicita_relazione}%`, backgroundColor: gameState.relazione.felicita_relazione > 50 ? 'var(--color-highlight-secondary)' : 'var(--color-button-danger)' }}></div>
+                        </div>
+                    )}
+                </div>
+
+                {/* Blocco Figli */}
+                <div className="stat-box">
+                    <p className="stat-label-row"> 
+                        <span className="icon children-icon">👨‍👩‍👧‍👦</span> Figli:
+                    </p>
+                    <p className="stat-value-row">
+                        {hasChildren ? gameState.figli.map(f => f.nome).join(', ') : "Nessuno"}
+                    </p>
+                </div>
+            </div>
 
                     {message && (
                         <div className="game-message">
@@ -115,6 +128,7 @@ function MainGameScreen({ gameState, doAction, onBack, isDarkMode, aiSuggestion,
                     )}
 
                     {aiSuggestion && (
+
                         //blocco per i suggerimenti AI
                     <div className={`main-game-screen__ai-suggestion ${isDarkMode ? 'dark' : 'light'}`}>
                         <p className="ai-suggestion__text">
@@ -137,7 +151,6 @@ function MainGameScreen({ gameState, doAction, onBack, isDarkMode, aiSuggestion,
                         {gameState.lavoro_attuale !== "disoccupato" && (
 
                             //blocco pulsanti //
-
                             <button onClick={() => doAction('lavoro')} className="main-game-screen__action-btn">Vai a Lavorare</button>
                         )}
                         {gameState.lavoro_attuale === "disoccupato" && (

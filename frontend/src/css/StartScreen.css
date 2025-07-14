@@ -15,6 +15,7 @@
     padding: 0 1rem;
     background: transparent; /* Inherit from #root */
     color: inherit; /* Inherit from #root */
+    animation: fadeIn 3s ease-out forwards;
 }
 
 /* Effetti "Aura" di sfondo per StartScreen (pseudo-elementi ::before e ::after) */
@@ -75,16 +76,17 @@
     letter-spacing: 2px;
     color: var(--color-highlight-primary);
     transition: text-shadow 0.3s ease, color 0.5s ease;
+    animation: fadeInScaleUp 1s ease-out forwards;
+    animation-delay: 0.3s; /* Delay its appearance */
+    opacity: 0;
 }
 
 .title:hover {
     text-shadow: 0 0 30px var(--color-highlight-primary-hover);
 }
 
-/* Stili per il pulsante principale (es. "Inizia Nuova Partita") */
+/* Stili per il pulsante principale (es. "Gioca") */
 .button {
-    /* Se non usi un precompilatore, copia qui le proprietà da .base-button */
-    /* @extend .base-button; */
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     border: none;
     border-radius: 16px;
@@ -97,6 +99,9 @@
     cursor: pointer; /* Aggiunto cursor: pointer */
     padding: 1rem 6rem;
     font-size: 1.8rem;
+    animation: fadeInSlideUp 0.8s ease-out forwards;
+    animation-delay: 0.9s; /* Delay its appearance */
+    opacity: 0; /* Start invisible */
 }
 
 .button:hover {
@@ -106,8 +111,6 @@
 
 /* Stili per il pulsante "Chiudi" nei popup */
 .button_chiudi {
-    /* Se non usi un precompilatore, copia qui le proprietà da .base-button */
-    /* @extend .base-button; */
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     border: none;
     border-radius: 16px;
@@ -117,14 +120,14 @@
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing: 1.2px;
     user-select: none;
-    cursor: pointer; /* Aggiunto cursor: pointer */
+    cursor: pointer; 
     padding: 1rem 3rem;
     font-size: 1.2rem;
-    /* Overwrite specific hover scale for chiudi button */
+
 }
-.button_chiudi:hover { /* Chiusura corretta del blocco &:hover */
+.button_chiudi:hover { 
     transform: scale(1.05);
-    box-shadow: 0 20px 40px var(--color-button-shadow-hover); /* Aggiunto box-shadow mancante */
+    box-shadow: 0 20px 40px var(--color-button-shadow-hover); 
 }
 
 
@@ -138,6 +141,9 @@
     letter-spacing: 0.6px;
     color: var(--color-text-secondary);
     transition: color 0.3s ease;
+    animation: fadeInSlideUp 0.8s ease-out forwards;
+    animation-delay: 0.6s; /* Delay its appearance */
+    opacity: 0; /* Start invisible */
 }
 
 .subtitle:hover {
@@ -366,6 +372,42 @@
 @keyframes fadeInPopup {
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
+}
+
+/* keyframes definiscono gli stili che un elemento avrà in det. punti
+   di un'animazione. Il browser li interpreta e crea un movimento fluido.
+   Da definire sempre altrimenti, come già provato, rimanendo solo animation,
+   gli elementi a schermo scompaiono direttamente */
+   
+@keyframes fadeInScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* --- Stili per il Footer della StartScreen --- */

@@ -16,11 +16,10 @@
     animation: fadeIn 0.3s ease-out;
 }
 
-/* E nel tuo :root block */
 :root {
     /* ... */
-    --z-index-popup: 1000; /* Assicurati che sia 1000 o più alto */
-    --z-index-content: 2; /* Gli slot avranno questo valore */
+    --z-index-popup: 1000;
+    --z-index-content: 2; 
     /* ... */
 }
 .game-slots-container {
@@ -77,7 +76,7 @@
     text-align: center;
     transition: color 0.5s ease;
     position: relative;
-    z-index: var(--z-index-content); /* Using variable */
+    z-index: var(--z-index-content);
 }
 
 .game-slots-title {
@@ -131,7 +130,7 @@
     margin: 0 auto;
     padding: 0 20px;
     box-sizing: border-box;
-    position: relative; /* Puoi mantenere 'relative' se ti serve per posizionare figli assoluti all'interno */
+    position: relative; 
 }
 
 .game-slot {
@@ -140,8 +139,6 @@
     border-radius: 8px;
     padding: 15px;
     width: 250px;
-
-    /* Rimossa l'altezza fissa - CORREZIONE CHIAVE */
     min-height: 130px; 
     display: flex;
     flex-direction: column;
@@ -267,14 +264,14 @@
 
 /* Stile per gli slots con partita terminata */
 .game-slot.game-over-slot {
-    opacity: 0.7; /* Rendi leggermente opaco */
-    border: 2px dashed var(--color-text-secondary); /* Bordo diverso */
-    background-color: var(--color-background-primary-darker); /* Sfondo più scuro */
+    opacity: 0.7; 
+    border: 2px dashed var(--color-text-secondary); 
+    background-color: var(--color-background-primary-darker); 
 }
 
 .game-slot.game-over-slot h3,
 .game-slot.game-over-slot p {
-    color: var(--color-text-secondary); /* Testo più sbiadito */
+    color: var(--color-text-secondary); 
 }
 
 .game-slot.game-over-slot:hover {
@@ -341,7 +338,6 @@
     margin-top: 20px;
 }
 .modal-btn {
-    /* Proprietà comuni per tutti i pulsanti del modale */
     border: none;
     border-radius: 8px;
     padding: 0.8rem 1.5rem;
@@ -387,7 +383,6 @@
     }
 }
 
-/* Animazioni (se non le hai già) */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }

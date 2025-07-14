@@ -21,7 +21,6 @@
     transition: background 0.5s ease, color 0.5s ease;
 }
 
-/* **AGGIUNTO**: Applica gli effetti "Aura" anche al container del portale */
 .game-selection-portal-container::before,
 .game-selection-portal-container::after {
     content: "";
@@ -29,7 +28,7 @@
     border-radius: 50%;
     filter: blur(160px);
     opacity: 0.2;
-    z-index: var(--z-index-base); /* Using variable */
+    z-index: var(--z-index-base); 
     transition: background-color 0.5s ease, opacity 0.5s ease, filter 0.5s ease;
 }
 
@@ -56,12 +55,12 @@
 /* --- Stili per il Titolo della Schermata di Selezione Gioco ("Scegli La Modalità") --- */
 .portal-title {
     position: relative;
-    z-index: var(--z-index-content); /* Using variable */
+    z-index: var(--z-index-content); 
     font-size: 3.8rem;
-    margin-top: -120px; /* AGGIORNATO */
+    margin-top: -120px; 
     margin-bottom: 0.8rem;
     font-weight: 700;
-    letter-spacing: 3px; /* AGGIORNATO */
+    letter-spacing: 3px; 
     color: var(--color-highlight-primary);
     animation: fadeInSlideDown 1s ease-out;
     transition: color 0.5s ease, text-shadow 0.3s ease;
@@ -81,10 +80,10 @@
 /* --- Stili per il Sottotitolo della Schermata di Selezione Gioco --- */
 .portal-subtitle {
     position: relative;
-    z-index: var(--z-index-content); /* Using variable */
-    margin-top: 0.5rem; /* AGGIORNATO */
-    margin-bottom: 3.5rem; /* AGGIORNATO */
-    font-size: 1.3rem; /* AGGIORNATO */
+    z-index: var(--z-index-content); 
+    margin-top: 0.5rem; 
+    margin-bottom: 3.5rem; 
+    font-size: 1.3rem; 
     font-weight: 400;
     font-style: italic;
     letter-spacing: 0.8px;
@@ -108,46 +107,44 @@
 /* --- Stili per la Griglia dei Pulsanti "Portali" --- */
 .portal-options-grid {
     position: relative;
-    z-index: var(--z-index-content); /* Using variable */
-    display: flex; /* AGGIORNATO */
-    flex-direction: column; /* AGGIORNATO */
-    gap: 30px; /* AGGIORNATO */
-    width: 90%; /* AGGIORNATO */
-    max-width: 800px; /* AGGIORNATO */
-    margin-top: 20px; /* AGGIUNTO */
-    align-items: center; /* AGGIUNTO */
+    z-index: var(--z-index-content); 
+    display: flex;
+    flex-direction: column;
+    gap: 30px; 
+    width: 90%; 
+    max-width: 800px; 
+    margin-top: 20px; 
+    align-items: center; 
 }
 
 /* --- Stili per i Pulsanti "Portali" (Nuova Partita, Carica Partita) --- */
 .portal-button {
-    /* Se non usi un precompilatore, copia qui le proprietà da .base-button */
-    /* @extend .base-button; */
     background: linear-gradient(90deg, var(--color-button-gradient-start), var(--color-button-gradient-end));
     border: none;
-    border-radius: 16px; /* AGGIORNATO */
+    border-radius: 16px; 
     font-weight: 700;
     color: var(--color-button-text);
     box-shadow: 0 12px 25px var(--color-button-shadow-primary);
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing: 1.2px;
     user-select: none;
-    cursor: pointer; /* Aggiunto cursor: pointer */
+    cursor: pointer; 
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.8rem 3rem; /* AGGIORNATO */
-    font-size: 1.8rem; /* AGGIORNATO */
-    width: 100%; /* AGGIUNTO */
-    max-width: 300px; /* AGGIUNTO */
-    height: 75px; /* AGGIUNTO */
-    overflow: hidden; /* AGGIUNTO */
+    padding: 0.8rem 3rem; 
+    font-size: 1.8rem;
+    width: 100%;
+    max-width: 300px;
+    height: 75px; 
+    overflow: hidden; 
 }
 
 
 /* Testo all'interno del pulsante, posizionato sopra il glow */
 .portal-button-text {
     position: relative;
-    z-index: var(--z-index-content); /* AGGIORNATO */
+    z-index: var(--z-index-content); 
 }
 
 /* Effetto "glow" interno al pulsante al passaggio del mouse */
@@ -156,45 +153,46 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 0; /* AGGIORNATO */
-    height: 0; /* AGGIORNATO */
-    background: radial-gradient(circle, var(--portal-button-glow-color) 0%, transparent 70%); /* AGGIORNATO */
-    filter: blur(40px); /* AGGIORNATO */
-    opacity: 0; /* AGGIORNATO */
-    transform: translate(-50%, -50%); /* AGGIORNATO */
-    transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease; /* AGGIORNATO */
-    z-index: var(--z-index-base); /* Behind the text */
+    width: 0; 
+    height: 0; 
+    background: radial-gradient(circle, var(--portal-button-glow-color) 0%, transparent 70%); 
+    filter: blur(40px); 
+    opacity: 0; 
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+    z-index: var(--z-index-base); 
 }
 
 /* Effetti hover sui pulsanti del portale */
 .portal-button:hover {
     box-shadow: 0 20px 40px var(--color-button-shadow-hover);
-    transform: scale(1.12); /* AGGIORNATO */
+    transform: scale(1.12);
 }
 
 /* --- Media Queries per la Responsività della GameSelectionScreen --- */
 @media (min-width: 768px) {
     .portal-options-grid {
-        gap: 30px; /* AGGIORNATO */
-        max-width: 700px; /* AGGIORNATO */
+        gap: 30px; 
+        max-width: 700px; 
     }
     .portal-button {
-        padding: 1rem 6rem; /* AGGIORNATO */
-        font-size: 1.8rem; /* AGGIORNATO */
+        padding: 1rem 6rem;
+        font-size: 1.8rem; 
     }
 }
 
+/* --- se la la lunghrzza dello schermo è max 480 px, applica tali regole -- */
 @media (max-width: 480px) {
     .portal-title {
-        font-size: 2.5rem; /* AGGIORNATO */
-        margin-top: -80px; /* AGGIORNATO */
+        font-size: 2.5rem; 
+        margin-top: -80px; 
     }
     .portal-subtitle {
-        font-size: 1.1rem; /* AGGIORNATO */
-        margin-bottom: 3rem; /* AGGIORNATO */
+        font-size: 1.1rem; 
+        margin-bottom: 3rem;
     }
     .portal-button {
-        padding: 1rem 2.5rem; /* AGGIORNATO */
-        font-size: 1.4rem; /* AGGIORNATO */
+        padding: 1rem 2.5rem; 
+        font-size: 1.4rem; 
     }
 }

@@ -10,7 +10,7 @@ const ContactPopup = ({ onClose }) => {
       <div className="popup-content" onClick={(e) => e.stopPropagation()}>
         <h2>Contattaci</h2>
         <p>
-          Per qualsiasi domanda o supporto, puoi scriverci a:
+          Per qualsiasi domanda o supporto, puoi scriverci ai nostri indirizzi:
         </p>
         <p>
           <strong>Daniele Di Sarno:</strong> <a href="mailto:danieledisarno35@gmail.com" className="contact-email-text">danieledisarno35@gmail.com</a>
@@ -34,26 +34,26 @@ const HowToPlayPopup = ({ onClose }) => {
       <div className="popup-content" onClick={(e) => e.stopPropagation()}>
         <h2>Come Giocare</h2>
         <p>
-          Benvenuto in LifeSim! Ecco un'idea di come funziona il gioco.
+          Benvenuti in LifeSim! Ecco un'idea di come funziona il gioco.
         </p>
         <p>
-          1. "Inizia una Nuova Partita:" Prendi decisioni cruciali
+          <strong>1. Inizia una Nuova Partita:</strong> Prendi decisioni cruciali
           che influenzeranno il percorso della tua vita simulata.
         </p>
         <p>
-          2. "Gestisci le Risorse:" Bilancia aspetti come finanze,
+          <strong>2. Gestisci le Risorse:</strong> Bilancia aspetti come finanze,
           salute e relazioni.
         </p>
         <p>
-          3. "Eventi Casuali:" Preparati a sfide inaspettate
+          <strong>3. Eventi Casuali:</strong> Preparati a sfide inaspettate
           che metteranno alla prova le tue abilità decisionali.
         </p>
         <p>
-          4. "Obiettivi e Scopi:" Punta a raggiungere vari traguardi
+          <strong>4. Obiettivi e Scopi:</strong> Punta a raggiungere vari traguardi
           per sbloccare nuove possibilità.
         </p>
         <p>
-          5. "Esplora le Carriere:" Scegli il tuo percorso professionale e
+          <strong>5. Esplora le Carriere:</strong> Scegli il tuo percorso professionale e
           osserva come influisce sulla tua vita.
         </p>
         <br />
@@ -224,7 +224,7 @@ function StartScreen({ onStart }) {
       )}
 
       {/* Contenuto principale della StartScreen */}
-      <h1 className="title">Benvenuto in LifeSim!</h1>
+      <h1 className="title">Benvenuti in LifeSim!</h1>
       <p className="subtitle">Vivi la tua vita simulata e divertiti!</p>
       <button className="button" onClick={onStart}>
         Gioca

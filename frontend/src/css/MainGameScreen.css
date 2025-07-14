@@ -5,7 +5,11 @@
 /* General container */
 
 .lightblue-text{
-    color: #c300ff 
+    color: #ffffff 
+}
+
+.light-mode .lightblue-text{
+    color: #000000 
 }
 
 .main-game-screen {
@@ -15,9 +19,9 @@
     color: var(--color-text-primary);
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly; /* Changed to space-evenly for better distribution */
+    justify-content: space-evenly;
     min-height: 100vh;
-    overflow: hidden; /* Keep this to prevent scroll due to aura effects */
+    overflow: hidden; 
     padding: 2vh 30px; /* Reduced vertical padding */
     position: relative;
     width: 100%;
@@ -81,7 +85,6 @@
     transition: color 0.5s ease, text-shadow 0.5s ease;
 }
 
-/* Animations (add if not present) */
 @keyframes fadeInSlideDown {
     from {
         opacity: 0;
@@ -108,11 +111,11 @@
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--color-shadow-primary);
     display: grid;
-    gap: 20px; /* Aumentato il gap per maggiore spazio tra le colonne */
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Aumentato il min-width a 250px */
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
     margin-bottom: 4vh;
     padding: 1.5vh 30px;
-    max-width: 1000px; /* Potresti anche provare ad aumentare questo a 1200px se 900px è troppo stretto per il tuo schermo */
+    max-width: 1000px; 
     text-align: left;
     width: 95%;
     z-index: var(--z-index-content);
@@ -126,6 +129,51 @@
     display: flex;
     font-size: 2.00vh; /* Scaled with vh */
     transition: color 0.5s ease;
+    margin: 0; 
+    padding: 0;
+}
+
+.stat-label-row {
+    display: flex; /* Per allineare icona e testo dell'etichetta */
+    align-items: center;
+    color: var(--color-text-primary);
+    font-size: 2.00vh;
+    margin: 0; 
+    padding: 0;
+    gap: 0.5em; 
+}
+
+.stat-label-row .icon {
+
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.2));
+    font-size: 2.2vh;
+    margin-right: 0; /* Resetta margin-right se il gap sopra lo gestisce */
+}
+
+ .stat-value-row {
+    color: white; 
+    font-weight: 200;
+    font-size: 2.1vh; 
+    margin: 0; 
+    padding: 0;
+    word-wrap: break-word;
+    white-space: normal; /* Assicura che il testo vada a capo */
+}
+
+/* differenziazione dello style che dipende dal dark mode, quello di sopra o tema chiaro cioè questo*/
+.light-mode .stat-value-row {
+    color: var(--color-highlight-primary);
+    font-weight: 200;
+    font-size: 2.1vh; 
+    margin: 0; 
+    padding: 0;
+    word-wrap: break-word; 
+    white-space: normal; /* Assicura che il testo vada a capo */
+}
+
+.stat-detail {
+    margin: 0;
+    padding: 0;
 }
 
 .game-stat .icon {
@@ -141,13 +189,16 @@
 }
 
 /* Relationship Bar within stats */
+
 .relationship-bar-container {
     background-color: #333;
     border-radius: 5px;
     height: 10px;
-    margin-left: 10px;
     overflow: hidden;
-    width: 100px;
+    width: 100px; 
+    margin-top: 1.5vh; /* Aggiunge spazio sopra la barra. */
+    width: 100%;
+    max-width: 150px; 
 }
 
 .relationship-bar {
@@ -290,7 +341,6 @@
 }
 
 /* Game Over Styles */
-/* These styles don't directly affect the main layout, but ensure the overlay fits */
 .game-over-bg {
     background-color: var(--color-background-primary-darker);
     transition: background-color 0.5s ease;
@@ -305,7 +355,7 @@
     height: 100vh; /* Use vh for full height */
     justify-content: center;
     left: 0;
-    position: fixed; /* Changed to fixed to ensure it covers the whole viewport */
+    position: fixed;
     top: 0;
     width: 100vw; /* Use vw for full width */
     z-index: var(--z-index-modal);
@@ -317,11 +367,13 @@
     padding: 1.5vh 1vw;
     box-shadow: 0 4px 10px var(--color-shadow-secondary);
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 50px; /* Altezza minima uniforme */
-    height: 100%; /* Cresce uguale nella griglia */
+    flex-direction: column; /* <-- CRUCIALE: Metti gli elementi in colonna */
+    justify-content: flex-start; /* Allinea in alto */
+    min-height: 50px;
+    height: 100%;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    /* Aggiungi un piccolo gap tra gli elementi interni del stat-box (etichetta e valore) */
+    gap: 0.5vh; /* Regola questo valore per lo spazio verticale tra Etichetta e Valore */
 }
 
 

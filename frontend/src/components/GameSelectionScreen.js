@@ -41,9 +41,6 @@ const GameSelectionScreen = ({ onNewGame, onLoadGame, onDeleteGame, onBackToStar
           <p>Sviluppato da Daniele Di Sarno & Ciro La Rocca</p>
         </footer>
       </>
-
-      {/* Rimosso il blocco di rendering di GameSlotsScreen,
-          ora è gestito dal componente App.js in base a currentPhase */}
     </div>
   );
 };
