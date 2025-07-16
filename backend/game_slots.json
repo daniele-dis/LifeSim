@@ -29,7 +29,10 @@
         "giorni_per_prossimo_livello_studio": 38,
         "lavoro_attuale": "impiegato_amministrativo",
         "stipendio": 1400,
-        "current_suggestion": null,
+        "current_suggestion": {
+            "action": "lavoro",
+            "text": "Daniele, potresti guadagnare un po' di più. Hai voglia di lavorare?"
+        },
         "message": "Hai lavorato sodo e guadagnato un po' di soldi."
     }
 }

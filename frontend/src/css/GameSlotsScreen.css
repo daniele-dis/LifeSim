@@ -2,6 +2,13 @@
 /* --- STILI SPECIFICI PER LA SCHERMATA DI SELEZIONE SLOT (GameSlotsScreen) --- */
 /* ========================================================================== */
 
+:root {
+    /* ... */
+    --z-index-popup: 1000;
+    --z-index-content: 2; 
+    /* ... */
+}
+
 .game-slot-modal-overlay {
     position: fixed; /* ESSENZIALE per posizionarlo rispetto alla viewport */
     top: 0;
@@ -16,12 +23,6 @@
     animation: fadeIn 0.3s ease-out;
 }
 
-:root {
-    /* ... */
-    --z-index-popup: 1000;
-    --z-index-content: 2; 
-    /* ... */
-}
 .game-slots-container {
     display: flex;
     flex-direction: column;
@@ -153,6 +154,22 @@
     z-index: var(--z-index-content);
 }
 
+.game-slot:hover {
+    transform: translateY(-2px); 
+    box-shadow: 
+        0 0 15px 5px rgba(255, 255, 255, 0.625), /* Aureola sfumata */
+        0 5px 18px rgba(255, 252, 252, 0.2); /* Ombra sottile per profondità */
+    border-color: #000000; 
+}
+
+.light-mode .game-slot:hover {
+    transform: translateY(-2px); 
+    box-shadow: 
+        0 0 15px 5px rgba(0, 0, 0, 0.74), /* Aureola sfumata */
+        0 5px 18px rgba(255, 252, 252, 0.2); /* Ombra sottile per profondità */
+    border-color: #ffffff; 
+}
+
 .slot-content {
     width: 100%;
     display: flex;
@@ -177,11 +194,6 @@
     font-size: 0.75em;
     line-height: 1.2;
     transition: color 0.5s ease;
-}
-
-.game-slot:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 10px var(--color-shadow-primary); /* Use primary shadow on hover */
 }
 
 .game-slot button {
@@ -229,7 +241,6 @@
         margin-top: 6px;
     }
 }
-
 
 .back-button {
   position: absolute;
@@ -365,6 +376,34 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
 }
+
+/* Stili per il pulsante delete-button all'interno dello slot */
+.delete-button {
+    background: linear-gradient(90deg, #dc3545, #c82333); /* Rosso per eliminare */
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.delete-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+}
+
+/* Stile per il testo info-text */
+.info-text {
+    color: var(--color-text-secondary);
+    font-style: italic;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
 /* Media Query per modale su schermi piccoli */
 @media (max-width: 480px) {
     .game-slot-modal {
@@ -393,29 +432,5 @@
     to { transform: translateY(0); opacity: 1; }
 }
 
-/* Stili per il pulsante delete-button all'interno dello slot */
-.delete-button {
-    background: linear-gradient(90deg, #dc3545, #c82333); /* Rosso per eliminare */
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 8px 15px;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-}
 
-.delete-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
-}
 
-/* Stile per il testo info-text */
-.info-text {
-    color: var(--color-text-secondary);
-    font-style: italic;
-    font-size: 0.8em;
-    margin-top: 5px;
-}
